@@ -1,38 +1,23 @@
-# --- Configurações ---
-C_SRC_DIR = src-c
-RUST_SRC_DIR = src-rust
-RUST_CARGO_NAME = webserver_rust 
+CARGO_NAME = gabrielfrigo
+BIN_NAME = webserver
 
-.PHONY: all build build-c build-rs update clear
+.PHONY: all build update clean clear erase
 
-all: build-c build-rs
+all: build
 
-build: all
-
-# --- Compilação C ---
-build-c:
-	@echo "🔨 Compilando C..."
-	gcc $(C_SRC_DIR)/*.c -I$(C_SRC_DIR) -o webserver-c -O2
-	@echo "✅ Binário C criado: ./webserver-c"
-
-# --- Compilação Rust ---
-build-rs:
+build:
 	@echo "🦀 Compilando Rust (Release)..."
-	cd $(RUST_SRC_DIR) && cargo build --release
-	@echo "📦 Movendo binário Rust para a raiz..."
-	cp $(RUST_SRC_DIR)/target/release/$(RUST_CARGO_NAME) webserver-rs
-	@echo "✅ Binário Rust criado: ./webserver-rs"
+	cargo build --release
+	cp target/release/$(CARGO_NAME) $(BIN_NAME)
+	@echo "✅ Binário criado: ./$(BIN_NAME)"
 
-# --- Updates (Scripts de Deploy) ---
-update-c: build-c
-	./update-server.sh "webserver-c"
-	./update-server.sh "static"
+update: build
+	@echo "🚀 Enviando arquivos para o servidor Oracle..."
+	./update-server.sh $(BIN_NAME)
+	./update-server.sh public
+	@echo "✅ Deploy concluído!"
 
-update-rs: build-rs
-	./update-server.sh "webserver-rs"
-	./update-server.sh "static"
-
-# --- Limpeza ---
-clear:
-	rm -f webserver webserver-c webserver-rs
-	cd $(RUST_SRC_DIR) && cargo clean
+clean clear erase:
+	@echo "🧹 Limpando o projeto..."
+	rm -f $(BIN_NAME)
+	cargo clean
