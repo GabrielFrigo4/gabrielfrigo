@@ -3,7 +3,7 @@ use local_ip_address::list_afinet_netifas;
 use tokio::net::TcpListener;
 use tower_http::services::ServeDir;
 
-const PORT: u16 = 8080;
+const PORT: u16 = 80;
 
 #[tokio::main]
 async fn main() {
@@ -22,6 +22,9 @@ async fn main() {
     let local_prefix = format!("[{}]", "local");
     println!("🌐 {:<8} http://localhost:{}", local_prefix, PORT);
 
+    let global_prefix = format!("[{}]", "global");
+    println!("🌐 {:<8} http://144.22.210.65:{}", global_prefix, PORT);
+
     if let Ok(network_interfaces) = list_afinet_netifas() {
         for (name, ip) in network_interfaces.iter() {
             let prefix = format!("[{}]", name);
@@ -33,8 +36,6 @@ async fn main() {
             }
         }
     }
-
-    println!("\n⚙️  Testar API: http://localhost:{}/api/status", PORT);
 
     axum::serve(listener, app).await.unwrap();
 }
