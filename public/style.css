@@ -5,8 +5,20 @@
 	--text-secondary: #8b949e;
 	--accent: #ff7b72;
 	--accent-hover: #ff938a;
-	--font-sans: 'Inter', sans-serif;
-	--font-mono: 'Fira Code', monospace;
+	--font-sans: "Inter", sans-serif;
+	--font-mono: "Fira Code", monospace;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
 }
 
 * {
@@ -20,6 +32,7 @@ body {
 	color: var(--text-primary);
 	font-family: var(--font-sans);
 	line-height: 1.6;
+	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 }
 
@@ -48,12 +61,38 @@ h1 {
 	letter-spacing: -1px;
 }
 
-h2 {
+.typewriter-display {
 	font-family: var(--font-mono);
 	font-size: 1.2rem;
 	color: var(--text-secondary);
 	margin-bottom: 20px;
 	height: 30px;
+	display: flex;
+	align-items: center;
+	white-space: pre-wrap;
+}
+
+.cursor {
+	display: inline-block;
+	width: 8px;
+	height: 1.2rem;
+	background-color: var(--accent);
+	opacity: 1;
+	vertical-align: middle;
+}
+
+.cursor.blinking {
+	animation: blink 1.2s infinite;
+}
+
+@keyframes blink {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
 }
 
 .bio {
@@ -132,7 +171,9 @@ h3 {
 	border: 1px solid #30363d;
 	padding: 25px;
 	border-radius: 8px;
-	transition: transform 0.2s ease, border-color 0.2s ease;
+	transition:
+		transform 0.2s ease,
+		border-color 0.2s ease;
 }
 
 .card:hover {

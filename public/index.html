@@ -1,91 +1,155 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Gabriel Frigo | Engenheiro de Software</title>
+		<meta
+			name="description"
+			content="Portfólio de Gabriel Frigo, Engenheiro de Software focado em C/C++, Rust e Alta Performance."
+		/>
+		<meta name="author" content="Gabriel Frigo" />
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Gabriel Frigo | Engenheiro de Software</title>
-	<meta name="description" content="Portfólio de Gabriel Frigo, Dev focado em C/C++, Rust e Alta Performance.">
-	<meta name="author" content="Gabriel Frigo">
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-	<!--
-	<meta property="og:image" content="https://gabrielfrigo.dev.br/sua-foto-de-capa.jpg">
-	-->
-	<meta property="og:title" content="Gabriel Frigo | Engenheiro de Software">
-	<meta property="og:description" content="Portfólio de Gabriel Frigo, Dev focado em C/C++, Rust e Alta Performance.">
-	<meta property="og:type" content="website">
-	<meta property="og:url" content="https://gabrielfrigo.dev.br">
-	<link rel="stylesheet" href="style.css">
-	<link
-		href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;800&display=swap"
-		rel="stylesheet">
-</head>
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "Person",
+				"name": "Gabriel Frigo",
+				"jobTitle": "Engenheiro de Software",
+				"url": "https://gabrielfrigo.dev.br",
+				"alumniOf": {
+					"@type": "CollegeOrUniversity",
+					"name": "UFABC"
+				},
+				"knowsAbout": [
+					"C",
+					"C++",
+					"Rust",
+					"Zig",
+					"Assembly",
+					"CUDA",
+					"OpenCL",
+					"GPGPU",
+					"Sistemas de Baixo Nível"
+				],
+				"sameAs": [
+					"https://github.com/GabrielFrigo4",
+					"https://linkedin.com/in/gabriel-frigo-b6727b275/"
+				]
+			}
+		</script>
 
-<body>
-	<header class="hero">
-		<div class="container">
-			<p class="terminal-prompt">> olá, eu sou o</p>
-			<h1>Gabriel Frigo</h1>
-			<h2 id="typewriter"></h2>
-			<p class="bio">
-				Estudante de Ciência da Computação na UFABC e Engenheiro de Software com foco em sistemas de baixo
-				nível, GPGPU e alta performance.
-			</p>
-			<div class="links">
-				<a href="https://github.com/GabrielFrigo4" target="_blank" class="btn">GitHub</a>
-				<a href="https://linkedin.com/in/gabriel-frigo-b6727b275/" target="_blank"
-					class="btn btn-outline">LinkedIn</a>
+		<meta property="og:title" content="Gabriel Frigo | Engenheiro de Software" />
+		<meta
+			property="og:description"
+			content="Engenheiro de Software focado em sistemas de baixo nível e alta performance."
+		/>
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://gabrielfrigo.dev.br" />
+
+		<link rel="stylesheet" href="style.css" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;800&display=swap"
+			rel="stylesheet"
+		/>
+
+		<script src="main.js" defer></script>
+	</head>
+
+	<body>
+		<header class="hero">
+			<div class="container">
+				<p class="terminal-prompt">> olá, eu sou o</p>
+				<h1>Gabriel Frigo</h1>
+
+				<h2 class="sr-only">
+					Programação de Baixo Nível, Alta Performance em C/C++ e Rust, Computação
+					Gráfica e GPGPU, Engenharia de Sistemas
+				</h2>
+
+				<div class="typewriter-display" aria-hidden="true">
+					<span id="typewriter-text"></span
+					><span id="typewriter-cursor" class="cursor blinking"></span>
+				</div>
+
+				<p class="bio">
+					Estudante de Ciência da Computação na UFABC e Engenheiro de Software com
+					foco em sistemas de baixo nível, GPGPU e alta performance.
+				</p>
+				<nav class="links">
+					<a
+						href="https://github.com/GabrielFrigo4"
+						target="_blank"
+						class="btn"
+						rel="noopener"
+						>GitHub</a
+					>
+					<a
+						href="https://linkedin.com/in/gabriel-frigo-b6727b275/"
+						target="_blank"
+						class="btn btn-outline"
+						rel="noopener"
+						>LinkedIn</a
+					>
+				</nav>
 			</div>
-		</div>
-	</header>
+		</header>
 
-	<main class="container">
-		<section class="skills">
-			<h3>> tech_stack</h3>
-			<div class="tags">
-				<span class="tag">C / C++</span>
-				<span class="tag">Rust</span>
-				<span class="tag">Zig</span>
-				<span class="tag">Assembly</span>
-				<span class="tag">Python</span>
-				<span class="tag">CUDA / OpenCL</span>
-				<span class="tag">OpenGL</span>
-				<span class="tag">Docker</span>
-			</div>
-		</section>
-
-		<section class="experience">
-			<h3>> destaques_e_projetos</h3>
-			<div class="card-grid">
-				<div class="card">
-					<h4>QI Tech | Estágio</h4>
-					<p>Desenvolvimento de APIs RESTful utilizando Python 3 para serviços financeiros e conteinerização
-						com Docker.</p>
+		<main class="container">
+			<section class="skills">
+				<h3>> tech_stack</h3>
+				<div class="tags">
+					<span class="tag">C / C++</span>
+					<span class="tag">Rust</span>
+					<span class="tag">Zig</span>
+					<span class="tag">Assembly</span>
+					<span class="tag">Python</span>
+					<span class="tag">CUDA / OpenCL</span>
+					<span class="tag">OpenGL</span>
+					<span class="tag">Docker</span>
 				</div>
-				<div class="card">
-					<h4>Motor 2D & GPGPU</h4>
-					<p>Desenvolvimento de motor gráfico com processamento de física paralela em tempo real utilizando
-						OpenCL e OpenGL.</p>
-				</div>
-				<div class="card">
-					<h4>Green Team Hacker Club</h4>
-					<p>Administração de projetos e instrução técnica em linguagens de baixo nível (C, C++, Rust, Zig e
-						Assembly).</p>
-				</div>
-				<div class="card">
-					<h4>Medalhista OBMEP</h4>
-					<p>Medalha de Ouro e 13ª posição nacional, unindo lógica matemática abstrata com resolução de
-						problemas complexos.</p>
-				</div>
-			</div>
-		</section>
-	</main>
+			</section>
 
-	<footer>
-		<p>Desenvolvido "perto do metal" com Rust + Axum por Gabriel Frigo © 2026</p>
-	</footer>
+			<section class="experience">
+				<h3>> destaques_e_projetos</h3>
+				<div class="card-grid">
+					<article class="card">
+						<h4>QI Tech | Estágio</h4>
+						<p>
+							Desenvolvimento de APIs RESTful utilizando Python 3 para serviços
+							financeiros e conteinerização com Docker.
+						</p>
+					</article>
+					<article class="card">
+						<h4>Motor 2D & GPGPU</h4>
+						<p>
+							Desenvolvimento de motor gráfico com processamento de física
+							paralela em tempo real utilizando OpenCL e OpenGL.
+						</p>
+					</article>
+					<article class="card">
+						<h4>Green Team Hacker Club</h4>
+						<p>
+							Administração de projetos e instrução técnica em linguagens de baixo
+							nível (C, C++, Rust, Zig e Assembly).
+						</p>
+					</article>
+					<article class="card">
+						<h4>Medalhista OBMEP</h4>
+						<p>
+							Medalha de Ouro e 13ª posição nacional, unindo lógica matemática
+							abstrata com resolução de problemas complexos.
+						</p>
+					</article>
+				</div>
+			</section>
+		</main>
 
-	<script src="main.js"></script>
-</body>
-
+		<footer>
+			<p>Desenvolvido "perto do metal" com Rust + Axum por Gabriel Frigo © 2026</p>
+		</footer>
+	</body>
 </html>

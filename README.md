@@ -1,2 +1,10 @@
 # Gabriel Frigo - WebSite
- Gabriel Frigo personal website made in __Rust__ + __Tokio__ + __Sockets__ in __OCI__ + __Ubuntu 24.04 Minimal__
+
+Gabriel Frigo personal website made in **Rust** + **Tokio** + **Sockets** in **OCI** + **Ubuntu 24.04 Minimal**
+
+## Update Server
+
+```bash
+rm -rf public
+rm -f webserver
+```

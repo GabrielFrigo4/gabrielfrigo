@@ -1,45 +1,47 @@
-const phrases = [
-    "Programação de Baixo Nível",
-    "Alta Performance em C/C++ e Rust",
-    "Computação Gráfica e GPGPU",
-    "Engenharia de Sistemas"
-];
+const createTypewriter = (textElement, cursorElement, phrases) => {
+	let phraseIndex = 0;
+	let charIndex = 0;
+	let isDeleting = false;
 
-let i = 0;
-let j = 0;
-let isDeleting = false;
+	const type = () => {
+		const currentPhrase = phrases[phraseIndex];
 
-function loop() {
-    const typewriter = document.getElementById('typewriter');
-    const currentText = phrases[i].substring(0, j);
-    
-    typewriter.innerHTML = currentText + '<span style="border-right: 2px solid var(--accent); animation: blink 1s infinite;">&nbsp;</span>';
+		textElement.textContent = currentPhrase.substring(0, charIndex);
 
-    let timeoutSpeed = 50 + Math.random() * 50; 
+		let timeoutSpeed = isDeleting ? 40 : 80 + Math.random() * 40;
 
-    if (isDeleting) {
-        timeoutSpeed /= 2;
-    }
+		if (!isDeleting && charIndex === currentPhrase.length) {
+			cursorElement.classList.add("blinking");
+			timeoutSpeed = 2000;
+			isDeleting = true;
+		} else if (isDeleting && charIndex === 0) {
+			cursorElement.classList.remove("blinking");
+			isDeleting = false;
+			phraseIndex = (phraseIndex + 1) % phrases.length;
+			timeoutSpeed = 500;
+		} else {
+			cursorElement.classList.remove("blinking");
+		}
 
-    if (!isDeleting && j === phrases[i].length) {
-        timeoutSpeed = 2000; 
-        isDeleting = true;
-    } else if (isDeleting && j === 0) {
-        isDeleting = false;
-        i++;
-        if (i === phrases.length) {
-            i = 0;
-        }
-        timeoutSpeed = 500;
-    }
+		isDeleting ? charIndex-- : charIndex++;
 
-    if (isDeleting && j > 0) {
-        j--;
-    } else if (!isDeleting && j < phrases[i].length) {
-        j++;
-    }
+		setTimeout(type, timeoutSpeed);
+	};
 
-    setTimeout(loop, timeoutSpeed);
-}
+	type();
+};
 
-document.addEventListener('DOMContentLoaded', loop);
+document.addEventListener("DOMContentLoaded", () => {
+	const textElement = document.getElementById("typewriter-text");
+	const cursorElement = document.getElementById("typewriter-cursor");
+	const phrases = [
+		"Programação de Baixo Nível",
+		"Alta Performance em C/C++ e Rust",
+		"Computação Gráfica e GPGPU",
+		"Engenharia de Sistemas",
+	];
+
+	if (textElement && cursorElement) {
+		createTypewriter(textElement, cursorElement, phrases);
+	}
+});
