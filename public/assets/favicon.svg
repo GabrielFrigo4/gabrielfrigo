@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ff7b72">
+  <rect x="6" y="2" width="2.5" height="4" rx="1.25" />
+  <rect x="10.75" y="2" width="2.5" height="4" rx="1.25" />
+  <rect x="15.5" y="2" width="2.5" height="4" rx="1.25" />
+  
+  <rect x="6" y="18" width="2.5" height="4" rx="1.25" />
+  <rect x="10.75" y="18" width="2.5" height="4" rx="1.25" />
+  <rect x="15.5" y="18" width="2.5" height="4" rx="1.25" />
+  
+  <rect x="2" y="6" width="4" height="2.5" rx="1.25" />
+  <rect x="2" y="10.75" width="4" height="2.5" rx="1.25" />
+  <rect x="2" y="15.5" width="4" height="2.5" rx="1.25" />
+  
+  <rect x="18" y="6" width="4" height="2.5" rx="1.25" />
+  <rect x="18" y="10.75" width="4" height="2.5" rx="1.25" />
+  <rect x="18" y="15.5" width="4" height="2.5" rx="1.25" />
+
+  <path fill-rule="evenodd" d="M 5,8 A 3,3 0 0 1 8,5 L 16,5 A 3,3 0 0 1 19,8 L 19,16 A 3,3 0 0 1 16,19 L 8,19 A 3,3 0 0 1 5,16 Z M 12,8.5 A 3.5,3.5 0 1,0 12,15.5 A 3.5,3.5 0 1,0 12,8.5 Z" />
+</svg>
