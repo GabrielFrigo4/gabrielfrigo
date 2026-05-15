@@ -92,10 +92,6 @@ fn print_startup_banner() {
         println!("🌐 {:<10} https://{}{}\n", formatted_label, host, suffix);
     };
 
-    print_urls("domain", DOMAIN, false);
-    print_urls("domain", &format!("{}.{}", WWW, DOMAIN), false);
-    print_urls("domain", &format!("{}.{}", RESUME, DOMAIN), false);
-
     if let Ok(network_interfaces) = list_afinet_netifas() {
         for (name, ip) in network_interfaces.iter() {
             let host = match ip {
@@ -129,4 +125,8 @@ fn print_startup_banner() {
             }
         }
     }
+
+    print_urls("domain", DOMAIN, false);
+    print_urls("domain", &format!("{}.{}", WWW, DOMAIN), false);
+    print_urls("domain", &format!("{}.{}", RESUME, DOMAIN), false);
 }
