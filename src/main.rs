@@ -5,6 +5,8 @@ use std::{net::IpAddr, time::Instant};
 use tokio::net::TcpListener;
 use tower_http::services::ServeDir;
 
+const WWW: &str = "www";
+const RESUME: &str = "resume";
 const DOMAIN: &str = "gabrielfrigo.dev.br";
 const LOCALHOST: &str = "localhost";
 const PORT: u16 = 443 * 80;
@@ -21,7 +23,7 @@ async fn main() -> std::io::Result<()> {
     let start_time = Instant::now();
     let app = build_router(start_time);
 
-    let addr = format!("[::1]:{}", PORT);
+    let addr = format!("{}:{}", LOCALHOST, PORT);
     let listener = TcpListener::bind(&addr).await?;
 
     print_startup_banner();
@@ -67,6 +69,8 @@ fn print_startup_banner() {
     };
 
     print_urls("domain", DOMAIN, false);
+    print_urls("domain", &format!("{}.{}", WWW, DOMAIN), false);
+    print_urls("domain", &format!("{}.{}", RESUME, DOMAIN), false);
     print_urls("local", LOCALHOST, true);
 
     if let Ok(network_interfaces) = list_afinet_netifas() {
