@@ -8,8 +8,12 @@ fi
 
 KEY="${HOME}/.key/ssh-key-frigo-server.key"
 USER_HOST="ubuntu@144.22.210.65"
-TARGET_PATH="/home/ubuntu/resume/${1}"
+TARGET_PATH="/home/ubuntu/gabrielfrigo/${1}"
 PARENT_DIR="$(dirname "${TARGET_PATH}")"
 
-ssh -i "${KEY}" "${USER_HOST}" "mkdir -p \"${PARENT_DIR}\" && rm -rf \"${TARGET_PATH}\""
-scp -r -i "${KEY}" "${1}" "${USER_HOST}:${TARGET_PATH}"
+if [ -f "${KEY}" ]; then
+	ssh -i "${KEY}" "${USER_HOST}" "mkdir -p \"${PARENT_DIR}\" && rm -rf \"${TARGET_PATH}\""
+	scp -r -i "${KEY}" "${1}" "${USER_HOST}:${TARGET_PATH}"
+else
+	echo "Chave SSH não encontrada em ${KEY}. Deploy ignorado."
+fi

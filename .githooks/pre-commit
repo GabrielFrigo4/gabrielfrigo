@@ -1,0 +1,48 @@
+#!/usr/bin/env sh
+
+### ================================
+### PORTFOLIO PRE-COMMIT HOOK
+### ================================
+
+set -e
+
+_repo_root="$(git rev-parse --show-toplevel 2> "/dev/null" || pwd)"
+cd "${_repo_root}"
+
+echo "🔍 [pre-commit] Executing Portfolio quality gates..."
+
+### --------------------------------
+### Whitespace & Formatting Check
+### --------------------------------
+echo "  ↳ Checking whitespace and formatting (git diff --check)..."
+if ! git diff --check --cached; then
+	echo "❌ [pre-commit] Whitespace or EOF formatting error detected!" >&2
+	echo "   Run 'git diff --check --cached' to inspect issues." >&2
+	exit 1
+fi
+
+### --------------------------------
+### Shell Scripts Syntax Check
+### --------------------------------
+echo "  ↳ Validating shell scripts syntax..."
+find . -name "*.sh" -not -path "*/.git/*" -not -path "*/node_modules/*" -exec sh -n {} +
+
+### --------------------------------
+### Prettier Validation on Staged Files
+### --------------------------------
+if command -v npx > "/dev/null" 2>&1; then
+	echo "  ↳ Validating staged files formatting with Prettier..."
+	_staged_files=$(git diff --cached --name-only --diff-filter=d | grep -E '\.(svelte|js|json|md|html|css)$' || true)
+	if [ -n "${_staged_files}" ]; then
+		for _f in ${_staged_files}; do
+			if [ -f "${_f}" ] && ! npx prettier --check "${_f}" > "/dev/null" 2>&1; then
+				echo "❌ [pre-commit] Unformatted file detected: ${_f}" >&2
+				echo "   Run 'npx prettier --write ${_f}' or 'make format' to fix." >&2
+				exit 1
+			fi
+		done
+	fi
+fi
+
+echo "✅ [pre-commit] Portfolio quality gates passed cleanly!"
+exit 0

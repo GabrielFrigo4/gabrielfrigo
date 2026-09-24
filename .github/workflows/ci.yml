@@ -1,0 +1,41 @@
+name: Portfolio CI
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    validate-and-build:
+        name: ⚡ Validate & Static Build
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: "npm"
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Validate Formatting (Prettier)
+              run: npm run lint
+
+            - name: Build Static SvelteKit Site
+              run: npm run build
+
+            - name: Verify Static Artifacts
+              run: |
+                  test -f build/index.html || { echo "❌ build/index.html not generated!"; exit 1; }
+                  test -f build/404.html || { echo "❌ build/404.html not generated!"; exit 1; }
+                  echo "✅ Static site built successfully with @sveltejs/adapter-static"
