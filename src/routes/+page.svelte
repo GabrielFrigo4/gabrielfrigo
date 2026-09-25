@@ -173,8 +173,8 @@
 			title: "Sistemas Operacionais & Kernel",
 			items: [
 				{
-					name: "FreeBSD",
-					desc: "Jails, ZFS datasets nativos, pf firewall, áudio nativo OSS via /dev/dsp",
+					name: "FreeBSD & CheriBSD",
+					desc: "Jails, ZFS datasets nativos, pf firewall, áudio OSS e pesquisa em hardware capabilities (CHERI)",
 				},
 				{
 					name: "Linux",
@@ -190,7 +190,7 @@
 				},
 				{
 					name: "Windows / MSYS2",
-					desc: "Ambiente defensivo de compatibilidade POSIX, winget e Clang",
+					desc: "Ambiente defensivo POSIX, prompt com Clink (Lua + GNU Readline) e Clang",
 				},
 			],
 		},
@@ -198,7 +198,7 @@
 			title: "Conteinerização & Sandboxing Soberano",
 			items: [
 				{
-					name: "Podman (Nativo Linux & FreeBSD)",
+					name: "Podman (Linux & FreeBSD)",
 					desc: "Daemonless e rootless no Linux, e execução nativa OCI no FreeBSD com runj (Docker Hub em Jails)",
 				},
 				{
@@ -247,8 +247,8 @@
 					desc: "Concorrência com goroutines/channels, compilação estática em binário único",
 				},
 				{
-					name: "Assembly",
-					desc: "Instruções x86_64 e AArch64, registradores, chamadas de sistema e ABI",
+					name: "Assembly & Hardware",
+					desc: "Instruções x86_64 e AArch64, registradores, ABI e fundamentos de VHDL / FPGA",
 				},
 			],
 		},
@@ -268,8 +268,8 @@
 					desc: "Padrão relacional canônico para alta vazão transacional",
 				},
 				{
-					name: "PocketBase",
-					desc: "Backend embarcado em Go com SQLite nativo e sincronização em tempo real",
+					name: "PocketBase & Let's Encrypt",
+					desc: "Backend embarcado em Go com SQLite WAL e provisionamento TLS automático nativo",
 				},
 				{
 					name: "OpenZFS",
@@ -281,24 +281,28 @@
 			title: "Computação Gráfica, GPU & Áudio",
 			items: [
 				{
-					name: "SDL3 & SDL_GPU",
-					desc: "Fundação canônica de baixo nível e API moderna de GPU com shaders multiplataforma nativos",
+					name: "SDL3 (SDL_GPU & SDL_Audio)",
+					desc: "Fundação canônica de baixo nível, pipelines modernos de GPU e streams de áudio consistentes",
 				},
 				{
 					name: "NVIDIA CUDA",
 					desc: "Computação massiva paralela em GPU (GPGPU), warp execution e memória compartilhada de alta vazão",
 				},
 				{
-					name: "WebGPU",
-					desc: "Pipeline gráfico moderno e compute shaders de baixo overhead para web e aplicações nativas",
+					name: "WebGPU & QRhi",
+					desc: "Pipelines gráficos modernos, compute shaders e abstração unificada de hardware gráfico",
 				},
 				{
-					name: "OpenGL (Legado Histórico)",
-					desc: "Fundação clássica e formativa da computação gráfica 3D e shaders programáveis (GLSL)",
+					name: "OSS vs ALSA & Audio",
+					desc: "Filosofia UNIX pura (/dev/dsp sem overhead no OSS) vs ecossistema ALSA no Linux e SDL_Audio",
 				},
 				{
-					name: "OSS vs ALSA",
-					desc: "Filosofia UNIX pura em áudio (/dev/dsp sem camadas convolutas no OSS) vs ecossistema ALSA no Linux",
+					name: "Dear ImGui & Tooling (GLFW3 / GLAD)",
+					desc: "Interfaces imediatas para instrumentação e debug, janelamento GLFW e loaders de extensões GLAD",
+				},
+				{
+					name: "OpenGL, OpenCL & OpenAL",
+					desc: "Marcos formativos e legados históricos preservados da computação gráfica 3D, GPGPU e áudio espacial",
 				},
 			],
 		},
@@ -522,9 +526,11 @@
 						ocultas.
 					</li>
 					<li>
-						<strong>Herança Gráfica:</strong> Preservação do <code>OpenGL</code> clássico
-						como marco formativo da computação gráfica 3D, distinguindo-o das APIs modernas
-						baseadas em pipelines explícitos de GPU.
+						<strong>Herança Gráfica & Áudio:</strong> Preservação de
+						<code>OpenGL</code>,
+						<code>OpenCL</code> e <code>OpenAL</code> como marcos clássicos formativos
+						e legados históricos da computação gráfica 3D, GPGPU e áudio espacial, distinguindo-os
+						das APIs modernas baseadas em pipelines explícitos de GPU.
 					</li>
 					<li>
 						<strong>Alta Fidelidade:</strong> Código escrito para explorar o paralelismo
