@@ -8,13 +8,6 @@ MAKEFLAGS += --no-print-directory -s
 NPM ?= npm
 NODE ?= node
 GIT ?= git
-
-### --------------------------------
-### Server & Deploy Variables
-### --------------------------------
-FRIGO_SERVER_IP ?= 144.22.210.65
-FRIGO_SERVER_USER ?= ubuntu
-FRIGO_SERVER_KEY ?= $(HOME)/.vault/keys/ssh-key-frigo-server.key
 TARGET_DIR ?= build
 
 ### ================================
@@ -46,7 +39,7 @@ help:
 	printf "  make test     - Executa o ciclo completo de validação e compilação\n"
 	printf "  make ci       - Target de integração contínua (Quality Gate)\n"
 	printf "  make clean    - Remove diretórios de build e cache\n"
-	printf "  make deploy   - Executa build e sincroniza com o servidor remoto\n"
+	printf "  make deploy   - Executa build e envia os artefatos para o servidor\n"
 
 ### ================================
 ### DEVELOPMENT & LOCAL SERVER
@@ -133,9 +126,5 @@ clean:
 ### --------------------------------
 deploy: build
 	if [ -f "./update-server.sh" ]; then \
-		printf "🚀 Disparando deploy para $(FRIGO_SERVER_USER)@$(FRIGO_SERVER_IP)...\n"; \
-		FRIGO_SERVER_IP="$(FRIGO_SERVER_IP)" \
-		FRIGO_SERVER_USER="$(FRIGO_SERVER_USER)" \
-		FRIGO_SERVER_KEY="$(FRIGO_SERVER_KEY)" \
 		./update-server.sh $(TARGET_DIR); \
 	fi
