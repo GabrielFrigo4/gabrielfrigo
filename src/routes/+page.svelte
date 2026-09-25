@@ -245,23 +245,27 @@
 			],
 		},
 		{
-			title: "Computação Gráfica, Áudio & Interfaces",
+			title: "Computação Gráfica, GPU & Áudio",
 			items: [
 				{
-					name: "SDL3",
-					desc: "Fundação canônica de baixo nível para janelas, eventos, áudio e entrada",
+					name: "SDL3 & SDL_GPU",
+					desc: "Fundação canônica de baixo nível e API moderna de GPU com shaders multiplataforma nativos",
 				},
 				{
-					name: "SDL_GPU",
-					desc: "Nova API moderna de GPU com shaders multiplataforma nativos",
+					name: "NVIDIA CUDA",
+					desc: "Computação massiva paralela em GPU (GPGPU), warp execution e memória compartilhada de alta vazão",
 				},
 				{
-					name: "WebGPU & OpenGL",
-					desc: "Pipelines gráficos modernos, compute shaders e aceleração via hardware",
+					name: "WebGPU",
+					desc: "Pipeline gráfico moderno e compute shaders de baixo overhead para web e aplicações nativas",
 				},
 				{
-					name: "Open Sound System (OSS)",
-					desc: "Arquitetura UNIX pura: cat /dev/dsp > /dev/dsp sem camadas convolutas",
+					name: "OpenGL (Legado Histórico)",
+					desc: "Fundação clássica e formativa da computação gráfica 3D e shaders programáveis (GLSL)",
+				},
+				{
+					name: "OSS vs ALSA",
+					desc: "Filosofia UNIX pura em áudio (/dev/dsp sem camadas convolutas no OSS) vs ecossistema ALSA no Linux",
 				},
 			],
 		},
@@ -453,14 +457,20 @@
 				</p>
 				<ul class="card-list">
 					<li>
-						<strong>Fundação Canônica:</strong> <code>POSIX.1</code> para primitivas
-						de sistema operacional e <code>SDL3</code> (SDL_GPU, SDL_Audio, WebGPU, QRhi)
-						para janelas, entrada e computação gráfica.
+						<strong>Fundação Canônica & GPU:</strong> <code>POSIX.1</code> para
+						primitivas de sistema operacional, <code>SDL3</code> (SDL_GPU,
+						SDL_Audio, WebGPU, QRhi) e <code>NVIDIA CUDA</code> para computação paralela
+						massiva perto do metal.
 					</li>
 					<li>
 						<strong>Standard BSD Library (SBL):</strong> Implementação autoral de bibliotecas
 						de sistema BSD em C23 moderno, com compilação hermética via bmake e zero dependências
 						ocultas.
+					</li>
+					<li>
+						<strong>Herança Gráfica:</strong> Preservação do <code>OpenGL</code> clássico
+						como marco formativo da computação gráfica 3D, distinguindo-o das APIs modernas
+						baseadas em pipelines explícitos de GPU.
 					</li>
 					<li>
 						<strong>Alta Fidelidade:</strong> Código escrito para explorar o paralelismo
