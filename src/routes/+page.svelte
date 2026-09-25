@@ -178,7 +178,7 @@
 				},
 				{
 					name: "Linux",
-					desc: "Podman rootless/daemonless, observabilidade eBPF, KVM/QEMU",
+					desc: "Motor universal de nuvem, observabilidade eBPF, KVM/QEMU e containers",
 				},
 				{
 					name: "OpenBSD",
@@ -186,11 +186,40 @@
 				},
 				{
 					name: "illumos",
-					desc: "Solaris Zones nativas, Crossbow, ZFS e rastreabilidade dinâmica DTrace",
+					desc: "Linhagem clássica Solaris/SunOS, Solaris Zones nativas, Crossbow e DTrace",
 				},
 				{
 					name: "Windows / MSYS2",
 					desc: "Ambiente defensivo de compatibilidade POSIX, winget e Clang",
+				},
+			],
+		},
+		{
+			title: "Conteinerização & Sandboxing Soberano",
+			items: [
+				{
+					name: "Podman (Nativo Linux & FreeBSD)",
+					desc: "Daemonless e rootless no Linux, e execução nativa OCI no FreeBSD com runj (Docker Hub em Jails)",
+				},
+				{
+					name: "FreeBSD Jails & Bastille",
+					desc: "Isolamento clássico e leve de sistema operacional integrado ao ZFS e orquestração BastilleBSD",
+				},
+				{
+					name: "Incus & LXC",
+					desc: "Contêineres de sistema completos (System Containers) de alta densidade no Linux sem peso de VMs",
+				},
+				{
+					name: "Solaris Zones (illumos)",
+					desc: "Particionamento nativo de sistema e zonas lx-brand com contenção estrita de recursos",
+				},
+				{
+					name: "Docker & OCI",
+					desc: "Padrão aberto de empacotamento, distribuição e imagens reproduzíveis",
+				},
+				{
+					name: "Sylve & bhyve",
+					desc: "Orquestrador Sylve e hipervisor bhyve sobre datasets OpenZFS no FreeBSD",
 				},
 			],
 		},
@@ -242,6 +271,10 @@
 					name: "PocketBase",
 					desc: "Backend embarcado em Go com SQLite nativo e sincronização em tempo real",
 				},
+				{
+					name: "OpenZFS",
+					desc: "Snapshots atômicos, datasets criptografados e proteção contra corrupção silenciosa",
+				},
 			],
 		},
 		{
@@ -266,6 +299,27 @@
 				{
 					name: "OSS vs ALSA",
 					desc: "Filosofia UNIX pura em áudio (/dev/dsp sem camadas convolutas no OSS) vs ecossistema ALSA no Linux",
+				},
+			],
+		},
+		{
+			title: "Frontend Compilado & Ecossistema Web",
+			items: [
+				{
+					name: "Svelte 5",
+					desc: "Reatividade baseada em runes ($state, $derived), sem overhead de virtual DOM",
+				},
+				{
+					name: "SvelteKit Estático",
+					desc: "Compilação Ahead-of-Time para HTML/CSS/JS puros e distribuição soberana",
+				},
+				{
+					name: "Vite",
+					desc: "Pipeline de build ultra-rápido e hermético para desenvolvimento e produção",
+				},
+				{
+					name: "Caddy Web Server",
+					desc: "Servidor web em Go de alta performance com HTTP/2, HTTP/3 (QUIC) e zstd nativos",
 				},
 			],
 		},
@@ -1390,6 +1444,8 @@
 
 	.footer-manifesto {
 		max-width: 800px;
+		margin: 0 auto;
+		text-align: center;
 		padding: 1.5rem;
 		background: rgba(22, 27, 34, 0.5);
 		border: 1px solid var(--border-muted);
