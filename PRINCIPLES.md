@@ -3,11 +3,11 @@
 > _"Rule of Simplicity: Design for simplicity; add complexity only where you must."_<br>
 > — Eric S. Raymond, _The Art of UNIX Programming_ (2003)
 
-O website e portfólio oficial de Gabriel Frigo ([gabrielfrigo.dev.br](https://gabrielfrigo.dev.br)) é governado por **19 Princípios de Engenharia** (17 Princípios UNIX clássicos + Regra da Soberania do Usuário + Regra da Autonomia Reentrante), adaptados para desenvolvimento web estático de alta fidelidade e mínima fricção.
+O website e portfólio oficial de Gabriel Frigo ([gabrielfrigo.dev.br](https://gabrielfrigo.dev.br)) é governado por **22 Princípios de Engenharia** (17 Princípios UNIX clássicos + 5 Regras Soberanas), adaptados para desenvolvimento web estático de alta fidelidade e mínima fricção.
 
 ---
 
-## 🏛️ Os 19 Princípios Aplicados ao Portfólio
+## 🏛️ Os 22 Princípios Aplicados ao Portfólio
 
 ### 1. Regra da Modularidade (_Rule of Modularity_)
 
@@ -84,3 +84,16 @@ O website e portfólio oficial de Gabriel Frigo ([gabrielfrigo.dev.br](https://g
 ### 19. Regra da Autonomia Reentrante (_Rule of Reentrant Autonomy_)
 
 - O repositório pode ser clonado em qualquer ambiente e compilado imediatamente com `npm install && make build`.
+
+### 20. Regra do Hermetismo de Produção & Autonomia Soberana (_Rule of Production Hermeticity_)
+
+- **A Invariante do Teste de Fogo (`rm -rf .agents`):** Se a pasta `.agents/` for deletada, o site continua compilando (`make build`), gerando os artefatos estáticos e fazendo deploy com perfeição absoluta.
+- **Zero Acoplamento de IA em Produção:** Nenhum componente Svelte, pipeline ou Makefile depende de diretórios de IA.
+
+### 21. Regra do Desacoplamento Dev-Hub vs. Runtime de Produção (_Rule of Production Sovereign Isolation_)
+
+- O portfólio opera como bancada independente. Builds de desenvolvimento (`build/`, `.svelte-kit/`) são isolados no workspace sem poluir servidores até o deploy explícito.
+
+### 22. Regra da Antifragilidade & Resiliência Ativa (_Rule of Antifragility & Active Self-Healing_)
+
+- Scripts de deploy (`update-server.sh`) utilizam cascata ativa de descoberta de chaves e variáveis, auto-curam permissões em tempo de voo (`chmod 0600`) e toleram variações de rede sem falha silenciosa.

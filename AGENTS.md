@@ -46,7 +46,7 @@ Portfolio/
 ├── static/                    # Favicon, assets e imagens públicas
 ├── AGENTS.md                  # Este briefing
 ├── Makefile                   # Orquestrador POSIX silencioso
-├── PRINCIPLES.md              # 19 Princípios de Engenharia
+├── PRINCIPLES.md              # 22 Princípios de Engenharia
 ├── README.md                  # Documentação institucional do repositório
 ├── package.json               # Dependências estritas de SvelteKit e Vite
 ├── svelte.config.js           # Configuração de adapter-static
