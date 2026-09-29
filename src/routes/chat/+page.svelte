@@ -51,10 +51,12 @@
 			sender: "Sistema Soberano",
 			metaRight: "100% Client-Side",
 			content:
-				"Ambiente WebGPU configurado com seleção limpa e dinâmica:\n\n" +
-				"• **Dropdown Simplificado:** Nomes concisos sem poluição visual.\n" +
-				"• **Card Informativo:** Veja no painel acima o laboratório, tamanho em parâmetros, consumo estimado de VRAM e foco do modelo selecionado.\n\n" +
-				"Escolha o modelo no topo e clique em **Carregar Modelo** para iniciar a inferência na GPU local.",
+				"### ⚡ Runtime WebGPU Local Pronto\n\n" +
+				"Ambiente de inferência executado **diretamente nos shaders da sua GPU**, sem requisições de texto a servidores na nuvem.\n\n" +
+				"• **Zero Telemetria Externa:** Pesos são cacheados no Cache API do seu navegador e computados localmente.\n" +
+				"• **Modelos de Ponta:** Gemma 4 (Google), Qwen3.5 com raciocínio analítico (`<think>`) e SmolLM.\n" +
+				"• **Telemetria em Tempo Real:** Medição precisa de vazão de tensores (`tok/s`) e contagem de tokens.\n\n" +
+				"> 💡 **Como Iniciar:** Selecione o modelo desejado no menu superior e clique em **Carregar Modelo ⚡**.",
 		},
 	];
 
@@ -74,7 +76,7 @@
 		isLoading = true;
 		showProgress = true;
 		progressPct = 0;
-		progressText = `Carregando pesos de ${selectedSpec.name}...`;
+		progressText = `Carregando tensores de ${selectedSpec.name}...`;
 
 		try {
 			const webllm = await getWebLLM();
@@ -234,9 +236,10 @@
 		flex-direction: column;
 		height: 100vh;
 		max-height: 100vh;
-		background-color: var(--bg-base, #090d13);
-		color: var(--text-main, #f0f6fc);
+		background: radial-gradient(circle at 50% 0%, #0d1527 0%, #080c14 65%, #05080e 100%);
+		color: #f1f5f9;
 		overflow: hidden;
+		position: relative;
 	}
 
 	.chat-main-container {
@@ -244,9 +247,15 @@
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
-		max-width: 980px;
+		max-width: 1040px;
 		width: 100%;
 		margin: 0 auto;
-		padding: 16px 20px 20px 20px;
+		padding: 16px 24px 20px 24px;
+	}
+
+	@media (max-width: 640px) {
+		.chat-main-container {
+			padding: 12px 14px 16px 14px;
+		}
 	}
 </style>
