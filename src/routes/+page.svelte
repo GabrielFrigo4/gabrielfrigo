@@ -91,6 +91,23 @@
 			repo: "https://github.com/GabrielFrigo4/rng-engine",
 		},
 		{
+			id: "webgpu-chat",
+			cat: "graphics",
+			title: "Sovereign WebGPU Chat (Client-Side AI)",
+			desc: "Inferência local na GPU via WebGPU e WebLLM sem servidores na nuvem: Gemma 4, Qwen3.5 e SmolLM com streaming em tempo real, tokens/s e raciocínio <think>.",
+			tags: [
+				"WebGPU",
+				"WebLLM",
+				"WASM",
+				"Client-Side",
+				"SvelteKit",
+				"Gemma 4",
+				"Qwen3.5",
+			],
+			link: "/chat/",
+			repo: "https://github.com/GabrielFrigo4/gabrielfrigo",
+		},
+		{
 			id: "optilaser",
 			cat: "web",
 			title: "OptiLaser — Motor Logístico VRPTW",
@@ -391,6 +408,7 @@
 			<a href="#hubs" class="nav-link">Sexteto Federado</a>
 			<a href="#stack" class="nav-link">Stack</a>
 			<a href="#projetos" class="nav-link">Projetos</a>
+			<a href="/chat/" class="nav-link nav-link-highlight">WebGPU Chat ⚡</a>
 			<a
 				href="https://github.com/GabrielFrigo4"
 				target="_blank"
@@ -817,6 +835,16 @@
 
 	.nav-link:hover {
 		color: var(--text-main);
+	}
+
+	.nav-link-highlight {
+		color: var(--accent-green);
+		font-weight: 500;
+	}
+
+	.nav-link-highlight:hover {
+		color: #ffffff;
+		text-shadow: 0 0 8px rgba(126, 231, 135, 0.4);
 	}
 
 	.nav-link-btn {
