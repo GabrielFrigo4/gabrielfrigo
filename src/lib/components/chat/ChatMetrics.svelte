@@ -11,22 +11,32 @@
 </script>
 
 <div class="metrics-bar">
-	<div class="metric-item">
+	<!-- Layout Desktop: Itens detalhados -->
+	<div class="metric-item desktop-only">
 		<span class="metric-icon">🤖</span>
-		<span class="metric-label">MODELO ATIVO:</span>
+		<span class="metric-label">MODELO:</span>
 		<span class="metric-val val-model">{activeModelName}</span>
 	</div>
 
-	<div class="metric-item">
+	<div class="metric-item desktop-only">
 		<span class="metric-icon">⚡</span>
 		<span class="metric-label">VAZÃO:</span>
 		<span class="metric-val {getSpeedColor(speed)}">{speed} tok/s</span>
 	</div>
 
-	<div class="metric-item">
+	<div class="metric-item desktop-only">
 		<span class="metric-icon">🔢</span>
-		<span class="metric-label">TOKENS GERADOS:</span>
+		<span class="metric-label">TOKENS:</span>
 		<span class="metric-val val-tokens">{tokens}</span>
+	</div>
+
+	<!-- Layout Mobile: Ticker minimalista em 1 linha -->
+	<div class="mobile-ticker mobile-only">
+		<span class="ticker-segment {getSpeedColor(speed)}">⚡ {speed} tok/s</span>
+		<span class="ticker-sep">·</span>
+		<span class="ticker-segment val-tokens-txt">{tokens} tokens</span>
+		<span class="ticker-sep">·</span>
+		<span class="ticker-segment val-model-txt">{activeModelName}</span>
 	</div>
 </div>
 
@@ -36,15 +46,14 @@
 		justify-content: space-between;
 		align-items: center;
 		font-family: var(--font-mono, monospace);
-		font-size: 11.5px;
+		font-size: 11px;
 		color: #cbd5e1;
-		padding: 8px 12px;
+		padding: 6px 12px;
 		border-top: 1px solid rgba(55, 65, 81, 0.65);
-		margin-top: 8px;
-		flex-wrap: wrap;
-		gap: 12px;
+		margin-top: 6px;
 		background: rgba(11, 15, 25, 0.7);
 		border-radius: 8px;
+		flex-shrink: 0;
 	}
 
 	.metric-item {
@@ -103,5 +112,58 @@
 		background: rgba(139, 92, 246, 0.18);
 		color: #d8b4fe;
 		border: 1px solid rgba(216, 180, 254, 0.35);
+	}
+
+	.mobile-only {
+		display: none;
+	}
+
+	.desktop-only {
+		display: inline-flex;
+	}
+
+	.mobile-ticker {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		gap: 8px;
+		font-size: 10.5px;
+	}
+
+	.ticker-segment {
+		font-weight: 600;
+	}
+
+	.ticker-sep {
+		color: #475569;
+	}
+
+	.val-tokens-txt {
+		color: #d8b4fe;
+	}
+
+	.val-model-txt {
+		color: #93c5fd;
+		max-width: 140px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	@media (max-width: 640px) {
+		.metrics-bar {
+			padding: 4px 8px;
+			margin-top: 4px;
+			border-radius: 6px;
+		}
+
+		.mobile-only {
+			display: flex;
+		}
+
+		.desktop-only {
+			display: none;
+		}
 	}
 </style>

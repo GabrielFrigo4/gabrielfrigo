@@ -24,8 +24,9 @@
 	.progress-container {
 		background: rgba(11, 15, 25, 0.95);
 		border-bottom: 1px solid rgba(55, 65, 81, 0.7);
-		padding: 10px 24px;
+		padding: 8px 20px;
 		animation: slide-down 0.2s ease-out;
+		flex-shrink: 0;
 	}
 
 	@keyframes slide-down {
@@ -43,24 +44,28 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		font-size: 12px;
-		margin-bottom: 7px;
+		font-size: 11.5px;
+		margin-bottom: 5px;
 		font-family: var(--font-mono, monospace);
+		gap: 8px;
 	}
 
 	.progress-info {
 		display: flex;
 		align-items: center;
-		gap: 8px;
+		gap: 7px;
+		min-width: 0;
+		overflow: hidden;
 	}
 
 	.pulse-indicator {
-		width: 7px;
-		height: 7px;
+		width: 6px;
+		height: 6px;
 		border-radius: 50%;
 		background-color: #38bdf8;
-		box-shadow: 0 0 8px #38bdf8;
+		box-shadow: 0 0 6px #38bdf8;
 		animation: pulse 1s infinite alternate;
+		flex-shrink: 0;
 	}
 
 	@keyframes pulse {
@@ -77,16 +82,20 @@
 	.progress-text {
 		color: #e2e8f0;
 		font-weight: 600;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.progress-pct {
 		color: #38bdf8;
 		font-weight: 700;
+		flex-shrink: 0;
 	}
 
 	.progress-bar-bg {
 		width: 100%;
-		height: 6px;
+		height: 5px;
 		background-color: #1e293b;
 		border-radius: 3px;
 		overflow: hidden;
@@ -97,5 +106,19 @@
 		background: linear-gradient(90deg, #38bdf8, #10b981);
 		box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
 		transition: width 0.15s ease-out;
+	}
+
+	@media (max-width: 640px) {
+		.progress-container {
+			padding: 6px 12px;
+		}
+
+		.progress-header {
+			font-size: 10.5px;
+		}
+
+		.progress-bar-bg {
+			height: 4px;
+		}
 	}
 </style>

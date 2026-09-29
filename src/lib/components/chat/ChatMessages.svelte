@@ -83,14 +83,14 @@
 		overflow-y: auto;
 		display: flex;
 		flex-direction: column;
-		gap: 20px;
-		padding: 12px 10px 12px 2px;
+		gap: 16px;
+		padding: 10px 8px 10px 2px;
 		scroll-behavior: smooth;
 	}
 
 	/* Custom Scrollbar */
 	.chat-window::-webkit-scrollbar {
-		width: 6px;
+		width: 5px;
 	}
 	.chat-window::-webkit-scrollbar-track {
 		background: transparent;
@@ -107,7 +107,7 @@
 		display: flex;
 		flex-direction: column;
 		max-width: 88%;
-		padding: 14px 18px;
+		padding: 13px 16px;
 		border-radius: 12px;
 		line-height: 1.65;
 		font-size: 14.5px;
@@ -152,11 +152,12 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		gap: 12px;
-		margin-bottom: 8px;
-		padding-bottom: 6px;
+		gap: 10px;
+		margin-bottom: 7px;
+		padding-bottom: 5px;
 		border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 		font-family: var(--font-mono, monospace);
+		flex-wrap: wrap;
 	}
 
 	.msg-user .msg-meta {
@@ -167,18 +168,18 @@
 	.meta-right {
 		display: flex;
 		align-items: center;
-		gap: 8px;
+		gap: 6px;
 	}
 
 	.role-badge {
-		font-size: 11px;
+		font-size: 10.5px;
 		font-weight: 700;
-		padding: 2.5px 8px;
-		border-radius: 5px;
+		padding: 2px 7px;
+		border-radius: 4px;
 		letter-spacing: 0.5px;
 		display: inline-flex;
 		align-items: center;
-		gap: 5px;
+		gap: 4px;
 	}
 
 	.role-user {
@@ -194,17 +195,17 @@
 	}
 
 	.role-icon {
-		font-size: 10px;
+		font-size: 9px;
 	}
 
 	.meta-badge {
-		font-size: 11px;
+		font-size: 10.5px;
 		font-weight: 600;
-		padding: 2.5px 8px;
-		border-radius: 5px;
+		padding: 2px 7px;
+		border-radius: 4px;
 		display: inline-flex;
 		align-items: center;
-		gap: 5px;
+		gap: 4px;
 		letter-spacing: 0.3px;
 	}
 
@@ -215,8 +216,8 @@
 	}
 
 	.telemetry-dot {
-		width: 6px;
-		height: 6px;
+		width: 5px;
+		height: 5px;
 		border-radius: 50%;
 		background-color: #22d3ee;
 		box-shadow: 0 0 6px #22d3ee;
@@ -236,12 +237,14 @@
 
 	/* Conteúdo textual da mensagem */
 	.msg-content {
-		font-size: 14.5px;
-		line-height: 1.65;
+		font-size: 14px;
+		line-height: 1.6;
+		overflow-wrap: break-word;
+		word-break: break-word;
 	}
 
 	:global(.msg-content p) {
-		margin-bottom: 10px;
+		margin-bottom: 8px;
 	}
 
 	:global(.msg-content p:last-child) {
@@ -249,37 +252,37 @@
 	}
 
 	:global(.msg-content ul, .msg-content ol) {
-		margin: 10px 0 10px 22px;
+		margin: 8px 0 8px 18px;
 	}
 
 	:global(.msg-content li) {
-		margin-bottom: 5px;
+		margin-bottom: 4px;
 	}
 
 	:global(.msg-content h1, .msg-content h2, .msg-content h3, .msg-content h4) {
-		margin: 14px 0 8px 0;
+		margin: 12px 0 6px 0;
 		color: #f8fafc;
 		font-weight: 700;
 		letter-spacing: -0.2px;
 	}
 
 	:global(.msg-content h1) {
-		font-size: 17px;
+		font-size: 16px;
 		color: #93c5fd;
 	}
 	:global(.msg-content h2) {
-		font-size: 15.5px;
+		font-size: 15px;
 		color: #6ee7b7;
 	}
 	:global(.msg-content h3) {
-		font-size: 14.5px;
+		font-size: 14px;
 		color: #d8b4fe;
 	}
 
 	:global(.msg-content blockquote) {
 		border-left: 3px solid #38bdf8;
-		padding: 6px 14px;
-		margin: 10px 0;
+		padding: 5px 12px;
+		margin: 8px 0;
 		background: rgba(56, 189, 248, 0.08);
 		border-radius: 0 6px 6px 0;
 		color: #cbd5e1;
@@ -289,15 +292,16 @@
 	:global(.msg-content table) {
 		border-collapse: collapse;
 		width: 100%;
-		margin: 12px 0;
-		font-size: 13px;
+		margin: 10px 0;
+		font-size: 12.5px;
 		border-radius: 6px;
-		overflow: hidden;
+		overflow-x: auto;
+		display: block;
 	}
 
 	:global(.msg-content th, .msg-content td) {
 		border: 1px solid rgba(75, 85, 99, 0.6);
-		padding: 8px 12px;
+		padding: 6px 10px;
 		text-align: left;
 	}
 
@@ -314,7 +318,7 @@
 	:global(.msg-content hr) {
 		border: 0;
 		border-top: 1px solid rgba(75, 85, 99, 0.6);
-		margin: 14px 0;
+		margin: 12px 0;
 	}
 
 	:global(.msg-content a) {
@@ -337,11 +341,11 @@
 	:global(.think-block) {
 		background-color: rgba(245, 158, 11, 0.08);
 		border: 1px solid rgba(245, 158, 11, 0.35);
-		border-left: 4px solid #f59e0b;
-		padding: 10px 14px;
-		margin: 12px 0;
+		border-left: 3px solid #f59e0b;
+		padding: 8px 12px;
+		margin: 10px 0;
 		border-radius: 6px;
-		font-size: 13px;
+		font-size: 12.5px;
 		color: #e2e8f0;
 		font-family: var(--font-mono, monospace);
 		white-space: pre-wrap;
@@ -350,26 +354,27 @@
 
 	:global(.think-label) {
 		display: block;
-		font-size: 11px;
+		font-size: 10px;
 		font-weight: 800;
 		color: #fbbf24;
 		text-transform: uppercase;
 		letter-spacing: 0.6px;
-		margin-bottom: 6px;
+		margin-bottom: 4px;
 	}
 
 	/* Blocos de Código e Sintaxe */
 	:global(.msg-content pre) {
 		background-color: #060911;
 		border: 1px solid rgba(55, 65, 81, 0.8);
-		padding: 12px 16px;
+		padding: 10px 14px;
 		border-radius: 8px;
 		font-family: var(--font-mono, monospace);
-		font-size: 13px;
+		font-size: 12.5px;
 		line-height: 1.5;
-		margin: 12px 0;
+		margin: 10px 0;
 		overflow-x: auto;
 		white-space: pre-wrap;
+		word-break: break-all;
 		box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
 	}
 
@@ -377,10 +382,10 @@
 		background-color: rgba(59, 130, 246, 0.15);
 		color: #93c5fd;
 		border: 1px solid rgba(147, 197, 253, 0.25);
-		padding: 2px 6px;
+		padding: 2px 5px;
 		border-radius: 4px;
 		font-family: var(--font-mono, monospace);
-		font-size: 12.5px;
+		font-size: 12px;
 	}
 
 	:global(.msg-content pre code) {
@@ -388,5 +393,41 @@
 		color: #f1f5f9;
 		padding: 0;
 		border: none;
+	}
+
+	@media (max-width: 640px) {
+		.chat-window {
+			gap: 12px;
+			padding: 6px 2px;
+		}
+
+		.msg {
+			max-width: 95%;
+			padding: 10px 12px;
+			font-size: 13.5px;
+			line-height: 1.55;
+		}
+
+		.msg-meta {
+			gap: 6px;
+			margin-bottom: 5px;
+			padding-bottom: 4px;
+		}
+
+		.role-badge,
+		.meta-badge {
+			font-size: 9.5px;
+			padding: 1.5px 5px;
+		}
+
+		:global(.msg-content pre) {
+			padding: 8px 10px;
+			font-size: 11.5px;
+		}
+
+		:global(.think-block) {
+			padding: 6px 10px;
+			font-size: 11.5px;
+		}
 	}
 </style>

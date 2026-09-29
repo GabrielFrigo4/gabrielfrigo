@@ -389,6 +389,8 @@
 			? projects
 			: projects.filter((p) => p.cat === selectedCategory),
 	);
+
+	let mobileMenuOpen = $state(false);
 </script>
 
 <svelte:head>
@@ -403,7 +405,21 @@
 			<span class="brand-text">gabriel<strong>frigo</strong></span>
 		</a>
 
-		<div class="nav-links">
+		<!-- Ações Mobile Diretas -->
+		<div class="nav-mobile-actions mobile-only">
+			<a href="/chat/" class="mobile-chat-btn">WebGPU ⚡</a>
+			<button
+				class="mobile-menu-btn"
+				onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
+				aria-label="Abrir Menu de Navegação"
+				aria-expanded={mobileMenuOpen}
+			>
+				{mobileMenuOpen ? "✕" : "☰"}
+			</button>
+		</div>
+
+		<!-- Links Desktop -->
+		<div class="nav-links desktop-only">
 			<a href="#filosofia" class="nav-link">Filosofia</a>
 			<a href="#hubs" class="nav-link">Sexteto Federado</a>
 			<a href="#stack" class="nav-link">Stack</a>
@@ -419,6 +435,40 @@
 			</a>
 		</div>
 	</div>
+
+	<!-- Gaveta Dropdown no Mobile -->
+	{#if mobileMenuOpen}
+		<div class="mobile-drawer">
+			<a href="#filosofia" class="mobile-link" onclick={() => (mobileMenuOpen = false)}>
+				Filosofia
+			</a>
+			<a href="#hubs" class="mobile-link" onclick={() => (mobileMenuOpen = false)}>
+				Sexteto Federado
+			</a>
+			<a href="#stack" class="mobile-link" onclick={() => (mobileMenuOpen = false)}>
+				Stack Tecnológica
+			</a>
+			<a href="#projetos" class="mobile-link" onclick={() => (mobileMenuOpen = false)}>
+				Projetos em Destaque
+			</a>
+			<a
+				href="/chat/"
+				class="mobile-link mobile-link-chat"
+				onclick={() => (mobileMenuOpen = false)}
+			>
+				WebGPU Chat (IA Local) ⚡
+			</a>
+			<a
+				href="https://github.com/GabrielFrigo4"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="mobile-link mobile-link-gh"
+				onclick={() => (mobileMenuOpen = false)}
+			>
+				GitHub Institucional ↗
+			</a>
+		</div>
+	{/if}
 </nav>
 
 <!-- Hero Section -->
@@ -861,6 +911,78 @@
 	.nav-link-btn:hover {
 		border-color: var(--accent-blue);
 		color: var(--accent-blue);
+	}
+
+	.mobile-only {
+		display: none;
+	}
+
+	.desktop-only {
+		display: flex;
+	}
+
+	.nav-mobile-actions {
+		align-items: center;
+		gap: 0.6rem;
+	}
+
+	.mobile-chat-btn {
+		background: rgba(126, 231, 135, 0.15);
+		border: 1px solid rgba(126, 231, 135, 0.4);
+		color: var(--accent-green);
+		padding: 0.35rem 0.75rem;
+		border-radius: 6px;
+		font-family: var(--font-mono);
+		font-size: 0.8rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.mobile-menu-btn {
+		background: var(--bg-card);
+		border: 1px solid var(--border-default);
+		color: var(--text-main);
+		padding: 0.35rem 0.65rem;
+		border-radius: 6px;
+		font-size: 1.1rem;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 36px;
+		min-height: 36px;
+	}
+
+	.mobile-drawer {
+		display: flex;
+		flex-direction: column;
+		background: rgba(9, 13, 19, 0.98);
+		border-top: 1px solid var(--border-muted);
+		padding: 0.75rem 1.25rem 1.25rem 1.25rem;
+		gap: 0.25rem;
+	}
+
+	.mobile-link {
+		padding: 0.75rem 0.5rem;
+		font-size: 0.95rem;
+		color: var(--text-muted);
+		border-bottom: 1px solid var(--border-muted);
+		font-family: var(--font-sans);
+		transition: color 0.15s ease;
+	}
+
+	.mobile-link:hover {
+		color: var(--text-main);
+	}
+
+	.mobile-link-chat {
+		color: var(--accent-green);
+		font-weight: 700;
+	}
+
+	.mobile-link-gh {
+		color: var(--accent-blue);
+		border-bottom: none;
 	}
 
 	/* Hero */
@@ -1551,12 +1673,54 @@
 	}
 
 	@media (max-width: 768px) {
-		.hero-title {
-			font-size: 2.2rem;
+		.desktop-only {
+			display: none !important;
 		}
 
-		.nav-links {
+		.mobile-only {
+			display: flex !important;
+		}
+
+		.hero {
+			padding: 3.5rem 1.25rem 2.5rem;
+		}
+
+		.hero-title {
+			font-size: clamp(1.85rem, 6.5vw, 2.3rem);
+		}
+
+		.hero-lead {
+			font-size: 1.05rem;
+			line-height: 1.6;
+			margin-bottom: 1.75rem;
+		}
+
+		.hero-actions {
+			flex-direction: column;
+			width: 100%;
+			max-width: 420px;
+		}
+
+		.hero-actions .btn {
+			width: 100%;
+		}
+
+		.filter-bar {
+			justify-content: flex-start;
+			flex-wrap: nowrap;
+			overflow-x: auto;
+			padding: 0.25rem 0.25rem 0.75rem;
+			-webkit-overflow-scrolling: touch;
+			scrollbar-width: none;
+		}
+
+		.filter-bar::-webkit-scrollbar {
 			display: none;
+		}
+
+		.filter-btn {
+			flex-shrink: 0;
+			white-space: nowrap;
 		}
 
 		.triad-grid,
@@ -1570,6 +1734,31 @@
 			flex-direction: column;
 			gap: 1rem;
 			text-align: center;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.hero {
+			padding: 2.5rem 1rem 2rem;
+		}
+
+		.hero-badge {
+			font-size: 0.72rem;
+			padding: 0.25rem 0.6rem;
+		}
+
+		.terminal-card {
+			margin-bottom: 1.75rem;
+		}
+
+		.terminal-header {
+			font-size: 0.78rem;
+			padding: 0.5rem 0.75rem;
+		}
+
+		.terminal-body {
+			font-size: 0.85rem;
+			padding: 0.75rem;
 		}
 	}
 </style>

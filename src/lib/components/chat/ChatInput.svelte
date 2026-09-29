@@ -21,37 +21,37 @@
 		<textarea
 			bind:value={prompt}
 			placeholder={disabled
-				? "Selecione e carregue um modelo acima para habilitar o prompt..."
-				: "Envie uma consulta técnica ou instrução de sistemas..."}
+				? "Carregue um modelo acima para habilitar o chat..."
+				: "Envie uma consulta técnica ou comando..."}
 			{disabled}
 			onkeydown={handleKeyDown}
 			rows="2"
 		></textarea>
 
 		<div class="input-bottom-bar">
-			<div class="shortcuts-hint">
+			<div class="shortcuts-hint desktop-only">
 				<span class="key-hint"><kbd>Enter</kbd> Enviar</span>
 				<span class="key-sep">·</span>
-				<span class="key-hint"><kbd>Shift</kbd>+<kbd>Enter</kbd> Quebra de linha</span>
+				<span class="key-hint"><kbd>Shift</kbd>+<kbd>Enter</kbd> Nova linha</span>
 			</div>
 
 			<button
 				class="btn-send"
 				disabled={disabled || isGenerating || !prompt.trim()}
 				onclick={onSend}
-				aria-label="Enviar Prompt"
+				aria-label="Enviar Mensagem"
 			>
 				{#if isGenerating}
 					<span class="spinner"></span>
-					<span>Gerando...</span>
+					<span class="desktop-only">Gerando...</span>
 				{:else}
-					<span>Enviar</span>
+					<span class="desktop-only">Enviar</span>
 					<svg
 						class="send-icon"
 						viewBox="0 0 20 20"
 						fill="currentColor"
-						width="14"
-						height="14"
+						width="15"
+						height="15"
 					>
 						<path
 							d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"
@@ -65,17 +65,19 @@
 
 <style>
 	.input-container {
-		margin-top: 10px;
+		margin-top: 8px;
+		flex-shrink: 0;
 	}
 
 	.input-card {
 		display: flex;
 		flex-direction: column;
-		background: rgba(15, 23, 42, 0.9);
+		background: rgba(15, 23, 42, 0.92);
 		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
 		border: 1px solid rgba(55, 65, 81, 0.7);
 		border-radius: 12px;
-		padding: 12px 16px 10px 16px;
+		padding: 10px 14px 8px 14px;
 		transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
 	}
@@ -95,15 +97,15 @@
 		outline: none;
 		color: #f8fafc;
 		font-family: inherit;
-		font-size: 14.5px;
+		font-size: 14px;
 		resize: none;
-		height: 48px;
-		line-height: 1.55;
+		height: 44px;
+		line-height: 1.5;
 	}
 
 	textarea::placeholder {
 		color: #64748b;
-		font-size: 13.5px;
+		font-size: 13px;
 	}
 
 	textarea:disabled {
@@ -115,10 +117,9 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding-top: 8px;
+		padding-top: 6px;
 		border-top: 1px solid rgba(255, 255, 255, 0.05);
-		gap: 12px;
-		flex-wrap: wrap;
+		gap: 10px;
 	}
 
 	.shortcuts-hint {
@@ -145,7 +146,7 @@
 	}
 
 	.btn-send {
-		padding: 7px 18px;
+		padding: 6px 16px;
 		font-size: 13px;
 		font-weight: 700;
 		border-radius: 7px;
@@ -156,8 +157,10 @@
 		transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 		display: inline-flex;
 		align-items: center;
-		gap: 7px;
+		justify-content: center;
+		gap: 6px;
 		box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35);
+		margin-left: auto;
 	}
 
 	.btn-send:hover:not(:disabled) {
@@ -196,6 +199,42 @@
 	@keyframes spin {
 		to {
 			transform: rotate(360deg);
+		}
+	}
+
+	.desktop-only {
+		display: inline-flex;
+	}
+
+	@media (max-width: 640px) {
+		.desktop-only {
+			display: none;
+		}
+
+		.input-card {
+			padding: 8px 10px 6px 10px;
+			border-radius: 10px;
+		}
+
+		textarea {
+			/* Font-size 16px no mobile previne zoom indesejado no iOS Safari e Android */
+			font-size: 16px;
+			height: 38px;
+			line-height: 1.4;
+		}
+
+		textarea::placeholder {
+			font-size: 13px;
+		}
+
+		.input-bottom-bar {
+			padding-top: 4px;
+		}
+
+		.btn-send {
+			padding: 6px 12px;
+			min-width: 44px;
+			min-height: 34px;
 		}
 	}
 </style>

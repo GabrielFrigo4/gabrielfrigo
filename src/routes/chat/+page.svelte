@@ -12,11 +12,13 @@
 	import ChatInput from "$lib/components/chat/ChatInput.svelte";
 
 	// Estado reativo Svelte 5 com Runes
-	let selectedModelKey = $state("gemma-4-e2b");
-	let selectedSpec = $derived(MODEL_SPECS[selectedModelKey] || MODEL_SPECS["gemma-4-e2b"]);
+	let selectedModelKey = $state("smol-lm-3-360m");
+	let selectedSpec = $derived(MODEL_SPECS[selectedModelKey] || MODEL_SPECS["smol-lm-3-360m"]);
 
 	let gpuStatus = $state("Verificando WebGPU...");
+	let shortGpuStatus = $state("GPU...");
 	let isGpuError = $state(false);
+	let isMobileDevice = $state(false);
 
 	let isLoading = $state(false);
 	let isLoaded = $state(false);
@@ -51,12 +53,11 @@
 			sender: "Sistema Soberano",
 			metaRight: "100% Client-Side",
 			content:
-				"### ⚡ Runtime WebGPU Local Pronto\n\n" +
-				"Ambiente de inferência executado **diretamente nos shaders da sua GPU**, sem requisições de texto a servidores na nuvem.\n\n" +
-				"• **Zero Telemetria Externa:** Pesos são cacheados no Cache API do seu navegador e computados localmente.\n" +
-				"• **Modelos de Ponta:** Gemma 4 (Google), Qwen3.5 com raciocínio analítico (`<think>`) e SmolLM.\n" +
-				"• **Telemetria em Tempo Real:** Medição precisa de vazão de tensores (`tok/s`) e contagem de tokens.\n\n" +
-				"> 💡 **Como Iniciar:** Selecione o modelo desejado no menu superior e clique em **Carregar Modelo ⚡**.",
+				"### ⚡ Runtime WebGPU Local Ativo\n\n" +
+				"Inferência de IA de ponta executada **diretamente nos shaders da sua GPU**, com privacidade absoluta e zero tráfego na nuvem.\n\n" +
+				"• **Modelos de Ponta:** Família SmolLM3 & SmolVLM (Hugging Face), Qwen3.5 nativo (Alibaba) e Gemma 4 (Google).\n" +
+				"• **📱 Otimizado para Smartphones:** Para celulares (como Galaxy M52 / Adreno), utilize os modelos **SmolLM3 (360M Mobile ou 135M Nano)** para garantir estabilidade e fluidez máxima.\n\n" +
+				"> 💡 **Como Iniciar:** Escolha o modelo acima e toque em **Carregar Modelo ⚡**.",
 		},
 	];
 
@@ -65,18 +66,38 @@
 	onMount(async () => {
 		const gpuResult = await checkWebGPU();
 		gpuStatus = gpuResult.status;
+		shortGpuStatus = gpuResult.shortStatus;
 		isGpuError = gpuResult.isError;
+		isMobileDevice = gpuResult.isMobile;
+
+		// No mobile, garante seleção de modelo ultra-leve SmolLM3 por padrão
+		if (isMobileDevice) {
+			selectedModelKey = "smol-lm-3-360m";
+		} else {
+			selectedModelKey = "gemma-4-e2b";
+		}
 
 		markedInstance = await getMarked();
 	});
 
-	async function loadModel() {
+	async function loadModel(overrideModelId = null) {
 		if (isGpuError || isLoading || isGenerating) return;
 
 		isLoading = true;
 		showProgress = true;
 		progressPct = 0;
-		progressText = `Carregando tensores de ${selectedSpec.name}...`;
+		progressText = `Preparando runtime de GPU para ${selectedSpec.name}...`;
+
+		// 1. Liberação proativa de VRAM anterior para evitar OOM no dispositivo móvel
+		if (engine) {
+			try {
+				progressText = "Liberando buffers de VRAM do modelo anterior...";
+				await engine.unload();
+			} catch (e) {
+				console.warn("Aviso ao descarregar engine anterior:", e);
+			}
+			engine = null;
+		}
 
 		try {
 			const webllm = await getWebLLM();
@@ -88,20 +109,67 @@
 				progressText = `[${selectedSpec.name}] ${report.text}`;
 			});
 
-			await engine.reload(selectedSpec.primaryId);
+			const targetModelId = overrideModelId || selectedSpec.primaryId;
+			await engine.reload(targetModelId);
 
 			progressPct = 100;
-			progressText = `${selectedSpec.name} pronto na VRAM!`;
+			progressText = `${selectedSpec.name} pronto na GPU!`;
 			activeModelName = selectedSpec.name;
 			isLoaded = true;
 
 			setTimeout(() => {
 				showProgress = false;
-			}, 1500);
+			}, 1800);
 		} catch (err) {
 			console.error("Falha ao inicializar WebLLM:", err);
-			progressText = `Erro no carregamento: ${err.message || err}`;
+			const errMsg = String(err?.message || err);
+
+			// Detecta se ocorreu falha de GPU Device Loss / mapAsync / OOM (comum em Snapdragon/Adreno no Android)
+			const isGpuCrash =
+				errMsg.includes("mapAsync") ||
+				errMsg.includes("Instance reference") ||
+				errMsg.includes("Device is lost") ||
+				errMsg.includes("out of memory") ||
+				errMsg.includes("GPUBuffer");
+
+			if (isGpuCrash && selectedSpec.fallbackId && !overrideModelId) {
+				progressText = "Ativando variante F32 compatível com o driver da sua GPU...";
+				try {
+					await loadModel(selectedSpec.fallbackId);
+					return;
+				} catch (fallbackErr) {
+					console.error("Falha no fallback F32:", fallbackErr);
+				}
+			}
+
+			if (isGpuCrash) {
+				progressText =
+					"⚠️ Memória GPU esgotada ou driver Snapdragon/Adreno reiniciou. Escolha 'SmolLM3 (360M Mobile)' para estabilidade.";
+				messages = [
+					...messages,
+					{
+						role: "assistant",
+						sender: "Diagnóstico GPU",
+						metaRight: "Aviso de Hardware",
+						content:
+							"⚠️ **Aviso de Limite de VRAM / Driver GPU:**\n\n" +
+							"Seu dispositivo móvel atingiu o limite de memória gráfica permitida pelo navegador ou reiniciou o contexto WebGPU (`device lost`).\n\n" +
+							"👉 **Como resolver no celular (Galaxy M52 / Adreno):**\n" +
+							"1. Selecione o modelo **SmolLM3 (360M Mobile)** ou **SmolLM3 (135M Nano)** no menu superior.\n" +
+							"2. Eles consomem menos de 400MB de VRAM e utilizam ativação F32 segura para drivers móveis.",
+					},
+				];
+			} else {
+				progressText = `Erro no carregamento: ${errMsg}`;
+			}
+
 			isLoaded = false;
+			if (engine) {
+				try {
+					await engine.unload();
+				} catch (_) {}
+				engine = null;
+			}
 		} finally {
 			isLoading = false;
 		}
@@ -117,7 +185,10 @@
 		const userMsg = {
 			role: "user",
 			sender: "Você",
-			metaRight: new Date().toLocaleTimeString(),
+			metaRight: new Date().toLocaleTimeString([], {
+				hour: "2-digit",
+				minute: "2-digit",
+			}),
 			content: text,
 		};
 
@@ -127,7 +198,7 @@
 		const assistantIndex = messages.length;
 		const assistantMsg = {
 			role: "assistant",
-			sender: "Assistente Local",
+			sender: activeModelName || "Assistente Local",
 			metaRight: "Processando tensores...",
 			content: "",
 		};
@@ -159,7 +230,7 @@
 
 					messages[assistantIndex] = {
 						role: "assistant",
-						sender: "Assistente Local",
+						sender: activeModelName || "Assistente Local",
 						metaRight: `${tokPerSec} tok/s · WebGPU`,
 						content: fullResponse,
 					};
@@ -204,11 +275,12 @@
 	<ChatNav
 		bind:selectedModelKey
 		{gpuStatus}
+		{shortGpuStatus}
 		{isGpuError}
 		{isLoading}
 		{isLoaded}
 		{isGenerating}
-		onLoadModel={loadModel}
+		onLoadModel={() => loadModel()}
 		onClearChat={clearChat}
 	/>
 
@@ -235,7 +307,9 @@
 		display: flex;
 		flex-direction: column;
 		height: 100vh;
+		height: 100dvh;
 		max-height: 100vh;
+		max-height: 100dvh;
 		background: radial-gradient(circle at 50% 0%, #0d1527 0%, #080c14 65%, #05080e 100%);
 		color: #f1f5f9;
 		overflow: hidden;
@@ -250,12 +324,14 @@
 		max-width: 1040px;
 		width: 100%;
 		margin: 0 auto;
-		padding: 16px 24px 20px 24px;
+		padding: 12px 20px 14px 20px;
+		padding-bottom: max(14px, env(safe-area-inset-bottom));
 	}
 
 	@media (max-width: 640px) {
 		.chat-main-container {
-			padding: 12px 14px 16px 14px;
+			padding: 8px 10px 10px 10px;
+			padding-bottom: max(10px, env(safe-area-inset-bottom));
 		}
 	}
 </style>
