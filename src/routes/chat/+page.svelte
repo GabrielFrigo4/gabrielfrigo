@@ -312,7 +312,12 @@
 	<ProgressBar visible={showProgress} text={progressText} progress={progressPct} />
 
 	<main class="chat-main-container">
-		<ChatMessages {messages} {markedInstance} onSelectPrompt={handleSelectPrompt} />
+		<ChatMessages
+			{messages}
+			{markedInstance}
+			{isGenerating}
+			onSelectPrompt={handleSelectPrompt}
+		/>
 
 		<ChatInput
 			bind:prompt

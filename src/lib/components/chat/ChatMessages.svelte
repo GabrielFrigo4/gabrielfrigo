@@ -2,21 +2,79 @@
 	import { tick, onMount } from "svelte";
 	import { renderMarkdownWithThink } from "$lib/chat/markdown.js";
 
-	let { messages = [], markedInstance = null, onSelectPrompt = () => {} } = $props();
+	let {
+		messages = [],
+		markedInstance = null,
+		isGenerating = false,
+		onSelectPrompt = () => {},
+	} = $props();
 
 	let chatContainer = $state(null);
 	let copiedIdx = $state(null);
+	let isPinned = $state(true);
+	let showScrollBottomBtn = $state(false);
+	let isSmoothScrolling = false;
+	let lastMessageCount = 0;
 
-	export function scrollToBottom() {
-		if (chatContainer) {
+	export function scrollToBottom(smooth = false) {
+		if (!chatContainer) return;
+		if (smooth) {
+			isSmoothScrolling = true;
+			chatContainer.scrollTo({
+				top: chatContainer.scrollHeight,
+				behavior: "smooth",
+			});
+			setTimeout(() => {
+				isSmoothScrolling = false;
+				if (chatContainer) {
+					chatContainer.scrollTop = chatContainer.scrollHeight;
+				}
+			}, 350);
+		} else {
 			chatContainer.scrollTop = chatContainer.scrollHeight;
 		}
+	}
+
+	function handleScroll() {
+		if (!chatContainer || isSmoothScrolling) return;
+		const distanceFromBottom =
+			chatContainer.scrollHeight - chatContainer.scrollTop - chatContainer.clientHeight;
+
+		// Se estiver a <= 40px do fundo, considera grudado
+		if (distanceFromBottom <= 40) {
+			isPinned = true;
+			showScrollBottomBtn = false;
+		} else {
+			// Rolou para cima: solta a rolagem automática
+			isPinned = false;
+			showScrollBottomBtn = true;
+		}
+	}
+
+	function handleScrollToBottomClick() {
+		isPinned = true;
+		showScrollBottomBtn = false;
+		scrollToBottom(true);
 	}
 
 	$effect(() => {
 		if (messages.length) {
 			const _ = messages[messages.length - 1]?.content;
-			tick().then(scrollToBottom);
+			const currentCount = messages.length;
+
+			// Nova mensagem enviada/recebida: re-gruda automaticamente
+			if (currentCount > lastMessageCount) {
+				isPinned = true;
+				showScrollBottomBtn = false;
+				lastMessageCount = currentCount;
+			}
+
+			// Durante digitação, só acompanha se estiver grudado
+			tick().then(() => {
+				if (isPinned && chatContainer) {
+					chatContainer.scrollTop = chatContainer.scrollHeight;
+				}
+			});
 		}
 	});
 
@@ -60,115 +118,148 @@
 	let featuredPrompt = $derived(PROMPT_SUGGESTIONS[currentPromptIdx]);
 </script>
 
-<div class="chat-window" bind:this={chatContainer}>
-	<!-- Hero Inicial Limpo com Sugestão Dinâmica/Aleatória -->
-	{#if messages.length === 0}
-		<div class="welcome-hero">
-			<div class="welcome-badge">
-				<span class="badge-dot"></span>
-				<span>Inferência 100% Local · Shaders WebGPU · Zero Nuvem</span>
-			</div>
-
-			<h1 class="welcome-title">
-				Chat Local <span class="gradient-text">Soberano</span>
-			</h1>
-
-			<p class="welcome-desc">
-				Execute modelos de linguagem de última geração diretamente na GPU do seu
-				navegador. Privacidade matemática absoluta: nenhum prompt ou tensor trafega pela
-				nuvem.
-			</p>
-
-			<!-- Sugestão Única Centralizada & Rotativa (Aleatória + Botão Shuffle) -->
-			<div class="single-suggestion-container">
-				<div class="suggestion-pill">
-					<button
-						class="suggestion-content-btn"
-						onclick={() => onSelectPrompt(featuredPrompt)}
-						title="Enviar esta pergunta para a IA local"
-					>
-						<span class="chip-symbol">›</span>
-						<span class="chip-text">{featuredPrompt}</span>
-					</button>
-					<button
-						class="suggestion-refresh-btn"
-						onclick={nextPrompt}
-						title="Sortear outra sugestão (Aleatório)"
-						aria-label="Sortear outra pergunta"
-					>
-						<span class="refresh-icon">↻</span>
-					</button>
+<div class="chat-messages-container">
+	<div class="chat-window" bind:this={chatContainer} onscroll={handleScroll}>
+		<!-- Hero Inicial Limpo com Sugestão Dinâmica/Aleatória -->
+		{#if messages.length === 0}
+			<div class="welcome-hero">
+				<div class="welcome-badge">
+					<span class="badge-dot"></span>
+					<span>Inferência 100% Local · Shaders WebGPU · Zero Nuvem</span>
 				</div>
-			</div>
-		</div>
-	{/if}
 
-	<!-- Lista de Mensagens -->
-	{#each messages as msg, i}
-		<div class="msg msg-{msg.role}">
-			<div class="msg-header">
-				<div class="msg-author-group">
-					{#if msg.role === "user"}
-						<span class="author-name author-user">gabriel</span>
-					{:else}
-						<span class="author-symbol">λ</span>
-						<span class="author-name author-ai"
-							>{msg.sender ? msg.sender.toLowerCase() : "assistente local"}</span
+				<h1 class="welcome-title">
+					Chat Local <span class="gradient-text">Soberano</span>
+				</h1>
+
+				<p class="welcome-desc">
+					Execute modelos de linguagem de última geração diretamente na GPU do seu
+					navegador. Privacidade matemática absoluta: nenhum prompt ou tensor trafega
+					pela nuvem.
+				</p>
+
+				<!-- Sugestão Única Centralizada & Rotativa (Aleatória + Botão Shuffle) -->
+				<div class="single-suggestion-container">
+					<div class="suggestion-pill">
+						<button
+							class="suggestion-content-btn"
+							onclick={() => onSelectPrompt(featuredPrompt)}
+							title="Enviar esta pergunta para a IA local"
 						>
-					{/if}
-				</div>
-
-				<div class="msg-header-right">
-					{#if msg.timestamp}
-						<span class="msg-time">{msg.timestamp}</span>
-					{/if}
+							<span class="chip-symbol">›</span>
+							<span class="chip-text">{featuredPrompt}</span>
+						</button>
+						<button
+							class="suggestion-refresh-btn"
+							onclick={nextPrompt}
+							title="Sortear outra sugestão (Aleatório)"
+							aria-label="Sortear outra pergunta"
+						>
+							<span class="refresh-icon">↻</span>
+						</button>
+					</div>
 				</div>
 			</div>
+		{/if}
 
-			<div class="msg-body">
-				{#if msg.role === "assistant"}
-					{#if !msg.content}
-						<div class="stream-loading">
-							<span class="stream-dot"></span>
-							<span class="stream-dot"></span>
-							<span class="stream-dot"></span>
-						</div>
-					{:else}
-						{@html renderMarkdownWithThink(msg.content, markedInstance)}
-					{/if}
-				{:else}
-					<p class="user-text">{msg.content}</p>
-				{/if}
-			</div>
-
-			<!-- Rodapé de Telemetria Whisper -->
-			{#if msg.role === "assistant" && msg.content}
-				<div class="msg-footer">
-					<div class="telemetry-whisper">
-						{#if msg.metaRight}
-							<span class="telemetry-text">⚡ {msg.metaRight}</span>
+		<!-- Lista de Mensagens -->
+		{#each messages as msg, i}
+			<div class="msg msg-{msg.role}">
+				<div class="msg-header">
+					<div class="msg-author-group">
+						{#if msg.role === "user"}
+							<span class="author-name author-user">gabriel</span>
+						{:else}
+							<span class="author-symbol">λ</span>
+							<span class="author-name author-ai"
+								>{msg.sender
+									? msg.sender.toLowerCase()
+									: "assistente local"}</span
+							>
 						{/if}
 					</div>
 
-					<button
-						class="copy-btn"
-						onclick={() => copyMessage(msg.content, i)}
-						title="Copiar mensagem"
-						aria-label="Copiar mensagem"
-					>
-						{#if copiedIdx === i}
-							<span class="copied-text">Copiado! ✓</span>
-						{:else}
-							<span>Copiar</span>
+					<div class="msg-header-right">
+						{#if msg.timestamp}
+							<span class="msg-time">{msg.timestamp}</span>
 						{/if}
-					</button>
+					</div>
 				</div>
+
+				<div class="msg-body">
+					{#if msg.role === "assistant"}
+						{#if !msg.content}
+							<div class="stream-loading">
+								<span class="stream-dot"></span>
+								<span class="stream-dot"></span>
+								<span class="stream-dot"></span>
+							</div>
+						{:else}
+							{@html renderMarkdownWithThink(msg.content, markedInstance)}
+						{/if}
+					{:else}
+						<p class="user-text">{msg.content}</p>
+					{/if}
+				</div>
+
+				<!-- Rodapé de Telemetria Whisper -->
+				{#if msg.role === "assistant" && msg.content}
+					<div class="msg-footer">
+						<div class="telemetry-whisper">
+							{#if msg.metaRight}
+								<span class="telemetry-text">⚡ {msg.metaRight}</span>
+							{/if}
+						</div>
+
+						<button
+							class="copy-btn"
+							onclick={() => copyMessage(msg.content, i)}
+							title="Copiar mensagem"
+							aria-label="Copiar mensagem"
+						>
+							{#if copiedIdx === i}
+								<span class="copied-text">Copiado! ✓</span>
+							{:else}
+								<span>Copiar</span>
+							{/if}
+						</button>
+					</div>
+				{/if}
+			</div>
+		{/each}
+	</div>
+
+	<!-- Botão Flutuante de Voltar ao Fim / Acompanhar Geração -->
+	{#if showScrollBottomBtn}
+		<button
+			type="button"
+			class="scroll-bottom-btn"
+			onclick={handleScrollToBottomClick}
+			title={isGenerating ? "Voltar a acompanhar digitação" : "Rolar para o fim"}
+			aria-label="Rolar para o fim das mensagens"
+		>
+			{#if isGenerating}
+				<span class="stream-pulse"></span>
+				<span class="scroll-bottom-icon">↓</span>
+				<span class="scroll-bottom-text">Acompanhar digitação</span>
+			{:else}
+				<span class="scroll-bottom-icon">↓</span>
+				<span class="scroll-bottom-text">Rolar para o fim</span>
 			{/if}
-		</div>
-	{/each}
+		</button>
+	{/if}
 </div>
 
 <style>
+	.chat-messages-container {
+		flex: 1;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+		overflow: hidden;
+	}
+
 	.chat-window {
 		flex: 1;
 		overflow-y: auto;
@@ -176,7 +267,81 @@
 		flex-direction: column;
 		gap: 1.25rem;
 		padding: 1.5rem 0.5rem 1rem 0;
-		scroll-behavior: smooth;
+	}
+
+	/* Botão Flutuante de Voltar ao Fim / Acompanhar Geração */
+	.scroll-bottom-btn {
+		position: absolute;
+		bottom: 1.25rem;
+		left: 50%;
+		transform: translateX(-50%);
+		background: rgba(13, 17, 23, 0.94);
+		border: 1px solid var(--accent-blue);
+		color: var(--accent-blue);
+		box-shadow:
+			0 4px 16px rgba(0, 0, 0, 0.4),
+			0 0 12px rgba(88, 166, 255, 0.25);
+		border-radius: 20px;
+		padding: 0.45rem 1rem;
+		font-family: var(--font-mono);
+		font-size: 0.78rem;
+		font-weight: 600;
+		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		z-index: 20;
+		animation: pop-up 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+		transition: all 0.15s ease;
+	}
+
+	.scroll-bottom-btn:hover {
+		background: var(--accent-blue);
+		color: #090d13;
+		box-shadow: 0 4px 20px rgba(88, 166, 255, 0.5);
+		transform: translateX(-50%) translateY(-2px);
+	}
+
+	.scroll-bottom-icon {
+		font-size: 0.95rem;
+		font-weight: 700;
+		line-height: 1;
+	}
+
+	.stream-pulse {
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: var(--accent-green);
+		animation: pulse-ring 1.5s infinite;
+	}
+
+	@keyframes pulse-ring {
+		0% {
+			transform: scale(0.9);
+			box-shadow: 0 0 0 0 rgba(126, 231, 135, 0.7);
+		}
+		70% {
+			transform: scale(1.1);
+			box-shadow: 0 0 0 6px rgba(126, 231, 135, 0);
+		}
+		100% {
+			transform: scale(0.9);
+			box-shadow: 0 0 0 0 rgba(126, 231, 135, 0);
+		}
+	}
+
+	@keyframes pop-up {
+		from {
+			opacity: 0;
+			transform: translateX(-50%) translateY(8px);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(-50%) translateY(0);
+		}
 	}
 
 	.chat-window::-webkit-scrollbar {
@@ -362,6 +527,7 @@
 	.msg-user {
 		align-self: flex-end;
 		max-width: 80%;
+		min-width: 170px;
 		background: var(--bg-surface);
 		border: 1px solid var(--border-subtle);
 		color: var(--text-main);
@@ -379,6 +545,7 @@
 		justify-content: space-between;
 		align-items: center;
 		margin-bottom: 0.65rem;
+		gap: 2rem;
 	}
 
 	.msg-author-group {
@@ -588,6 +755,11 @@
 
 		.msg-user {
 			max-width: 90%;
+			min-width: 150px;
+		}
+
+		.msg-header {
+			gap: 1.5rem;
 		}
 	}
 </style>
