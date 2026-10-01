@@ -1,5 +1,5 @@
 <script>
-	import { tick } from "svelte";
+	import { tick, onMount } from "svelte";
 	import { renderMarkdownWithThink } from "$lib/chat/markdown.js";
 
 	let { messages = [], markedInstance = null, onSelectPrompt = () => {} } = $props();
@@ -33,12 +33,35 @@
 		}
 	}
 
-	const featuredPrompt =
-		"Como implementar multiplexação de I/O assíncrona com kqueue no FreeBSD?";
+	const PROMPT_SUGGESTIONS = [
+		"Como implementar multiplexação de I/O assíncrona com kqueue no FreeBSD?",
+		"Qual a diferença conceitual e técnica entre /dev/dsp (OSS puro) e a pilha ALSA?",
+		"Como funcionam as primitivas de mitigação pledge(2) e unveil(2) no OpenBSD?",
+		"Por que o compilador determinístico supera runtimes com garbage collection dinâmico?",
+		"Escreva um servidor HTTP concorrente em C23 utilizando sockets POSIX e poll(2)",
+		"Como provar matematicamente a correção de algoritmos para Min-Cost Network Flows?",
+		"Qual a vantagem do SQLite com WAL mode e binário único em Go contra microsserviços?",
+		"Como funciona a separação defensiva de privilégios com Capsicum no FreeBSD?",
+		"Explique a arquitetura de Solaris Zones no illumos versus namespaces do Linux",
+		"Quais são as garantias de segurança de tipos e aritmética segura do C23 (<stdckdint.h>)?",
+	];
+
+	let currentPromptIdx = $state(0);
+
+	onMount(() => {
+		currentPromptIdx = Math.floor(Math.random() * PROMPT_SUGGESTIONS.length);
+	});
+
+	function nextPrompt(e) {
+		if (e) e.stopPropagation();
+		currentPromptIdx = (currentPromptIdx + 1) % PROMPT_SUGGESTIONS.length;
+	}
+
+	let featuredPrompt = $derived(PROMPT_SUGGESTIONS[currentPromptIdx]);
 </script>
 
 <div class="chat-window" bind:this={chatContainer}>
-	<!-- Hero Inicial Limpo e Centralizado -->
+	<!-- Hero Inicial Limpo com Sugestão Dinâmica/Aleatória -->
 	{#if messages.length === 0}
 		<div class="welcome-hero">
 			<div class="welcome-badge">
@@ -56,15 +79,26 @@
 				nuvem.
 			</p>
 
-			<!-- 1 Única Sugestão de Exploração Centralizada -->
+			<!-- Sugestão Única Centralizada & Rotativa (Aleatória + Botão Shuffle) -->
 			<div class="single-suggestion-container">
-				<button
-					class="single-suggestion-chip"
-					onclick={() => onSelectPrompt(featuredPrompt)}
-				>
-					<span class="chip-symbol">›</span>
-					<span class="chip-text">{featuredPrompt}</span>
-				</button>
+				<div class="suggestion-pill">
+					<button
+						class="suggestion-content-btn"
+						onclick={() => onSelectPrompt(featuredPrompt)}
+						title="Enviar esta pergunta para a IA local"
+					>
+						<span class="chip-symbol">›</span>
+						<span class="chip-text">{featuredPrompt}</span>
+					</button>
+					<button
+						class="suggestion-refresh-btn"
+						onclick={nextPrompt}
+						title="Sortear outra sugestão (Aleatório)"
+						aria-label="Sortear outra pergunta"
+					>
+						<span class="refresh-icon">↻</span>
+					</button>
+				</div>
 			</div>
 		</div>
 	{/if}
@@ -227,37 +261,49 @@
 		margin-bottom: 1.75rem;
 	}
 
-	/* Sugestão Única Centralizada */
+	/* Sugestão Dinâmica & Rotativa */
 	.single-suggestion-container {
 		display: flex;
 		justify-content: center;
 		width: 100%;
-		max-width: 640px;
+		max-width: 680px;
 	}
 
-	.single-suggestion-chip {
+	.suggestion-pill {
+		display: inline-flex;
+		align-items: center;
 		background: var(--bg-surface);
 		border: 1px solid var(--border-subtle);
 		border-radius: 6px;
-		padding: 0.65rem 1.25rem;
+		transition: all 0.15s ease;
+		max-width: 100%;
+		overflow: hidden;
+	}
+
+	.suggestion-pill:hover {
+		border-color: var(--accent-blue);
+		background: var(--bg-card);
+		transform: translateY(-1px);
+	}
+
+	.suggestion-content-btn {
+		background: transparent;
+		border: none;
+		padding: 0.65rem 0.85rem 0.65rem 1.1rem;
 		color: var(--text-muted);
 		font-family: var(--font-mono);
 		font-size: 0.84rem;
 		cursor: pointer;
 		display: inline-flex;
 		align-items: center;
-		justify-content: center;
 		gap: 0.6rem;
-		transition: all 0.15s ease;
-		max-width: 100%;
-		text-align: center;
+		min-width: 0;
+		text-align: left;
+		transition: color 0.15s ease;
 	}
 
-	.single-suggestion-chip:hover {
-		border-color: var(--accent-blue);
+	.suggestion-content-btn:hover {
 		color: var(--text-main);
-		background: var(--bg-card);
-		transform: translateY(-1px);
 	}
 
 	.chip-symbol {
@@ -270,6 +316,35 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+
+	.suggestion-refresh-btn {
+		background: transparent;
+		border: none;
+		border-left: 1px solid var(--border-muted);
+		padding: 0.65rem 0.85rem;
+		color: var(--text-dim);
+		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.15s ease;
+		flex-shrink: 0;
+	}
+
+	.suggestion-refresh-btn:hover {
+		color: var(--accent-blue);
+		background: rgba(88, 166, 255, 0.08);
+	}
+
+	.refresh-icon {
+		font-size: 0.95rem;
+		line-height: 1;
+		transition: transform 0.25s ease;
+	}
+
+	.suggestion-refresh-btn:hover .refresh-icon {
+		transform: rotate(90deg);
 	}
 
 	/* Mensagens */
@@ -502,9 +577,9 @@
 			font-size: 1.6rem;
 		}
 
-		.single-suggestion-chip {
+		.suggestion-content-btn {
 			font-size: 0.78rem;
-			padding: 0.55rem 0.85rem;
+			padding: 0.55rem 0.75rem 0.55rem 0.85rem;
 		}
 
 		.msg {
