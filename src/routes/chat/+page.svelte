@@ -287,7 +287,7 @@
 	<title>Sovereign WebGPU Chat | Gabriel Frigo</title>
 	<meta
 		name="description"
-		content="WebGPU Chat Soberano: Inferência de IA 100% Client-Side na GPU local com Llama 3.2, DeepSeek R1, Gemma 4, Qwen3.5 e SmolLM3."
+		content="WebGPU Chat Soberano: Inferência de IA 100% Client-Side na GPU local com Qwen 3.5, DeepSeek R1, Phi-4 e Ministral 3."
 	/>
 </svelte:head>
 
