@@ -4,6 +4,79 @@
 
 ---
 
+## 🎯 Meta Prioritária: Ajuste Visual Mobile, Auditoria Matemática de Memória e Recategorização do Chat
+
+> **Objetivo:** Corrigir os problemas de layout do chat ([gabrielfrigo.dev.br/chat](https://gabrielfrigo.dev.br/chat/)) em telas de celular, calcular matematicamente o consumo real de memória dos modelos atuais com base em suas características técnicas e reorganizar as categorias da lista para separar modelos pequenos (ex: Qwen 0.8B) de intermediários (ex: Qwen 2B).
+
+```mermaid
+flowchart LR
+    subgraph UI ["1. Front-end Mobile"]
+        CSS["Ajuste de CSS & Telas Pequenas"]
+        FIX["Fim do Overflow & Input Firme"]
+        CSS --> FIX
+    end
+
+    subgraph MATH ["2. Auditoria Matemática"]
+        FORMULA["Fórmula: (Params x Bits) + KV Cache"]
+        SIZES["Tamanho Real Calculado"]
+        FORMULA --> SIZES
+    end
+
+    subgraph LIST ["3. Nova Estrutura"]
+        TIERS["Separação Lógica (0.8B vs 2B)"]
+        UI_UPDATE["Atualizar Seletor do Chat"]
+        TIERS --> UI_UPDATE
+    end
+
+    FIX --> SIZES --> UI_UPDATE
+```
+
+---
+
+### 🛡️ Diretrizes de Execução
+
+1. **Front-end Mobile Limpo e Estável:**
+    - Garantir que caixas de texto, mensagens e botões se adaptem à largura da tela sem gerar barra de rolagem horizontal ou quebras visuais.
+    - Manter a área de digitação e histórico visíveis e utilizáveis em telas pequenas quando o teclado do celular abrir.
+2. **Cálculo Matemático sem Achismos:**
+    - Estimar o consumo de memória usando a fórmula direta de características do modelo:
+      $$\text{Memória Total (GB)} \approx \frac{\text{Parâmetros} \times \text{Bits por Peso}}{8 \times 10^9} + \text{KV Cache da Janela}$$
+    - Fazer as contas para a quantização em uso (ex: 4 bits / `q4f16`) somada ao espaço que o contexto aberto ocupa na memória.
+3. **Categorias Coerentes no Menu:**
+    - Acabar com o agrupamento genérico. Modelos sub-1B (como Qwen 0.8B) têm exigências muito menores que modelos de 2B e devem ter seções/categorias separadas.
+
+---
+
+### 📝 Runbook Passo a Passo
+
+#### Passo 1: Correção do Layout no Mobile
+
+- Revisar o CSS do container principal, histórico de mensagens e barra de input para não estourarem a largura em smartphones (360px a 400px).
+- Travar quebras de palavras longas e blocos de código com `overflow-wrap: anywhere` e `overflow-x: auto` isolado.
+- Garantir que a tela do chat ocupe a altura total visível no mobile sem que o rodapé seja empurrado para fora.
+
+#### Passo 2: Cálculo Matemático dos Modelos Atuais
+
+- Listar cada modelo atualmente presente no site.
+- Aplicar a matemática direta:
+    - **Pesos:** Número de parâmetros $\times$ tamanho da quantização (ex: $0.8 \times 10^9 \times 4\text{ bits} \div 8 \approx 400\text{ MB}$ de pesos).
+    - **Contexto:** Estimativa do KV Cache para a janela padrão de tokens configurada no chat.
+    - **Total:** Somar pesos + KV Cache para definir o tamanho real final de cada modelo.
+
+#### Passo 3: Reestruturação das Categorias na Lista
+
+- Dividir o seletor em grupos claros baseados no tamanho real calculado:
+    - **Leves / Entrada (Sub-1B):** Para modelos ultra-leves e rápidos como Qwen 0.8B.
+    - **Intermediários (~2B):** Para modelos mais densos como Qwen 2B, que exigem mais memória.
+- Atualizar a lista de opções no componente do Svelte com a nova divisão e a exibição do tamanho real ao lado de cada nome.
+
+#### Passo 4: Validação Prática
+
+- Abrir o site no celular e validar se o layout se mantém alinhado e sem quebras visuais.
+- Conferir se os modelos estão ordenados e categorizados de acordo com os valores calculados.
+
+---
+
 ## 🎯 Meta Prioritária: Pipeline de CI/CD Seguro com Deploy Automático (Modelo A)
 
 > **Objetivo:** Automatizar a publicação do portfólio para que todo `git push origin main` execute os quality gates e sincronize automaticamente os artefatos estáticos (`build/`) com o servidor de produção em nuvem soberana (`ubuntu@144.22.210.65`), com **zero intervenção manual** e **defesa em profundidade**.
