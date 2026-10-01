@@ -1,8 +1,9 @@
 <script>
 	let {
 		prompt = $bindable(""),
-		disabled = false,
 		isGenerating = false,
+		isLoading = false,
+		isGpuError = false,
 		onSend = () => {},
 		onStop = () => {},
 	} = $props();
@@ -16,67 +17,65 @@
 
 		if (event.key === "Enter" && !event.shiftKey) {
 			event.preventDefault();
-			if (!disabled && !isGenerating && prompt.trim()) {
+			if (!isGenerating && !isLoading && !isGpuError && prompt.trim()) {
 				onSend();
 			}
 		}
 	}
 </script>
 
-<div class="input-container">
-	<div class="input-card" class:has-focus={!disabled}>
+<div class="chat-input-container">
+	<div class="input-card" class:has-focus={!isGenerating && !isLoading}>
 		<textarea
 			bind:value={prompt}
-			placeholder={disabled
-				? "Carregue um modelo no menu acima para habilitar o chat..."
-				: "Envie uma pergunta ou comando para a IA local..."}
-			{disabled}
+			placeholder={isGenerating
+				? "Gerando resposta nos tensores WebGPU..."
+				: isLoading
+					? "Carregando modelo na GPU..."
+					: isGpuError
+						? "Navegador sem suporte a WebGPU."
+						: "Envie uma pergunta ou código (Enter para enviar)..."}
+			disabled={isGenerating || isLoading || isGpuError}
 			onkeydown={handleKeyDown}
 			rows="2"
+			aria-label="Mensagem para a IA local"
 		></textarea>
 
-		<div class="input-bottom-bar">
+		<div class="input-actions-bar">
 			<div class="shortcuts-hint desktop-only">
-				<span class="key-hint"><kbd>Enter</kbd> enviar</span>
-				<span class="key-sep">·</span>
-				<span class="key-hint"><kbd>Shift</kbd>+<kbd>Enter</kbd> quebra de linha</span>
+				<span class="hint-text"><kbd>Enter</kbd> enviar</span>
+				<span class="hint-sep">·</span>
+				<span class="hint-text"><kbd>Shift</kbd>+<kbd>Enter</kbd> quebra de linha</span>
 				{#if isGenerating}
-					<span class="key-sep">·</span>
-					<span class="key-hint"><kbd>Esc</kbd> parar</span>
+					<span class="hint-sep">·</span>
+					<span class="hint-text"><kbd>Esc</kbd> parar</span>
 				{/if}
 			</div>
 
-			<div class="actions-right">
+			<div class="button-group">
 				{#if isGenerating}
 					<button
-						class="btn-stop"
+						class="btn-action btn-stop"
 						onclick={onStop}
 						aria-label="Interromper geração"
-						title="Parar geração imediatamente"
+						title="Parar geração imediatamente (Esc)"
 					>
-						<span class="stop-icon">⏹</span>
-						<span>Parar</span>
+						<span>⏹ Parar</span>
+					</button>
+				{:else if isLoading}
+					<button class="btn-action btn-loading" disabled>
+						<span class="btn-spinner"></span>
+						<span>Carregando...</span>
 					</button>
 				{:else}
 					<button
-						class="btn-send"
-						disabled={disabled || !prompt.trim()}
+						class="btn-action btn-send"
+						disabled={!prompt.trim() || isGpuError}
 						onclick={onSend}
-						aria-label="Enviar Mensagem"
+						aria-label="Enviar mensagem"
 					>
-						<span class="desktop-only">Enviar</span>
-						<span class="mobile-only">⚡</span>
-						<svg
-							class="send-icon desktop-only"
-							viewBox="0 0 20 20"
-							fill="currentColor"
-							width="14"
-							height="14"
-						>
-							<path
-								d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"
-							/>
-						</svg>
+						<span>Enviar</span>
+						<span class="arrow-symbol">↵</span>
 					</button>
 				{/if}
 			</div>
@@ -85,8 +84,9 @@
 </div>
 
 <style>
-	.input-container {
-		margin-top: 8px;
+	.chat-input-container {
+		width: 100%;
+		margin-top: 0.5rem;
 		flex-shrink: 0;
 	}
 
@@ -94,16 +94,14 @@
 		display: flex;
 		flex-direction: column;
 		background: var(--bg-surface);
-		border: 1px solid var(--border-default);
+		border: 1px solid var(--border-subtle);
 		border-radius: 8px;
-		padding: 10px 14px 8px 14px;
-		transition: all 0.2s ease;
-		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+		padding: 0.85rem 1rem 0.65rem 1rem;
+		transition: border-color 0.15s ease;
 	}
 
 	.input-card:focus-within {
 		border-color: var(--accent-blue);
-		box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
 	}
 
 	textarea {
@@ -113,148 +111,144 @@
 		outline: none;
 		color: var(--text-main);
 		font-family: var(--font-sans);
-		font-size: 14px;
+		font-size: 0.92rem;
 		resize: none;
-		height: 44px;
+		height: 48px;
 		line-height: 1.5;
 	}
 
 	textarea::placeholder {
 		color: var(--text-dim);
-		font-size: 13px;
+		font-size: 0.88rem;
 	}
 
 	textarea:disabled {
-		opacity: 0.5;
+		opacity: 0.6;
 		cursor: not-allowed;
 	}
 
-	.input-bottom-bar {
+	.input-actions-bar {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding-top: 6px;
+		padding-top: 0.5rem;
 		border-top: 1px solid var(--border-muted);
-		gap: 10px;
+		gap: 0.75rem;
 	}
 
 	.shortcuts-hint {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
 		font-family: var(--font-mono);
-		font-size: 11px;
+		font-size: 0.72rem;
 		color: var(--text-dim);
-		display: flex;
-		align-items: center;
-		gap: 6px;
 	}
 
-	.key-hint kbd {
+	.shortcuts-hint kbd {
 		background: var(--bg-card);
-		color: var(--text-muted);
-		border: 1px solid var(--border-default);
+		border: 1px solid var(--border-muted);
 		border-radius: 3px;
-		padding: 1px 5px;
-		font-size: 10px;
-		font-family: var(--font-mono);
-		font-weight: 600;
+		padding: 1px 4px;
+		color: var(--text-muted);
 	}
 
-	.key-sep {
-		color: var(--border-muted);
+	.hint-sep {
+		color: var(--border-hover);
 	}
 
-	.actions-right {
-		margin-left: auto;
+	.button-group {
 		display: flex;
 		align-items: center;
-		gap: 6px;
+		margin-left: auto;
+	}
+
+	.btn-action {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		padding: 0.35rem 0.85rem;
+		border-radius: 6px;
+		font-family: var(--font-mono);
+		font-size: 0.82rem;
+		cursor: pointer;
+		transition: all 0.15s ease;
+		border: 1px solid transparent;
+		white-space: nowrap;
 	}
 
 	.btn-send {
-		padding: 6px 14px;
-		font-size: 12.5px;
-		font-weight: 600;
-		font-family: var(--font-mono);
-		border-radius: 6px;
-		cursor: pointer;
-		border: 1px solid var(--accent-blue);
 		background: var(--accent-blue);
-		color: #090d13;
-		transition: all 0.2s ease;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 6px;
+		color: #0d1117;
+		font-weight: 600;
 	}
 
 	.btn-send:hover:not(:disabled) {
 		background: #79b8ff;
-		box-shadow: 0 0 12px rgba(88, 166, 255, 0.4);
-		transform: translateY(-1px);
 	}
 
 	.btn-send:disabled {
-		opacity: 0.45;
+		opacity: 0.4;
 		cursor: not-allowed;
-		box-shadow: none;
-		transform: none;
+		background: var(--bg-card);
+		color: var(--text-dim);
+		border-color: var(--border-muted);
+	}
+
+	.arrow-symbol {
+		font-weight: 700;
 	}
 
 	.btn-stop {
-		padding: 6px 14px;
-		font-size: 12.5px;
-		font-weight: 600;
-		font-family: var(--font-mono);
-		border-radius: 6px;
-		cursor: pointer;
-		border: 1px solid var(--accent-coral);
 		background: rgba(255, 123, 114, 0.15);
+		border-color: rgba(255, 123, 114, 0.35);
 		color: var(--accent-coral);
-		transition: all 0.2s ease;
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
+		font-weight: 600;
 	}
 
 	.btn-stop:hover {
 		background: rgba(255, 123, 114, 0.25);
-		transform: translateY(-1px);
 	}
 
-	.stop-icon {
-		font-size: 10px;
+	.btn-loading {
+		background: var(--bg-card);
+		border-color: var(--border-muted);
+		color: var(--text-muted);
+		cursor: wait;
 	}
 
-	.desktop-only {
-		display: inline-flex;
+	.btn-spinner {
+		width: 10px;
+		height: 10px;
+		border: 1.5px solid rgba(139, 148, 158, 0.3);
+		border-top-color: var(--accent-blue);
+		border-radius: 50%;
+		animation: spin 0.8s linear infinite;
 	}
 
-	.mobile-only {
-		display: none;
-	}
-
-	@media (max-width: 640px) {
-		.desktop-only {
-			display: none;
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
 		}
+	}
 
-		.mobile-only {
-			display: inline-flex;
+	@media (max-width: 768px) {
+		.desktop-only {
+			display: none !important;
 		}
 
 		.input-card {
-			padding: 8px 10px 6px 10px;
+			padding: 0.75rem 0.85rem 0.5rem 0.85rem;
 		}
 
 		textarea {
-			font-size: 16px;
-			height: 38px;
-			line-height: 1.4;
+			font-size: 0.88rem;
+			height: 42px;
 		}
 
-		.btn-send,
-		.btn-stop {
-			padding: 5px 12px;
-			font-size: 12px;
+		.btn-action {
+			padding: 0.3rem 0.75rem;
+			font-size: 0.78rem;
 		}
 	}
 </style>

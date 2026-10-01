@@ -5,15 +5,13 @@
 	import { checkWebGPU, getWebLLM } from "$lib/chat/webllm.js";
 
 	import ChatNav from "$lib/components/chat/ChatNav.svelte";
-	import ModelCard from "$lib/components/chat/ModelCard.svelte";
 	import ProgressBar from "$lib/components/chat/ProgressBar.svelte";
 	import ChatMessages from "$lib/components/chat/ChatMessages.svelte";
-	import ChatMetrics from "$lib/components/chat/ChatMetrics.svelte";
 	import ChatInput from "$lib/components/chat/ChatInput.svelte";
 
 	// Estado reativo Svelte 5 com Runes
-	let selectedModelKey = $state("smol-lm-3-360m");
-	let selectedSpec = $derived(MODEL_SPECS[selectedModelKey] || MODEL_SPECS["smol-lm-3-360m"]);
+	let selectedModelKey = $state("llama-3.2-1b");
+	let selectedSpec = $derived(MODEL_SPECS[selectedModelKey] || MODEL_SPECS["llama-3.2-1b"]);
 
 	let gpuStatus = $state("Verificando WebGPU...");
 	let shortGpuStatus = $state("GPU...");
@@ -58,22 +56,7 @@
 	}
 
 	let messageHistory = buildInitialHistory();
-
-	const INITIAL_MESSAGES = [
-		{
-			role: "assistant",
-			sender: "Sistema Soberano",
-			metaRight: "100% Client-Side",
-			content:
-				"### ⚡ Runtime WebGPU Local Ativo\n\n" +
-				"Inferência de IA de ponta executada **diretamente nos shaders da sua GPU**, com privacidade absoluta e zero tráfego na nuvem.\n\n" +
-				"• **Modelos Disponíveis:** Llama 3.2 (Meta), DeepSeek R1 Reasoning (DeepSeek), Qwen3.5 (Alibaba), Gemma 4 (Google) e SmolLM3 (Hugging Face).\n" +
-				"• **📱 Dica para Celulares:** Em smartphones ou notebooks leves, utilize **SmolLM3 (360M Mobile)** ou **Llama 3.2 (1B)** para máxima estabilidade e baixo consumo de VRAM.\n\n" +
-				"> 💡 **Como Iniciar:** Escolha o modelo acima e clique em **Carregar Modelo ⚡**.",
-		},
-	];
-
-	let messages = $state([...INITIAL_MESSAGES]);
+	let messages = $state([]);
 
 	onMount(async () => {
 		const gpuResult = await checkWebGPU();
@@ -82,7 +65,7 @@
 		isGpuError = gpuResult.isError;
 		isMobileDevice = gpuResult.isMobile;
 
-		// No mobile, garante seleção de modelo ultra-leve por padrão
+		// No mobile, seleciona SmolLM3 por padrão para evitar OOM
 		if (isMobileDevice) {
 			selectedModelKey = "smol-lm-3-360m";
 		} else {
@@ -98,12 +81,11 @@
 		isLoading = true;
 		showProgress = true;
 		progressPct = 0;
-		progressText = `Preparando runtime de GPU para ${selectedSpec.name}...`;
+		progressText = `Preparando ${selectedSpec.name} na GPU...`;
 
-		// 1. Liberação proativa de VRAM anterior para evitar OOM no dispositivo móvel
+		// Liberação de VRAM do modelo anterior se houver
 		if (engine) {
 			try {
-				progressText = "Liberando buffers de VRAM do modelo anterior...";
 				await engine.unload();
 			} catch (e) {
 				console.warn("Aviso ao descarregar engine anterior:", e);
@@ -131,7 +113,7 @@
 
 			setTimeout(() => {
 				showProgress = false;
-			}, 1800);
+			}, 1200);
 		} catch (err) {
 			console.error("Falha ao inicializar WebLLM:", err);
 			const errMsg = String(err?.message || err);
@@ -154,24 +136,17 @@
 			}
 
 			if (isGpuCrash) {
-				progressText =
-					"⚠️ Memória GPU esgotada ou driver móvel reiniciou. Escolha 'SmolLM3 (360M Mobile)' para estabilidade.";
 				messages = [
 					...messages,
 					{
 						role: "assistant",
 						sender: "Diagnóstico GPU",
-						metaRight: "Aviso de Hardware",
+						metaRight: "Aviso de VRAM",
 						content:
-							"⚠️ **Aviso de Limite de VRAM / Driver GPU:**\n\n" +
-							"Seu dispositivo móvel atingiu o limite de memória gráfica ou reiniciou o contexto WebGPU (`device lost`).\n\n" +
-							"👉 **Como resolver:**\n" +
-							"1. Selecione o modelo **SmolLM3 (360M Mobile)** ou **SmolLM3 (135M Nano)** no menu superior.\n" +
-							"2. Eles consomem menos de 400MB de VRAM e são ultra-estáveis em qualquer GPU.",
+							"⚠️ **Limite de Memória Gráfica (VRAM):**\n\n" +
+							"A GPU não conseguiu alocar o modelo selecionado. Experimente o **SmolLM3 (360M)** ou **SmolLM3 (135M)**.",
 					},
 				];
-			} else {
-				progressText = `Erro no carregamento: ${errMsg}`;
 			}
 
 			isLoaded = false;
@@ -199,15 +174,25 @@
 
 	async function sendMessage() {
 		const text = prompt.trim();
-		if (!text || isGenerating || !engine) return;
+		if (!text || isGenerating || isLoading || isGpuError) return;
 
 		prompt = "";
+
+		// Auto-carregamento transparente: se ainda não foi carregado, carrega agora
+		if (!isLoaded || !engine) {
+			await loadModel();
+			if (!engine) {
+				prompt = text;
+				return;
+			}
+		}
+
 		isGenerating = true;
 
 		const userMsg = {
 			role: "user",
 			sender: "Você",
-			metaRight: new Date().toLocaleTimeString([], {
+			timestamp: new Date().toLocaleTimeString([], {
 				hour: "2-digit",
 				minute: "2-digit",
 			}),
@@ -216,7 +201,6 @@
 
 		messages = [...messages, userMsg];
 
-		// Se o histórico estiver vazio e houver prompt de sistema, inicializa-o
 		if (messageHistory.length === 0 && customSystemPrompt.trim()) {
 			messageHistory = buildInitialHistory();
 		}
@@ -261,7 +245,7 @@
 					messages[assistantIndex] = {
 						role: "assistant",
 						sender: activeModelName || "Assistente Local",
-						metaRight: `${tokPerSec} tok/s · WebGPU`,
+						metaRight: `${tokPerSec} tok/s · ${tokenCount} tokens · WebGPU`,
 						content: fullResponse,
 					};
 				}
@@ -280,8 +264,19 @@
 		}
 	}
 
+	async function handleSelectPrompt(text) {
+		prompt = text;
+		await sendMessage();
+	}
+
+	async function handleModelChange() {
+		if (isLoaded) {
+			await loadModel();
+		}
+	}
+
 	function clearChat() {
-		messages = [...INITIAL_MESSAGES];
+		messages = [];
 		messageHistory = buildInitialHistory();
 		tokens = 0;
 		speed = "0.0";
@@ -305,31 +300,25 @@
 		{isLoading}
 		{isLoaded}
 		{isGenerating}
+		{progressPct}
 		{activePromptName}
+		hasMessages={messages.length > 0}
+		onModelChange={handleModelChange}
 		onLoadModel={() => loadModel()}
 		onClearChat={clearChat}
 		onOpenPromptModal={() => (isPromptModalOpen = true)}
 	/>
 
-	<ModelCard spec={selectedSpec} />
-
 	<ProgressBar visible={showProgress} text={progressText} progress={progressPct} />
 
 	<main class="chat-main-container">
-		<ChatMessages
-			{messages}
-			{markedInstance}
-			onSelectPrompt={(text) => {
-				prompt = text;
-			}}
-		/>
-
-		<ChatMetrics {activeModelName} {speed} {tokens} />
+		<ChatMessages {messages} {markedInstance} onSelectPrompt={handleSelectPrompt} />
 
 		<ChatInput
 			bind:prompt
-			disabled={!isLoaded || isGpuError}
 			{isGenerating}
+			{isLoading}
+			{isGpuError}
 			onSend={sendMessage}
 			onStop={stopGeneration}
 		/>
@@ -356,7 +345,7 @@
 		>
 			<div class="modal-header">
 				<div class="modal-title-group">
-					<span class="modal-icon">⚙️</span>
+					<span class="modal-icon">⚙</span>
 					<h2 id="modal-title" class="modal-title">Prompt de Sistema da IA</h2>
 				</div>
 				<button
@@ -369,12 +358,7 @@
 			</div>
 
 			<div class="modal-body">
-				<p class="modal-desc">
-					Defina o comportamento da IA. Modelos menores (135M/360M) respondem com
-					muito mais naturalidade com prompts amigáveis e diretos, ou no modo <strong
-						>Livre</strong
-					>.
-				</p>
+				<p class="modal-desc">Defina as diretrizes para as respostas da IA local.</p>
 
 				<div class="presets-grid">
 					{#each SYSTEM_PROMPT_PRESETS as preset}
@@ -409,7 +393,7 @@
 						class="prompt-textarea"
 						bind:value={customSystemPrompt}
 						oninput={() => (selectedPromptPresetId = "custom")}
-						placeholder="Digite as diretrizes de comportamento para a IA (ou deixe vazio para modo livre)..."
+						placeholder="Digite as instruções (ou deixe vazio para modo livre)..."
 						rows="3"
 					></textarea>
 				</div>
@@ -432,7 +416,7 @@
 						isPromptModalOpen = false;
 					}}
 				>
-					Salvar e Reiniciar Chat ⚡
+					Salvar e Reiniciar
 				</button>
 			</div>
 		</div>
@@ -448,7 +432,7 @@
 		max-height: 100vh;
 		max-height: 100dvh;
 		background:
-			radial-gradient(circle at 50% 0%, rgba(88, 166, 255, 0.08) 0%, transparent 65%),
+			radial-gradient(circle at 50% 0%, rgba(88, 166, 255, 0.05) 0%, transparent 60%),
 			var(--bg-base);
 		color: var(--text-main);
 		overflow: hidden;
@@ -460,11 +444,11 @@
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
-		max-width: 1080px;
+		max-width: 900px;
 		width: 100%;
 		margin: 0 auto;
-		padding: 10px 20px 12px 20px;
-		padding-bottom: max(12px, env(safe-area-inset-bottom));
+		padding: 0.5rem 1.5rem 1rem 1.5rem;
+		padding-bottom: max(1rem, env(safe-area-inset-bottom));
 	}
 
 	/* Modal de Configuração do Prompt */
@@ -493,9 +477,9 @@
 
 	.modal-card {
 		background: var(--bg-surface);
-		border: 1px solid var(--border-default);
+		border: 1px solid var(--border-subtle);
 		border-radius: 8px;
-		max-width: 600px;
+		max-width: 560px;
 		width: 100%;
 		box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 		display: flex;
@@ -507,7 +491,7 @@
 	@keyframes scale-up {
 		from {
 			opacity: 0;
-			transform: scale(0.95);
+			transform: scale(0.96);
 		}
 		to {
 			opacity: 1;
@@ -518,7 +502,6 @@
 	.modal-header {
 		padding: 12px 18px;
 		border-bottom: 1px solid var(--border-muted);
-		background: #06090e;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -531,14 +514,16 @@
 	}
 
 	.modal-icon {
-		font-size: 14px;
+		font-size: 15px;
+		color: var(--accent-blue);
 	}
 
 	.modal-title {
 		font-family: var(--font-mono);
-		font-size: 0.95rem;
-		font-weight: 700;
+		font-size: 14px;
+		font-weight: 600;
 		color: var(--text-main);
+		margin: 0;
 	}
 
 	.modal-close-btn {
@@ -547,37 +532,36 @@
 		color: var(--text-dim);
 		font-size: 14px;
 		cursor: pointer;
-		padding: 4px 8px;
+		padding: 4px;
 		border-radius: 4px;
-		transition: all 0.15s ease;
+		line-height: 1;
+		transition: color 0.15s ease;
 	}
 
 	.modal-close-btn:hover {
 		color: var(--text-main);
-		background: var(--bg-card);
 	}
 
 	.modal-body {
-		padding: 18px;
+		padding: 16px 18px;
 		display: flex;
 		flex-direction: column;
 		gap: 14px;
+		overflow-y: auto;
+		max-height: 70vh;
 	}
 
 	.modal-desc {
-		font-size: 0.88rem;
+		font-size: 13px;
 		color: var(--text-muted);
 		line-height: 1.5;
-	}
-
-	.modal-desc strong {
-		color: var(--accent-green);
+		margin: 0;
 	}
 
 	.presets-grid {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 10px;
+		grid-template-columns: 1fr 1fr;
+		gap: 8px;
 	}
 
 	.preset-card {
@@ -587,15 +571,15 @@
 		padding: 10px 12px;
 		cursor: pointer;
 		text-align: left;
-		transition: all 0.2s ease;
+		transition: all 0.15s ease;
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
 	}
 
 	.preset-card:hover {
-		border-color: var(--border-default);
-		transform: translateY(-1px);
+		border-color: var(--border-hover);
+		background: rgba(22, 27, 34, 0.9);
 	}
 
 	.preset-card.selected {
@@ -607,104 +591,99 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		gap: 6px;
 	}
 
 	.preset-name {
 		font-family: var(--font-mono);
-		font-size: 0.82rem;
-		font-weight: 700;
+		font-size: 12px;
+		font-weight: 600;
 		color: var(--text-main);
-	}
-
-	.preset-card.selected .preset-name {
-		color: var(--accent-blue);
 	}
 
 	.preset-tag {
 		font-family: var(--font-mono);
-		font-size: 9px;
+		font-size: 10px;
 		padding: 1px 5px;
-		border-radius: 3px;
+		border-radius: 4px;
 		background: var(--bg-surface);
 		border: 1px solid var(--border-muted);
 		color: var(--text-dim);
 	}
 
+	.preset-card.selected .preset-tag {
+		border-color: rgba(88, 166, 255, 0.4);
+		color: var(--accent-blue);
+	}
+
 	.preset-desc {
-		font-size: 0.78rem;
+		font-size: 11px;
 		color: var(--text-dim);
-		line-height: 1.35;
+		line-height: 1.4;
+		margin: 0;
 	}
 
 	.prompt-editor-group {
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
-		margin-top: 4px;
 	}
 
 	.editor-label {
-		font-family: var(--font-mono);
-		font-size: 0.8rem;
-		color: var(--text-muted);
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		color: var(--text-muted);
+		font-weight: 500;
 	}
 
 	.label-badge-empty {
-		font-size: 9.5px;
-		color: var(--accent-orange);
-		background: rgba(255, 166, 87, 0.1);
-		padding: 1px 6px;
-		border-radius: 3px;
-		border: 1px solid rgba(255, 166, 87, 0.3);
+		color: var(--accent-cyan);
+		font-size: 10px;
 	}
 
 	.prompt-textarea {
 		width: 100%;
 		background: var(--bg-card);
-		border: 1px solid var(--border-default);
+		border: 1px solid var(--border-muted);
 		border-radius: 6px;
-		padding: 10px 12px;
+		padding: 10px;
 		color: var(--text-main);
-		font-family: var(--font-sans);
-		font-size: 13px;
+		font-family: var(--font-mono);
+		font-size: 12px;
 		line-height: 1.5;
 		resize: vertical;
 		outline: none;
-		min-height: 75px;
+		transition: border-color 0.15s ease;
 	}
 
 	.prompt-textarea:focus {
 		border-color: var(--accent-blue);
-		box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
 	}
 
 	.modal-footer {
 		padding: 12px 18px;
 		border-top: 1px solid var(--border-muted);
-		background: #06090e;
 		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		gap: 10px;
+		justify-content: flex-end;
+		gap: 8px;
+		background: rgba(9, 13, 19, 0.6);
 	}
 
 	.modal-btn {
 		font-family: var(--font-mono);
-		font-size: 0.82rem;
+		font-size: 12px;
 		font-weight: 600;
 		padding: 6px 14px;
 		border-radius: 6px;
 		cursor: pointer;
-		transition: all 0.2s ease;
+		transition: all 0.15s ease;
 	}
 
 	.modal-btn-secondary {
-		background: var(--bg-card);
-		border: 1px solid var(--border-default);
+		background: transparent;
+		border: 1px solid var(--border-muted);
 		color: var(--text-muted);
 	}
 
@@ -716,31 +695,20 @@
 	.modal-btn-primary {
 		background: var(--accent-blue);
 		border: 1px solid var(--accent-blue);
-		color: #090d13;
+		color: #0d1117;
 	}
 
 	.modal-btn-primary:hover {
 		background: #79b8ff;
-		box-shadow: 0 0 12px rgba(88, 166, 255, 0.4);
 	}
 
 	@media (max-width: 640px) {
 		.chat-main-container {
-			padding: 6px 10px 10px 10px;
-			padding-bottom: max(10px, env(safe-area-inset-bottom));
+			padding: 0.5rem 1rem 0.75rem 1rem;
 		}
 
 		.presets-grid {
 			grid-template-columns: 1fr;
-		}
-
-		.modal-footer {
-			flex-direction: column-reverse;
-		}
-
-		.modal-btn {
-			width: 100%;
-			text-align: center;
 		}
 	}
 </style>

@@ -128,29 +128,29 @@ export const MODEL_SPECS = {
 
 export const MODEL_GROUPS = [
 	{
-		label: "📱 Smartphones & Mobile (Ultra Leves)",
+		label: "📱 Smartphones & Dispositivos Móveis",
 		options: [
-			{ key: "smol-lm-3-360m", label: "SmolLM3 (360M Mobile) — Ideal Celular 📱" },
-			{ key: "smol-lm-3-135m", label: "SmolLM3 (135M Nano) — Ultra Rápido ⚡" },
+			{ key: "smol-lm-3-360m", label: "SmolLM3 (360M) · ~380 MB VRAM" },
+			{ key: "smol-lm-3-135m", label: "SmolLM3 (135M) · ~360 MB VRAM" },
 		],
 	},
 	{
-		label: "⚡ Alta Fidelidade & Equilíbrio",
+		label: "⚡ Alta Fidelidade & Uso Geral",
 		options: [
-			{ key: "llama-3.2-1b", label: "Llama 3.2 (1B) — Recomendado ⭐" },
-			{ key: "gemma-4-e2b", label: "Gemma 4 (E2B) — Google 💎" },
-			{ key: "llama-3.2-3b", label: "Llama 3.2 (3B) — Desktop Pro 🚀" },
-			{ key: "smol-lm-3-3b", label: "SmolLM3 (3B) — Dual Mode 🧠" },
+			{ key: "llama-3.2-1b", label: "Llama 3.2 (1B) · ~880 MB VRAM ⭐" },
+			{ key: "llama-3.2-3b", label: "Llama 3.2 (3B) · ~2.2 GB VRAM" },
+			{ key: "gemma-4-e2b", label: "Gemma 4 (E2B) · ~1.2 GB VRAM" },
+			{ key: "smol-lm-3-3b", label: "SmolLM3 (3B) · ~1.8 GB VRAM" },
 		],
 	},
 	{
-		label: "🧠 Raciocínio Lógico & Código",
+		label: "🧠 Raciocínio Analítico & Código",
 		options: [
-			{ key: "phi-4-mini", label: "Phi-4-mini (3.8B) — Raciocínio Denso 🔬" },
-			{ key: "deepseek-r1-1.5b", label: "DeepSeek R1 (1.5B) — Raciocínio <think> 🧠" },
-			{ key: "qwen-3.5-0.8b", label: "Qwen3.5 (0.8B) — Gated Delta ⚡" },
-			{ key: "qwen-3.5-2b", label: "Qwen3.5 (2B) — Delta-MoE 🔬" },
-			{ key: "qwen-3.5-4b", label: "Qwen3.5 (4B) — Desktop Heavy 🚀" },
+			{ key: "deepseek-r1-1.5b", label: "DeepSeek R1 (1.5B) · ~1.4 GB VRAM 🧠" },
+			{ key: "phi-4-mini", label: "Phi-4-mini (3.8B) · ~2.4 GB VRAM 🔬" },
+			{ key: "qwen-3.5-0.8b", label: "Qwen3.5 (0.8B) · ~1.6 GB VRAM" },
+			{ key: "qwen-3.5-2b", label: "Qwen3.5 (2B) · ~2.4 GB VRAM" },
+			{ key: "qwen-3.5-4b", label: "Qwen3.5 (4B) · ~3.8 GB VRAM" },
 		],
 	},
 ];

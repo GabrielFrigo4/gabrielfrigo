@@ -20,14 +20,6 @@
 		}
 	});
 
-	function isTelemetry(meta) {
-		return meta && (meta.includes("tok/s") || meta.includes("WebGPU"));
-	}
-
-	function isClientSide(meta) {
-		return meta && meta.includes("Client-Side");
-	}
-
 	async function copyMessage(content, idx) {
 		if (!content) return;
 		try {
@@ -44,122 +36,104 @@
 	const suggestions = [
 		"Como funciona o kqueue no FreeBSD?",
 		"Qual a diferença entre /dev/dsp (OSS) e ALSA?",
-		"Por que o compilador determinístico supera runtime dinâmico?",
+		"Por que o compilador determinístico supera runtimes dinâmicos?",
 		"Escreva um exemplo de servidor de sockets em C23",
 	];
 </script>
 
 <div class="chat-window" bind:this={chatContainer}>
-	<!-- Terminal Card de Boas-Vindas da Home Page -->
-	{#if messages.length <= 1}
-		<div class="welcome-box">
-			<div class="terminal-card">
-				<div class="terminal-header">
-					<div class="terminal-dots">
-						<span class="dot red"></span>
-						<span class="dot yellow"></span>
-						<span class="dot green"></span>
-					</div>
-					<span class="terminal-title">webgpu@client-gpu:~ (sovereign-ai)</span>
-				</div>
-				<div class="terminal-body">
-					<div class="terminal-cmd">
-						<span class="terminal-prompt">$</span>
-						<span class="terminal-command"
-							>webgpu-chat --privacy=100% --engine=webllm</span
-						>
-					</div>
-					<p class="terminal-desc">
-						Inferência de inteligência artificial executada <strong
-							>diretamente nos shaders da sua GPU</strong
-						> via WebGPU & WebAssembly. Seus prompts nunca saem do seu navegador.
-					</p>
-					<div class="terminal-suggestions">
-						<span class="suggestions-label">Perguntas Rápidas:</span>
-						<div class="chips-container">
-							{#each suggestions as sug}
-								<button class="chip-btn" onclick={() => onSelectPrompt(sug)}>
-									<span class="chip-arrow">›</span>
-									{sug}
-								</button>
-							{/each}
-						</div>
-					</div>
+	<!-- Hero Inicial Limpo (Estilo Portfólio) -->
+	{#if messages.length === 0}
+		<div class="welcome-hero">
+			<div class="welcome-badge">
+				<span class="badge-dot"></span>
+				<span>Inferência 100% Local · Shaders WebGPU · Zero Nuvem</span>
+			</div>
+
+			<h1 class="welcome-title">
+				Chat Local <span class="gradient-text">Soberano</span>
+			</h1>
+
+			<p class="welcome-desc">
+				Execute modelos de linguagem de última geração diretamente na GPU do seu
+				navegador. Privacidade absoluta: nenhum prompt ou tensor trafega pela nuvem.
+			</p>
+
+			<div class="suggestions-container">
+				<span class="suggestions-title">Sugestões de Exploração:</span>
+				<div class="suggestions-grid">
+					{#each suggestions as sug}
+						<button class="suggestion-chip" onclick={() => onSelectPrompt(sug)}>
+							<span class="chip-symbol">›</span>
+							<span class="chip-text">{sug}</span>
+						</button>
+					{/each}
 				</div>
 			</div>
 		</div>
 	{/if}
 
+	<!-- Lista de Mensagens -->
 	{#each messages as msg, i}
 		<div class="msg msg-{msg.role}">
-			<div class="msg-meta">
-				<div class="meta-left">
-					<span class="role-badge role-{msg.role}">
-						{#if msg.role === "user"}
-							<span class="role-icon">👤</span> VOCÊ
-						{:else}
-							<span class="role-icon">⚡</span>
-							{msg.sender ? msg.sender.toUpperCase() : "ASSISTENTE LOCAL"}
-						{/if}
-					</span>
+			<div class="msg-header">
+				<div class="msg-author-group">
+					{#if msg.role === "user"}
+						<span class="author-name author-user">gabriel</span>
+					{:else}
+						<span class="author-symbol">λ</span>
+						<span class="author-name author-ai"
+							>{msg.sender ? msg.sender.toLowerCase() : "assistente local"}</span
+						>
+					{/if}
 				</div>
 
-				<div class="meta-right">
-					{#if msg.metaRight || msg.timestamp}
-						{@const meta = msg.metaRight || msg.timestamp}
-						{#if isTelemetry(meta)}
-							<span class="meta-badge badge-telemetry">
-								<span class="telemetry-dot"></span>
-								{meta}
-							</span>
-						{:else if isClientSide(meta)}
-							<span class="meta-badge badge-sovereign">
-								🔒 {meta}
-							</span>
-						{:else}
-							<span class="meta-badge badge-time">
-								{meta}
-							</span>
-						{/if}
-					{/if}
-
-					{#if msg.content}
-						<button
-							class="copy-btn"
-							onclick={() => copyMessage(msg.content, i)}
-							title="Copiar mensagem"
-							aria-label="Copiar mensagem"
-						>
-							{#if copiedIdx === i}
-								<span class="copied-text">Copiado! ✓</span>
-							{:else}
-								<svg
-									viewBox="0 0 24 24"
-									width="12"
-									height="12"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-								>
-									<rect x="9" y="9" width="13" height="13" rx="2" ry="2"
-									></rect>
-									<path
-										d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
-									></path>
-								</svg>
-							{/if}
-						</button>
+				<div class="msg-header-right">
+					{#if msg.timestamp}
+						<span class="msg-time">{msg.timestamp}</span>
 					{/if}
 				</div>
 			</div>
 
-			<div class="msg-content">
+			<div class="msg-body">
 				{#if msg.role === "assistant"}
-					{@html renderMarkdownWithThink(msg.content, markedInstance)}
+					{#if !msg.content}
+						<div class="stream-loading">
+							<span class="stream-dot"></span>
+							<span class="stream-dot"></span>
+							<span class="stream-dot"></span>
+						</div>
+					{:else}
+						{@html renderMarkdownWithThink(msg.content, markedInstance)}
+					{/if}
 				{:else}
-					<p>{msg.content}</p>
+					<p class="user-text">{msg.content}</p>
 				{/if}
 			</div>
+
+			<!-- Rodapé de Telemetria Discreta (Whisper) para Mensagens da IA -->
+			{#if msg.role === "assistant" && msg.content}
+				<div class="msg-footer">
+					<div class="telemetry-whisper">
+						{#if msg.metaRight}
+							<span class="telemetry-text">⚡ {msg.metaRight}</span>
+						{/if}
+					</div>
+
+					<button
+						class="copy-btn"
+						onclick={() => copyMessage(msg.content, i)}
+						title="Copiar mensagem"
+						aria-label="Copiar mensagem"
+					>
+						{#if copiedIdx === i}
+							<span class="copied-text">Copiado! ✓</span>
+						{:else}
+							<span>Copiar</span>
+						{/if}
+					</button>
+				</div>
+			{/if}
 		</div>
 	{/each}
 </div>
@@ -170,8 +144,8 @@
 		overflow-y: auto;
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
-		padding: 10px 8px 10px 2px;
+		gap: 1.25rem;
+		padding: 1.5rem 0.5rem 1rem 0;
 		scroll-behavior: smooth;
 	}
 
@@ -189,474 +163,373 @@
 		background: var(--border-hover);
 	}
 
-	/* Terminal Card de Boas-Vindas */
-	.welcome-box {
-		margin-bottom: 8px;
-	}
-
-	.terminal-card {
-		width: 100%;
-		background: var(--bg-surface);
-		border: 1px solid var(--border-default);
-		border-radius: 8px;
-		overflow: hidden;
-		box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
-		text-align: left;
-	}
-
-	.terminal-header {
-		background: #06090e;
-		padding: 0.55rem 0.85rem;
-		border-bottom: 1px solid var(--border-muted);
+	/* Hero Inicial Minimalista */
+	.welcome-hero {
+		margin: auto 0;
+		padding: 2.5rem 1rem;
+		text-align: center;
 		display: flex;
+		flex-direction: column;
+		align-items: center;
+		animation: fade-in 0.3s ease-out;
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+			transform: translateY(6px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.welcome-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.35rem 0.85rem;
+		background: var(--bg-surface);
+		border: 1px solid var(--border-subtle);
+		border-radius: 9999px;
+		font-family: var(--font-mono);
+		font-size: 0.78rem;
+		color: var(--text-dim);
+		margin-bottom: 1.25rem;
+	}
+
+	.badge-dot {
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: var(--accent-green);
+		box-shadow: 0 0 6px var(--accent-green);
+	}
+
+	.welcome-title {
+		font-family: var(--font-sans);
+		font-size: 2.1rem;
+		font-weight: 700;
+		color: var(--text-main);
+		margin-bottom: 0.75rem;
+		letter-spacing: -0.02em;
+	}
+
+	.gradient-text {
+		background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.welcome-desc {
+		max-width: 600px;
+		font-size: 0.95rem;
+		color: var(--text-muted);
+		line-height: 1.6;
+		margin-bottom: 2rem;
+	}
+
+	.suggestions-container {
+		width: 100%;
+		max-width: 700px;
+		display: flex;
+		flex-direction: column;
 		align-items: center;
 		gap: 0.75rem;
 	}
 
-	.terminal-dots {
-		display: flex;
-		gap: 6px;
-	}
-
-	.dot {
-		width: 10px;
-		height: 10px;
-		border-radius: 50%;
-	}
-
-	.dot.red {
-		background: #ff5f56;
-	}
-	.dot.yellow {
-		background: #ffbd2e;
-	}
-	.dot.green {
-		background: #27c93f;
-	}
-
-	.terminal-title {
+	.suggestions-title {
 		font-family: var(--font-mono);
 		font-size: 0.75rem;
 		color: var(--text-dim);
-	}
-
-	.terminal-body {
-		padding: 1rem 1.25rem;
-		font-family: var(--font-mono);
-		font-size: 0.88rem;
-		background: var(--bg-base);
-	}
-
-	.terminal-cmd {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		margin-bottom: 0.75rem;
-	}
-
-	.terminal-prompt {
-		color: var(--accent-coral);
-		font-weight: 700;
-	}
-
-	.terminal-command {
-		color: var(--accent-green);
-	}
-
-	.terminal-desc {
-		font-family: var(--font-sans);
-		font-size: 0.92rem;
-		color: var(--text-muted);
-		line-height: 1.6;
-		margin-bottom: 1.2rem;
-	}
-
-	.terminal-desc strong {
-		color: var(--text-main);
-	}
-
-	.terminal-suggestions {
-		border-top: 1px solid var(--border-muted);
-		padding-top: 0.85rem;
-	}
-
-	.quick-title {
-		font-size: 0.75rem;
-		color: var(--accent-blue);
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
-		font-weight: 600;
-		display: block;
-		margin-bottom: 0.6rem;
 	}
 
-	.chips-container {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
+	.suggestions-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.6rem;
+		width: 100%;
 	}
 
-	.chip-btn {
-		background: var(--bg-card);
-		border: 1px solid var(--border-muted);
+	.suggestion-chip {
+		background: var(--bg-surface);
+		border: 1px solid var(--border-subtle);
+		border-radius: 6px;
+		padding: 0.65rem 0.85rem;
 		color: var(--text-muted);
 		font-family: var(--font-mono);
-		font-size: 0.78rem;
-		padding: 5px 10px;
-		border-radius: 6px;
+		font-size: 0.8rem;
 		cursor: pointer;
 		text-align: left;
-		transition: all 0.2s ease;
-		display: inline-flex;
+		display: flex;
 		align-items: center;
-		gap: 6px;
+		gap: 0.5rem;
+		transition: all 0.15s ease;
 	}
 
-	.chip-btn:hover {
-		border-color: var(--accent-blue);
+	.suggestion-chip:hover {
+		border-color: var(--border-hover);
 		color: var(--text-main);
+		background: var(--bg-card);
 		transform: translateY(-1px);
 	}
 
-	.chip-arrow {
+	.chip-symbol {
 		color: var(--accent-coral);
 		font-weight: 700;
+		flex-shrink: 0;
+	}
+
+	.chip-text {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	/* Mensagens */
 	.msg {
 		display: flex;
 		flex-direction: column;
-		max-width: 88%;
-		padding: 12px 16px;
+		padding: 1.25rem 1.4rem;
 		border-radius: 8px;
 		line-height: 1.6;
-		font-size: 14px;
+		font-size: 0.92rem;
 		word-wrap: break-word;
-		position: relative;
+		transition: border-color 0.15s ease;
 	}
 
 	.msg-user {
 		align-self: flex-end;
-		background: var(--bg-card);
-		border: 1px solid var(--border-default);
-		border-top: 2px solid var(--accent-blue);
+		max-width: 80%;
+		background: var(--bg-surface);
+		border: 1px solid var(--border-subtle);
 		color: var(--text-main);
-		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 	}
 
 	.msg-assistant {
-		align-self: flex-start;
-		background: var(--bg-surface);
+		width: 100%;
+		background: var(--bg-card);
 		border: 1px solid var(--border-muted);
-		border-top: 2px solid var(--accent-green);
 		color: var(--text-main);
-		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 	}
 
-	.msg-meta {
+	.msg-header {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		gap: 8px;
-		margin-bottom: 8px;
-		padding-bottom: 6px;
-		border-bottom: 1px solid var(--border-muted);
-		font-family: var(--font-mono);
-		flex-wrap: wrap;
+		margin-bottom: 0.65rem;
 	}
 
-	.meta-left,
-	.meta-right {
+	.msg-author-group {
 		display: flex;
 		align-items: center;
-		gap: 6px;
+		gap: 0.35rem;
+		font-family: var(--font-mono);
+		font-size: 0.78rem;
 	}
 
-	.role-badge {
-		font-size: 10px;
+	.author-symbol {
+		color: var(--accent-green);
 		font-weight: 700;
-		padding: 2px 7px;
-		border-radius: 4px;
-		letter-spacing: 0.5px;
-		display: inline-flex;
-		align-items: center;
-		gap: 4px;
 	}
 
-	.role-user {
-		background: rgba(88, 166, 255, 0.15);
+	.author-user {
 		color: var(--accent-blue);
-		border: 1px solid rgba(88, 166, 255, 0.3);
-	}
-
-	.role-assistant {
-		background: rgba(126, 231, 135, 0.12);
-		color: var(--accent-green);
-		border: 1px solid rgba(126, 231, 135, 0.3);
-	}
-
-	.role-icon {
-		font-size: 9px;
-	}
-
-	.meta-badge {
-		font-size: 10px;
 		font-weight: 600;
-		padding: 2px 6px;
-		border-radius: 4px;
-		display: inline-flex;
-		align-items: center;
-		gap: 4px;
 	}
 
-	.badge-telemetry {
-		background: rgba(57, 197, 187, 0.12);
-		color: var(--accent-cyan);
-		border: 1px solid rgba(57, 197, 187, 0.3);
-	}
-
-	.telemetry-dot {
-		width: 5px;
-		height: 5px;
-		border-radius: 50%;
-		background-color: var(--accent-cyan);
-	}
-
-	.badge-sovereign {
-		background: rgba(126, 231, 135, 0.12);
+	.author-ai {
 		color: var(--accent-green);
-		border: 1px solid rgba(126, 231, 135, 0.3);
+		font-weight: 600;
 	}
 
-	.badge-time {
-		background: var(--bg-card);
+	.msg-time {
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
 		color: var(--text-dim);
-		border: 1px solid var(--border-muted);
+	}
+
+	.user-text {
+		margin: 0;
+		white-space: pre-wrap;
+	}
+
+	/* Telemetria Whisper */
+	.msg-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 1rem;
+		padding-top: 0.65rem;
+		border-top: 1px solid var(--border-muted);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+	}
+
+	.telemetry-whisper {
+		color: var(--text-dim);
 	}
 
 	.copy-btn {
 		background: transparent;
-		border: 1px solid transparent;
-		color: var(--text-dim);
-		cursor: pointer;
-		padding: 2px 5px;
+		border: 1px solid var(--border-muted);
 		border-radius: 4px;
-		display: inline-flex;
-		align-items: center;
+		color: var(--text-dim);
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		padding: 2px 7px;
+		cursor: pointer;
 		transition: all 0.15s ease;
 	}
 
 	.copy-btn:hover {
+		border-color: var(--border-hover);
 		color: var(--text-main);
-		border-color: var(--border-default);
-		background: var(--bg-card);
 	}
 
 	.copied-text {
 		color: var(--accent-green);
-		font-size: 10px;
-		font-weight: 700;
 	}
 
-	/* Conteúdo textual da mensagem */
-	.msg-content {
-		font-size: 14px;
-		line-height: 1.6;
-		overflow-wrap: break-word;
-		word-break: break-word;
+	/* Loading Dots do Stream */
+	.stream-loading {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		padding: 0.4rem 0;
 	}
 
-	:global(.msg-content p) {
-		margin-bottom: 8px;
+	.stream-dot {
+		width: 5px;
+		height: 5px;
+		background: var(--text-dim);
+		border-radius: 50%;
+		animation: stream-blink 1.2s infinite ease-in-out both;
 	}
 
-	:global(.msg-content p:last-child) {
+	.stream-dot:nth-child(1) {
+		animation-delay: -0.32s;
+	}
+	.stream-dot:nth-child(2) {
+		animation-delay: -0.16s;
+	}
+
+	@keyframes stream-blink {
+		0%,
+		80%,
+		100% {
+			opacity: 0.2;
+			transform: scale(0.8);
+		}
+		40% {
+			opacity: 1;
+			transform: scale(1.1);
+		}
+	}
+
+	/* Markdown e Bloco Think */
+	:global(.msg-body) {
+		line-height: 1.65;
+	}
+
+	:global(.msg-body p) {
+		margin: 0.5rem 0;
+	}
+	:global(.msg-body p:first-child) {
+		margin-top: 0;
+	}
+	:global(.msg-body p:last-child) {
 		margin-bottom: 0;
 	}
 
-	:global(.msg-content ul, .msg-content ol) {
-		margin: 8px 0 8px 18px;
-	}
-
-	:global(.msg-content li) {
-		margin-bottom: 4px;
-	}
-
-	:global(.msg-content h1, .msg-content h2, .msg-content h3, .msg-content h4) {
-		margin: 12px 0 6px 0;
+	:global(.msg-body h1, .msg-body h2, .msg-body h3, .msg-body h4) {
+		font-family: var(--font-sans);
 		color: var(--text-main);
-		font-weight: 700;
+		margin: 1.2rem 0 0.5rem 0;
 	}
 
-	:global(.msg-content h1) {
-		font-size: 16px;
-		color: var(--accent-blue);
-	}
-	:global(.msg-content h2) {
-		font-size: 15px;
-		color: var(--accent-green);
-	}
-	:global(.msg-content h3) {
-		font-size: 14px;
-		color: var(--accent-purple);
-	}
-
-	:global(.msg-content blockquote) {
-		border-left: 3px solid var(--accent-blue);
-		padding: 6px 12px;
-		margin: 8px 0;
-		background: rgba(88, 166, 255, 0.06);
-		border-radius: 0 6px 6px 0;
-		color: var(--text-muted);
-		font-style: italic;
-	}
-
-	:global(.msg-content table) {
-		border-collapse: collapse;
-		width: 100%;
-		margin: 10px 0;
-		font-size: 12.5px;
-		border-radius: 6px;
-		overflow-x: auto;
-		display: block;
-	}
-
-	:global(.msg-content th, .msg-content td) {
-		border: 1px solid var(--border-default);
-		padding: 6px 10px;
-		text-align: left;
-	}
-
-	:global(.msg-content th) {
-		background-color: var(--bg-card);
-		color: var(--accent-blue);
-		font-weight: 700;
-	}
-
-	:global(.msg-content tr:nth-child(even)) {
-		background-color: rgba(255, 255, 255, 0.02);
-	}
-
-	:global(.msg-content hr) {
-		border: 0;
-		border-top: 1px solid var(--border-muted);
-		margin: 12px 0;
-	}
-
-	:global(.msg-content a) {
-		color: var(--accent-blue);
-		text-decoration: underline;
-	}
-
-	:global(.msg-content strong) {
-		color: #ffffff;
-		font-weight: 700;
-	}
-
-	/* Bloco de Raciocínio Interno <think> com details expansível */
-	:global(.think-block) {
-		background: rgba(255, 166, 87, 0.05);
-		border: 1px solid rgba(255, 166, 87, 0.25);
-		border-left: 3px solid var(--accent-orange);
-		border-radius: 6px;
-		margin: 10px 0;
-		overflow: hidden;
+	:global(.msg-body code) {
 		font-family: var(--font-mono);
-		font-size: 12px;
+		font-size: 0.85em;
+		background: var(--bg-surface);
+		padding: 0.15em 0.35em;
+		border-radius: 4px;
+		border: 1px solid var(--border-muted);
+		color: var(--accent-orange);
+	}
+
+	:global(.msg-body pre) {
+		background: #090d13;
+		border: 1px solid var(--border-subtle);
+		border-radius: 6px;
+		padding: 0.85rem 1rem;
+		overflow-x: auto;
+		margin: 0.8rem 0;
+	}
+
+	:global(.msg-body pre code) {
+		background: transparent;
+		padding: 0;
+		border: none;
+		color: var(--text-main);
+	}
+
+	:global(.think-block) {
+		background: rgba(13, 17, 23, 0.6);
+		border: 1px solid var(--border-muted);
+		border-radius: 6px;
+		margin: 0.75rem 0;
+		overflow: hidden;
 	}
 
 	:global(.think-summary) {
-		padding: 6px 10px;
-		cursor: pointer;
 		display: flex;
 		align-items: center;
 		gap: 6px;
+		padding: 6px 12px;
+		cursor: pointer;
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		color: var(--text-dim);
+		background: var(--bg-surface);
 		user-select: none;
-		background: rgba(255, 166, 87, 0.08);
-		color: var(--accent-orange);
-		font-weight: 700;
-		font-size: 11px;
 	}
 
 	:global(.think-summary:hover) {
-		background: rgba(255, 166, 87, 0.12);
-	}
-
-	:global(.think-pill) {
-		font-size: 9px;
-		padding: 1px 5px;
-		border-radius: 3px;
-		background: rgba(255, 255, 255, 0.08);
-		color: var(--text-dim);
-		margin-left: auto;
-		text-transform: uppercase;
-		letter-spacing: 0.5px;
-	}
-
-	:global(.think-pill.thinking) {
-		color: var(--accent-coral);
-		background: rgba(255, 123, 114, 0.15);
+		color: var(--text-main);
 	}
 
 	:global(.think-content) {
-		padding: 8px 12px;
-		color: var(--text-muted);
-		white-space: pre-wrap;
-		line-height: 1.5;
-		border-top: 1px solid rgba(255, 166, 87, 0.15);
-	}
-
-	/* Código */
-	:global(.msg-content pre) {
-		background-color: #06090e;
-		border: 1px solid var(--border-muted);
 		padding: 10px 14px;
-		border-radius: 6px;
 		font-family: var(--font-mono);
-		font-size: 12.5px;
-		line-height: 1.5;
-		margin: 10px 0;
-		overflow-x: auto;
-		white-space: pre-wrap;
-		word-break: break-all;
+		font-size: 0.82rem;
+		line-height: 1.6;
+		color: var(--text-muted);
+		border-top: 1px solid var(--border-muted);
+		background: rgba(9, 13, 19, 0.4);
+		max-height: 300px;
+		overflow-y: auto;
 	}
 
-	:global(.msg-content code) {
-		background-color: rgba(88, 166, 255, 0.1);
-		color: var(--accent-blue);
-		padding: 0.15rem 0.35rem;
-		border-radius: 4px;
-		font-family: var(--font-mono);
-		font-size: 0.85em;
-	}
+	@media (max-width: 768px) {
+		.welcome-title {
+			font-size: 1.6rem;
+		}
 
-	:global(.msg-content pre code) {
-		background-color: transparent;
-		color: var(--text-main);
-		padding: 0;
-		border: none;
-	}
-
-	@media (max-width: 640px) {
-		.chat-window {
-			gap: 12px;
-			padding: 6px 2px;
+		.suggestions-grid {
+			grid-template-columns: 1fr;
 		}
 
 		.msg {
-			max-width: 96%;
-			padding: 10px 12px;
-			font-size: 13.5px;
+			padding: 1rem;
 		}
 
-		.chips-container {
-			flex-direction: column;
-		}
-
-		.chip-btn {
-			width: 100%;
-			font-size: 12px;
+		.msg-user {
+			max-width: 90%;
 		}
 	}
 </style>
