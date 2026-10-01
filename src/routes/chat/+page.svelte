@@ -65,9 +65,9 @@
 		isGpuError = gpuResult.isError;
 		isMobileDevice = gpuResult.isMobile;
 
-		// No mobile, seleciona SmolLM3 por padrão para evitar OOM
+		// No mobile, seleciona SmolLM2 por padrão para evitar OOM
 		if (isMobileDevice) {
-			selectedModelKey = "smol-lm-3-360m";
+			selectedModelKey = "smol-lm-360m";
 		} else {
 			selectedModelKey = "llama-3.2-1b";
 		}
