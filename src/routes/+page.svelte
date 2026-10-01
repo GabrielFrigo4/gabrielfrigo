@@ -94,15 +94,16 @@
 			id: "webgpu-chat",
 			cat: "graphics",
 			title: "Sovereign WebGPU Chat (Client-Side AI)",
-			desc: "Inferência local na GPU via WebGPU e WebLLM sem servidores na nuvem: Gemma 4, Qwen3.5 e SmolLM com streaming em tempo real, tokens/s e raciocínio <think>.",
+			desc: "Inferência local na GPU via WebGPU e WebLLM sem servidores na nuvem: Llama 3.2, DeepSeek R1, Gemma 4, Qwen3.5 e SmolLM3 com streaming, telemetria em tempo real e raciocínio analítico <think>.",
 			tags: [
 				"WebGPU",
 				"WebLLM",
 				"WASM",
 				"Client-Side",
-				"SvelteKit",
-				"Gemma 4",
+				"Llama 3.2",
+				"DeepSeek R1",
 				"Qwen3.5",
+				"SmolLM3",
 			],
 			link: "/chat/",
 			repo: "https://github.com/GabrielFrigo4/gabrielfrigo",
@@ -774,11 +775,13 @@
 						{#if p.link}
 							<a
 								href={p.link}
-								target="_blank"
-								rel="noopener noreferrer"
+								target={p.link.startsWith("http") ? "_blank" : undefined}
+								rel={p.link.startsWith("http")
+									? "noopener noreferrer"
+									: undefined}
 								class="btn-sm btn-primary-sm"
 							>
-								Demo / Live ↗
+								{p.link === "/chat/" ? "Abrir Chat ⚡" : "Demo / Live ↗"}
 							</a>
 						{/if}
 						<a

@@ -45,14 +45,14 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		font-family: var(--font-mono, monospace);
+		font-family: var(--font-mono);
 		font-size: 11px;
-		color: #cbd5e1;
-		padding: 6px 12px;
-		border-top: 1px solid rgba(55, 65, 81, 0.65);
+		color: var(--text-muted);
+		padding: 5px 12px;
+		border: 1px solid var(--border-muted);
 		margin-top: 6px;
-		background: rgba(11, 15, 25, 0.7);
-		border-radius: 8px;
+		background: var(--bg-surface);
+		border-radius: 6px;
 		flex-shrink: 0;
 	}
 
@@ -63,55 +63,54 @@
 	}
 
 	.metric-icon {
-		font-size: 11px;
+		font-size: 10px;
 	}
 
 	.metric-label {
-		color: #94a3b8;
-		font-weight: 700;
+		color: var(--text-dim);
+		font-weight: 600;
 		letter-spacing: 0.5px;
 	}
 
 	.metric-val {
-		font-weight: 700;
-		padding: 2px 7px;
+		font-weight: 600;
+		padding: 1px 6px;
 		border-radius: 4px;
 	}
 
 	.val-model {
-		background: rgba(59, 130, 246, 0.15);
-		color: #93c5fd;
-		border: 1px solid rgba(147, 197, 253, 0.3);
+		background: rgba(88, 166, 255, 0.1);
+		color: var(--accent-blue);
+		border: 1px solid rgba(88, 166, 255, 0.25);
 	}
 
 	.speed-idle {
-		background: rgba(75, 85, 99, 0.25);
-		color: #94a3b8;
+		background: var(--bg-card);
+		color: var(--text-dim);
 	}
 
 	.speed-active {
-		background: rgba(234, 179, 8, 0.18);
-		color: #fde047;
-		border: 1px solid rgba(253, 224, 71, 0.35);
+		background: rgba(255, 166, 87, 0.12);
+		color: var(--accent-orange);
+		border: 1px solid rgba(255, 166, 87, 0.3);
 	}
 
 	.speed-medium {
-		background: rgba(6, 182, 212, 0.18);
-		color: #67e8f9;
-		border: 1px solid rgba(103, 232, 249, 0.35);
+		background: rgba(57, 197, 187, 0.12);
+		color: var(--accent-cyan);
+		border: 1px solid rgba(57, 197, 187, 0.3);
 	}
 
 	.speed-fast {
-		background: rgba(16, 185, 129, 0.2);
-		color: #6ee7b7;
-		border: 1px solid rgba(110, 231, 183, 0.4);
-		box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
+		background: rgba(126, 231, 135, 0.15);
+		color: var(--accent-green);
+		border: 1px solid rgba(126, 231, 135, 0.35);
 	}
 
 	.val-tokens {
-		background: rgba(139, 92, 246, 0.18);
-		color: #d8b4fe;
-		border: 1px solid rgba(216, 180, 254, 0.35);
+		background: rgba(210, 168, 255, 0.12);
+		color: var(--accent-purple);
+		border: 1px solid rgba(210, 168, 255, 0.3);
 	}
 
 	.mobile-only {
@@ -136,15 +135,15 @@
 	}
 
 	.ticker-sep {
-		color: #475569;
+		color: var(--border-default);
 	}
 
 	.val-tokens-txt {
-		color: #d8b4fe;
+		color: var(--accent-purple);
 	}
 
 	.val-model-txt {
-		color: #93c5fd;
+		color: var(--accent-blue);
 		max-width: 140px;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -155,7 +154,6 @@
 		.metrics-bar {
 			padding: 4px 8px;
 			margin-top: 4px;
-			border-radius: 6px;
 		}
 
 		.mobile-only {

@@ -34,12 +34,12 @@ export function renderMarkdownWithThink(rawText, marked = markedInstance) {
 		if (processed.includes("</think>")) {
 			processed = processed.replace(
 				/<think>([\s\S]*?)<\/think>/g,
-				'<div class="think-block"><span class="think-label">Raciocínio Interno (&lt;think&gt;)</span>$1</div>',
+				'<details class="think-block" open><summary class="think-summary"><span class="think-icon">🧠</span><span class="think-label">Raciocínio Interno (&lt;think&gt;)</span><span class="think-pill">concluído</span></summary><div class="think-content">$1</div></details>',
 			);
 		} else {
 			processed = processed.replace(
 				/<think>([\s\S]*)$/g,
-				'<div class="think-block"><span class="think-label">Raciocínio Interno (&lt;think&gt;)</span>$1</div>',
+				'<details class="think-block" open><summary class="think-summary"><span class="think-icon">🧠</span><span class="think-label">Pensando (&lt;think&gt;)...</span><span class="think-pill thinking">em andamento</span></summary><div class="think-content">$1</div></details>',
 			);
 		}
 	}
