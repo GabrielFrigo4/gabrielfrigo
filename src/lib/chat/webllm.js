@@ -149,6 +149,16 @@ export async function checkWebGPU() {
 			cleanName = hasF16 ? "Hardware GPU" : "GPU (f32)";
 		}
 
+		console.log("[WebGPU Diagnostics]", {
+			webgpuInfo: info,
+			webglRenderer,
+			detectedDevice,
+			isSoftware,
+			hasF16,
+			isFallbackAdapter: adapter.isFallbackAdapter,
+			cleanName,
+		});
+
 		return {
 			supported: true,
 			status: `WebGPU: ${cleanName} (${hasF16 ? "f16" : "f32"})`,

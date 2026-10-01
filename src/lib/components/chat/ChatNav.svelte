@@ -50,13 +50,10 @@
 						class="pill"
 						class:pill-ready={!isGpuSoftware}
 						class:pill-warn={isGpuSoftware}
-						title={gpuStatus}
+						title={`${gpuStatus} · Modelo pronto`}
 					>
 						<span class="dot-ready" class:dot-warn={isGpuSoftware}></span>
-						<span class="pill-text desktop-only"
-							>{shortGpuStatus} · {currentSpec.name}</span
-						>
-						<span class="pill-text mobile-only">{shortGpuStatus}</span>
+						<span class="pill-text">{shortGpuStatus}</span>
 					</span>
 				{:else}
 					<span
@@ -222,7 +219,7 @@
 		display: flex;
 		align-items: center;
 		gap: 0.6rem;
-		min-width: 0;
+		flex-shrink: 0;
 	}
 
 	.nav-brand {
@@ -258,6 +255,7 @@
 		display: flex;
 		align-items: center;
 		margin-left: 0.25rem;
+		flex-shrink: 0;
 	}
 
 	.pill {
@@ -270,6 +268,7 @@
 		font-size: 0.75rem;
 		border: 1px solid transparent;
 		white-space: nowrap;
+		flex-shrink: 0;
 	}
 
 	.pill-idle {
@@ -373,7 +372,7 @@
 		cursor: pointer;
 		outline: none;
 		transition: all 0.15s ease;
-		max-width: 280px;
+		max-width: 240px;
 		text-overflow: ellipsis;
 	}
 
@@ -508,12 +507,6 @@
 			max-width: 140px;
 			font-size: 0.75rem;
 			padding: 0.3rem 1.4rem 0.3rem 0.5rem;
-		}
-	}
-
-	@media (min-width: 769px) {
-		.mobile-only {
-			display: none !important;
 		}
 	}
 </style>
