@@ -9,8 +9,8 @@
 	import ChatMessages from "$lib/components/chat/ChatMessages.svelte";
 	import ChatInput from "$lib/components/chat/ChatInput.svelte";
 
-	let selectedModelKey = $state("qwen-3.5-0.8b");
-	let selectedSpec = $derived(MODEL_SPECS[selectedModelKey] || MODEL_SPECS["qwen-3.5-0.8b"]);
+	let selectedModelKey = $state("smollm-360m");
+	let selectedSpec = $derived(MODEL_SPECS[selectedModelKey] || MODEL_SPECS["smollm-360m"]);
 
 	let gpuStatus = $state("Verificando WebGPU...");
 	let shortGpuStatus = $state("GPU...");
@@ -18,6 +18,7 @@
 	let isGpuSoftware = $state(false);
 	let gpuDeviceName = $state("WebGPU");
 	let isMobileDevice = $state(false);
+	let hasF16Support = $state(true);
 
 	let isLoading = $state(false);
 	let isLoaded = $state(false);
@@ -66,11 +67,12 @@
 		isGpuSoftware = gpuResult.isSoftware || false;
 		gpuDeviceName = gpuResult.cleanName || gpuResult.shortStatus || "WebGPU";
 		isMobileDevice = gpuResult.isMobile;
+		hasF16Support = gpuResult.hasF16 ?? true;
 
 		if (isMobileDevice) {
-			selectedModelKey = "qwen-3.5-0.8b";
+			selectedModelKey = "smollm-360m";
 		} else {
-			selectedModelKey = "deepseek-r1-1.5b";
+			selectedModelKey = "llama-3.2-1b";
 		}
 
 		markedInstance = await getMarked();
@@ -103,8 +105,21 @@
 				progressText = `[${selectedSpec.name}] ${report.text}`;
 			});
 
-			const targetModelId = overrideModelId || selectedSpec.primaryId;
-			await engine.reload(targetModelId);
+			const targetModelId =
+				overrideModelId ||
+				(hasF16Support
+					? selectedSpec.primaryId
+					: selectedSpec.fallbackId || selectedSpec.primaryId);
+
+			const chatOpts = isMobileDevice
+				? {
+						context_window_size: 1536,
+						sliding_window_size: 768,
+						attention_sink_size: 4,
+					}
+				: undefined;
+
+			await engine.reload(targetModelId, chatOpts);
 
 			progressPct = 100;
 			progressText = `${selectedSpec.name} pronto na GPU!`;
@@ -144,7 +159,7 @@
 						metaRight: "Aviso de VRAM",
 						content:
 							"⚠️ **Limite de Memória Gráfica (VRAM):**\n\n" +
-							"A GPU não conseguiu alocar o modelo selecionado. Experimente o **SmolLM3 (360M)** ou **SmolLM3 (135M)**.",
+							"A GPU não conseguiu alocar o modelo selecionado. Experimente o **SmolLM2 (360M)** ou **Llama 3.2 (1B)**.",
 					},
 				];
 			}
@@ -224,7 +239,7 @@
 			const completion = await engine.chat.completions.create({
 				messages: messageHistory,
 				temperature: 0.6,
-				max_tokens: 1024,
+				max_tokens: isMobileDevice ? 512 : 1024,
 				top_p: 0.9,
 				stream: true,
 			});
