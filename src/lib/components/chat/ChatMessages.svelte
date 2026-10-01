@@ -42,12 +42,10 @@
 		const distanceFromBottom =
 			chatContainer.scrollHeight - chatContainer.scrollTop - chatContainer.clientHeight;
 
-		// Se estiver a <= 40px do fundo, considera grudado
 		if (distanceFromBottom <= 40) {
 			isPinned = true;
 			showScrollBottomBtn = false;
 		} else {
-			// Rolou para cima: solta a rolagem automática
 			isPinned = false;
 			showScrollBottomBtn = true;
 		}
@@ -64,14 +62,12 @@
 			const _ = messages[messages.length - 1]?.content;
 			const currentCount = messages.length;
 
-			// Nova mensagem enviada/recebida: re-gruda automaticamente
 			if (currentCount > lastMessageCount) {
 				isPinned = true;
 				showScrollBottomBtn = false;
 				lastMessageCount = currentCount;
 			}
 
-			// Durante digitação, só acompanha se estiver grudado
 			tick().then(() => {
 				if (isPinned && chatContainer) {
 					chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -122,7 +118,6 @@
 
 <div class="chat-messages-container">
 	<div class="chat-window" bind:this={chatContainer} onscroll={handleScroll}>
-		<!-- Hero Inicial Limpo com Sugestão Dinâmica/Aleatória -->
 		{#if messages.length === 0}
 			<div class="welcome-hero">
 				<div class="welcome-badge" class:welcome-badge-warn={isGpuSoftware}>
@@ -140,7 +135,6 @@
 					pela nuvem.
 				</p>
 
-				<!-- Sugestão Única Centralizada & Rotativa (Aleatória + Botão Shuffle) -->
 				<div class="single-suggestion-container">
 					<div class="suggestion-pill">
 						<button
@@ -157,14 +151,28 @@
 							title="Sortear outra sugestão (Aleatório)"
 							aria-label="Sortear outra pergunta"
 						>
-							<span class="refresh-icon">↻</span>
+							<svg
+								class="refresh-icon"
+								width="13"
+								height="13"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.3"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path
+									d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"
+								/>
+							</svg>
 						</button>
 					</div>
 				</div>
 			</div>
 		{/if}
 
-		<!-- Lista de Mensagens -->
 		{#each messages as msg, i}
 			<div class="msg msg-{msg.role}">
 				<div class="msg-header">
@@ -204,12 +212,25 @@
 					{/if}
 				</div>
 
-				<!-- Rodapé de Telemetria Whisper -->
 				{#if msg.role === "assistant" && msg.content}
 					<div class="msg-footer">
 						<div class="telemetry-whisper">
 							{#if msg.metaRight}
-								<span class="telemetry-text">⚡ {msg.metaRight}</span>
+								<span class="telemetry-text">
+									<svg
+										class="telemetry-bolt"
+										width="11"
+										height="11"
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										aria-hidden="true"
+									>
+										<polygon
+											points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
+										/>
+									</svg>
+									<span>{msg.metaRight}</span>
+								</span>
 							{/if}
 						</div>
 
@@ -220,7 +241,22 @@
 							aria-label="Copiar mensagem"
 						>
 							{#if copiedIdx === i}
-								<span class="copied-text">Copiado! ✓</span>
+								<span class="copied-wrap">
+									<span>Copiado!</span>
+									<svg
+										width="12"
+										height="12"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2.5"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<polyline points="20 6 9 17 4 12" />
+									</svg>
+								</span>
 							{:else}
 								<span>Copiar</span>
 							{/if}
@@ -231,7 +267,6 @@
 		{/each}
 	</div>
 
-	<!-- Botão Flutuante de Voltar ao Fim / Acompanhar Geração -->
 	{#if showScrollBottomBtn}
 		<button
 			type="button"
@@ -242,10 +277,38 @@
 		>
 			{#if isGenerating}
 				<span class="stream-pulse"></span>
-				<span class="scroll-bottom-icon">↓</span>
+				<svg
+					class="scroll-bottom-icon"
+					width="13"
+					height="13"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.4"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<line x1="12" y1="5" x2="12" y2="19" />
+					<polyline points="19 12 12 19 5 12" />
+				</svg>
 				<span class="scroll-bottom-text">Acompanhar digitação</span>
 			{:else}
-				<span class="scroll-bottom-icon">↓</span>
+				<svg
+					class="scroll-bottom-icon"
+					width="13"
+					height="13"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.4"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<line x1="12" y1="5" x2="12" y2="19" />
+					<polyline points="19 12 12 19 5 12" />
+				</svg>
 				<span class="scroll-bottom-text">Rolar para o fim</span>
 			{/if}
 		</button>
@@ -277,7 +340,6 @@
 		width: 100%;
 	}
 
-	/* Botão Flutuante de Voltar ao Fim / Acompanhar Geração */
 	.scroll-bottom-btn {
 		position: absolute;
 		bottom: 1.25rem;
@@ -313,9 +375,7 @@
 	}
 
 	.scroll-bottom-icon {
-		font-size: 0.95rem;
-		font-weight: 700;
-		line-height: 1;
+		flex-shrink: 0;
 	}
 
 	.stream-pulse {
@@ -366,7 +426,6 @@
 		background: var(--border-hover);
 	}
 
-	/* Hero Inicial Minimalista */
 	.welcome-hero {
 		margin: auto 0;
 		padding: 2.5rem 1rem;
@@ -447,7 +506,6 @@
 		margin-bottom: 1.75rem;
 	}
 
-	/* Sugestão Dinâmica & Rotativa */
 	.single-suggestion-container {
 		display: flex;
 		justify-content: center;
@@ -539,7 +597,6 @@
 		transform: rotate(90deg);
 	}
 
-	/* Mensagens */
 	.msg {
 		display: flex;
 		flex-direction: column;
@@ -616,7 +673,6 @@
 		overflow-wrap: anywhere;
 	}
 
-	/* Telemetria Whisper */
 	.msg-footer {
 		display: flex;
 		justify-content: space-between;
@@ -640,6 +696,17 @@
 		line-height: 1.4;
 	}
 
+	.telemetry-text {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+	}
+
+	.telemetry-bolt {
+		flex-shrink: 0;
+		color: var(--accent-blue);
+	}
+
 	.copy-btn {
 		background: transparent;
 		border: 1px solid var(--border-muted);
@@ -657,11 +724,13 @@
 		color: var(--text-main);
 	}
 
-	.copied-text {
+	.copied-wrap {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
 		color: var(--accent-green);
 	}
 
-	/* Loading Dots do Stream */
 	.stream-loading {
 		display: flex;
 		align-items: center;
@@ -697,7 +766,6 @@
 		}
 	}
 
-	/* Markdown e Bloco Think */
 	:global(.msg-body) {
 		line-height: 1.65;
 	}

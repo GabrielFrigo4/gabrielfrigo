@@ -1,8 +1,5 @@
 let webllmModule = null;
 
-/**
- * Carrega a biblioteca @mlc-ai/web-llm dinamicamente no navegador via CDN esm.run.
- */
 export async function getWebLLM() {
 	if (webllmModule) return webllmModule;
 	try {
@@ -14,12 +11,6 @@ export async function getWebLLM() {
 	}
 }
 
-/**
- * Verifica se o navegador suporta WebGPU, se há adaptadores disponíveis
- * e detecta extensões (shader-f16) e contexto mobile.
- *
- * @returns {Promise<{ supported: boolean, status: string, shortStatus: string, isError: boolean, hasF16: boolean, isMobile: boolean }>}
- */
 export async function checkWebGPU() {
 	const isMobile =
 		typeof window !== "undefined" &&
@@ -45,9 +36,7 @@ export async function checkWebGPU() {
 			adapter = await navigator.gpu.requestAdapter({
 				powerPreference: "high-performance",
 			});
-		} catch (e) {
-			// fallback
-		}
+		} catch (e) {}
 		if (!adapter) {
 			adapter = await navigator.gpu.requestAdapter();
 		}
@@ -70,9 +59,7 @@ export async function checkWebGPU() {
 				(typeof adapter.requestAdapterInfo === "function"
 					? await adapter.requestAdapterInfo()
 					: null);
-		} catch (e) {
-			// ignore
-		}
+		} catch (e) {}
 
 		let webglRenderer = "";
 		if (typeof document !== "undefined") {
@@ -90,9 +77,7 @@ export async function checkWebGPU() {
 						).trim();
 					}
 				}
-			} catch (_) {
-				// ignore
-			}
+			} catch (_) {}
 		}
 
 		const rawDevice = (
@@ -162,7 +147,7 @@ export async function checkWebGPU() {
 		return {
 			supported: true,
 			status: `WebGPU: ${cleanName} (${hasF16 ? "f16" : "f32"})`,
-			shortStatus: isSoftware ? "CPU (Lento) ⚠️" : `${cleanName} ⚡`,
+			shortStatus: isSoftware ? "CPU (Lento)" : cleanName,
 			cleanName,
 			isError: false,
 			isSoftware,

@@ -17,16 +17,24 @@ Diretrizes canônicas para o repositório do portfólio web de Gabriel Frigo:
 - Animações, layouts e interações devem ser resolvidos primariamente via CSS moderno (`flexbox`, `grid`, `keyframes`, `backdrop-filter`).
 - O runtime de cliente deve se limitar estritamente à reatividade mínima de Svelte 5.
 
-## 4. Ícones Vetoriais SVG Nativos (Zero Bloat & Zero Unicode Jitter)
+## 4. Ícones Vetoriais SVG Nativos em Todo o Website (Zero Bloat & Zero Unicode Jitter)
 
+- **Diretriz Global do Website:** O uso de SVGs inline nativos é a regra mandatória para todo o site (Home, Chat, navegação, botões de ação, badges e cards).
 - **Proibição de Pacotes de Ícones:** Não instale dependências do npm (`lucide-svelte`, `font-awesome`, `@iconify`).
-- **Proibição de Glifos Unicode Instáveis:** Não use caracteres UTF-8 ou emojis (`⚙`, `↵`, `⏹`, `▾`) para controles, pois sua renderização, tamanho e alinhamento vertical variam drasticamente entre sistemas operacionais (FreeBSD, Linux, Windows, macOS, Android, iOS).
-- **A Solução Canônica:** Utilize SVGs inline nativos (`viewBox="0 0 24 24"`), com `stroke="currentColor"` ou `fill="currentColor"`, dimensões explícitas, `aria-hidden="true"` e micro-interações via transições CSS.
+- **Proibição de Glifos Unicode e Emojis em Controles:** É expressamente proibido usar caracteres UTF-8 ou emojis (`⚙`, `↵`, `⏹`, `▾`, `⚡`, `🧠`, `🎲`, `↗`, `↓`) para botões, controles de interface ou sinalizadores visuais. A renderização, altura de linha, tamanho e alinhamento variam drasticamente entre sistemas operacionais (FreeBSD, Linux, Windows, macOS, Android, iOS). Emojis só são admitidos quando representam dados literais de texto.
+- **A Solução Canônica:** Utilize SVGs inline nativos (`viewBox="0 0 24 24"`), com `stroke="currentColor"` ou `fill="currentColor"`, dimensões explícitas, `aria-hidden="true"` e estilização determinística via CSS.
 
-## 5. Hermetismo de Produção (`rm -rf .agents`)
+## 5. Proibição Absoluta de Comentários no Código (Clean Code >>> Comentários)
+
+- **Zero Comentários em Código Fonte:** Comentários em arquivos `.svelte`, `.js`, `.css` e HTML são expressamente proibidos (`//`, `/* */`, `<!-- -->`).
+- **Autoexplicabilidade:** O código deve ser autoexplicativo por construção, empregando nomes reveladores de intenção, funções puras coesas e clareza estrutural. Comentários frequentemente mascaram código ruim ou ficam defasados; código limpo expressa a verdade matemática imediata.
+- **Documentação em Arquivos Próprios:** Filosofia, arquitetura, infraestrutura e decisões de engenharia pertencem à documentação Markdown (`AGENTS.md`, `PRINCIPLES.md`, `README.md`, `INFRASTRUCTURE.md`), nunca ao código-fonte.
+- **Exceção Hermética Única:** Apenas pragmas estritamente exigidos por ferramentas de compilação externa (`/* @vite-ignore */` em importações dinâmicas via CDN) são tolerados.
+
+## 6. Hermetismo de Produção (`rm -rf .agents`)
 
 - Nada em `.agents/` ou `.githooks/` pode ser acoplado ao build estático em produção.
 
-## 6. Determinismo & Validação Contínua
+## 7. Determinismo & Validação Contínua
 
 - O código deve compilar sem warnings e passar com 100% de sucesso em `make lint` e `make build`.

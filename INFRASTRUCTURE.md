@@ -51,52 +51,25 @@ flowchart TD
 Localizado em `/etc/caddy/Caddyfile` no servidor:
 
 ```caddy
-# ==============================================================================
-# 🌐 Gabriel Frigo — Caddy Webserver & Reverse Proxy Configuration
-# Arquivo: /etc/caddy/Caddyfile
-# Servidor: Personal Server (144.22.210.65)
-# Roteamento: gabrielfrigo.dev.br, www, resume, game
-# ==============================================================================
-
-# ------------------------------------------------------------------------------
-# 1. Website Oficial e Portfólio Estático (SvelteKit Static / WebGPU Chat)
-# ------------------------------------------------------------------------------
 gabrielfrigo.dev.br, www.gabrielfrigo.dev.br, resume.gabrielfrigo.dev.br {
-	# Raiz dos artefatos pré-renderizados estáticos gerados pelo SvelteKit
 	root * /home/ubuntu/gabrielfrigo/build
-
-	# Compressão de alta velocidade: Zstandard (zstd) com fallback para Gzip
 	encode zstd gzip
 
-	# Blindagem de Cache para Páginas HTML:
-	# O HTML do SPA/SSG NUNCA deve ser retido em cache por browsers para que
-	# deploys e atualizações de JavaScript/CSS sejam recebidos instantaneamente.
 	@html {
 		path *.html / /chat/
 	}
 	header @html Cache-Control "no-cache, no-store, must-revalidate"
 
-	# Cache Máximo para Artefatos Imutáveis com Hash de Conteúdo:
-	# Chunks JS/CSS em /_app/immutable/ possuem hash SHA exclusivo no nome (Vite).
-	# Podem e devem ser cacheados por 1 ano (31536000s) sem risco de desatualização.
 	@immutable {
 		path /_app/immutable/*
 	}
 	header @immutable Cache-Control "public, max-age=31536000, immutable"
 
-	# Servidor de arquivos estáticos de alta performance
 	file_server
-
-	# Roteamento SPA e Tratamento de 404:
-	# Tenta servir o arquivo exato; se for diretório tenta /; caso contrário usa /404.html
 	try_files {path} {path}/ /404.html
 }
 
-# ------------------------------------------------------------------------------
-# 2. Laboratório de Sistemas: Servidor HTTP Berkeley Sockets em C23 (unix-sock)
-# ------------------------------------------------------------------------------
 game.gabrielfrigo.dev.br {
-	# Encaminha o tráfego HTTPS público diretamente para o socket local do binário em C23
 	reverse_proxy [::1]:35441
 }
 ```

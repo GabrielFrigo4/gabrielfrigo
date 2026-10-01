@@ -24,8 +24,8 @@ O website reflete a identidade técnica, acadêmica e filosófica de Gabriel Fri
 2. **Método Socrático:** Ao implementar novos componentes ou textos, questione criticamente sua necessidade. Teste rigorosamente cada mudança.
 3. **Hermetismo de Produção (`rm -rf .agents`):** A pasta `.agents/` serve exclusivamente para inteligência contextual local e não pode ser acoplada ao build.
 4. **Make como Interface Única:** Todas as ações devem ser validadas via `make lint`, `make build` e `make test`.
-5. **Quality Gates & Conventional Commits:** Todo commit deve respeitar as convenções de commit semântico (`feat:`, `fix:`, `docs:`, `chore:`, etc.).
-6. **Ícones Vetoriais SVG Nativos (Zero Bloat & Zero Unicode Jitter):** É proibido instalar bibliotecas de ícones no npm (`lucide`, `font-awesome`) e proibido usar glifos Unicode frágeis (`⚙`, `↵`, `⏹`, `▾`) para controles de interface. Todo ícone deve ser SVG inline nativo com `viewBox`, estilizado via CSS com `currentColor`, garantindo determinismo visual idêntico em qualquer sistema operacional.
+5. **Ícones Vetoriais SVG Nativos em Todo o Website (Zero Bloat & Zero Unicode Jitter):** É proibido instalar bibliotecas de ícones no npm (`lucide`, `font-awesome`) e expressamente proibido usar glifos Unicode frágeis ou emojis (`⚙`, `↵`, `⏹`, `▾`, `⚡`, `🧠`, `🎲`, `↗`, `↓`) para controles, badges e botões em qualquer lugar do site. Todo ícone deve ser SVG inline nativo com `viewBox`, estilizado via CSS com `currentColor`, garantindo determinismo visual idêntico em qualquer sistema operacional (FreeBSD, Linux, macOS, Windows, mobile).
+6. **Proibição Absoluta de Comentários no Código (Clean Code >>> Comentários):** Nenhum arquivo de código (`.svelte`, `.js`, `.css`, HTML, `Makefile`, shell scripts) deve conter comentários (`//`, `/* */`, `<!-- -->`, `#`). O código deve ser 100% legível, declarativo e autoexplicativo por construção. Toda explicação conceitual, arquitetural ou de governança deve residir exclusivamente na documentação (`.md`). Única exceção tolerada no código: `/* @vite-ignore */` para bundles dinâmicos via CDN.
 
 ---
 

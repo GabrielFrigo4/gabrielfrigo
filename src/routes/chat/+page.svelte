@@ -9,7 +9,6 @@
 	import ChatMessages from "$lib/components/chat/ChatMessages.svelte";
 	import ChatInput from "$lib/components/chat/ChatInput.svelte";
 
-	// Estado reativo Svelte 5 com Runes
 	let selectedModelKey = $state("qwen-3.5-0.8b");
 	let selectedSpec = $derived(MODEL_SPECS[selectedModelKey] || MODEL_SPECS["qwen-3.5-0.8b"]);
 
@@ -37,7 +36,6 @@
 
 	let engine = null;
 
-	// Gerenciamento simples e robusto de Prompt de Sistema
 	let selectedPromptPresetId = $state("friendly");
 	let customSystemPrompt = $state(SYSTEM_PROMPT_PRESETS[0].prompt);
 	let isPromptModalOpen = $state(false);
@@ -69,7 +67,6 @@
 		gpuDeviceName = gpuResult.cleanName || gpuResult.shortStatus || "WebGPU";
 		isMobileDevice = gpuResult.isMobile;
 
-		// No mobile, seleciona Qwen 3.5 (0.8B) por padrão para máxima fluidez
 		if (isMobileDevice) {
 			selectedModelKey = "qwen-3.5-0.8b";
 		} else {
@@ -87,7 +84,6 @@
 		progressPct = 0;
 		progressText = `Preparando ${selectedSpec.name} na GPU...`;
 
-		// Liberação de VRAM do modelo anterior se houver
 		if (engine) {
 			try {
 				await engine.unload();
@@ -182,7 +178,6 @@
 
 		prompt = "";
 
-		// Auto-carregamento transparente: se ainda não foi carregado, carrega agora
 		if (!isLoaded || !engine) {
 			await loadModel();
 			if (!engine) {
@@ -337,19 +332,17 @@
 	</main>
 </div>
 
-<!-- Modal de Configuração do Prompt de Sistema -->
 {#if isPromptModalOpen}
 	<div
 		class="modal-backdrop"
-		onclick={() => (isPromptModalOpen = false)}
+		onclick={(e) => {
+			if (e.target === e.currentTarget) isPromptModalOpen = false;
+		}}
 		onkeydown={(e) => e.key === "Escape" && (isPromptModalOpen = false)}
 		role="presentation"
 	>
-		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 		<div
 			class="modal-card"
-			onclick={(e) => e.stopPropagation()}
 			role="dialog"
 			aria-modal="true"
 			aria-labelledby="modal-title"
@@ -497,7 +490,6 @@
 		padding-bottom: max(1rem, env(safe-area-inset-bottom));
 	}
 
-	/* Modal de Configuração do Prompt */
 	.modal-backdrop {
 		position: fixed;
 		inset: 0;

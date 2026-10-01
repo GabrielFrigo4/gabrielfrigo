@@ -2,30 +2,15 @@
 .SILENT:
 MAKEFLAGS += --no-print-directory -s
 
-### ================================
-### CONSTANTS & VARIABLES
-### ================================
 NPM ?= npm
 NODE ?= node
 GIT ?= git
 TARGET_DIR ?= build
 
-### ================================
-### TARGETS DECLARATION
-### ================================
 .PHONY: all help dev build preview format lint check hooks test ci clean deploy
 
-### ================================
-### DEFAULT GOAL
-### ================================
 all: help
 
-### ================================
-### HELP & DISCOVERY
-### ================================
-### --------------------------------
-### List available targets
-### --------------------------------
 help:
 	printf "⚡ Gabriel Frigo — Static Portfolio (SvelteKit)\n\n"
 	printf "Alvos disponíveis:\n"
@@ -41,89 +26,41 @@ help:
 	printf "  make clean    - Remove diretórios de build e cache\n"
 	printf "  make deploy   - Executa build e envia os artefatos para o servidor\n"
 
-### ================================
-### DEVELOPMENT & LOCAL SERVER
-### ================================
-### --------------------------------
-### Start development server
-### --------------------------------
 dev:
 	printf "🚀 Iniciando servidor de desenvolvimento SvelteKit...\n"
 	$(NPM) run dev
 
-### ================================
-### COMPILATION & STATIC BUILD
-### ================================
-### --------------------------------
-### Compile static site
-### --------------------------------
 build:
 	printf "⚡ Compilando site estático com SvelteKit...\n"
 	$(NPM) run build
 	printf "✅ Build estático gerado com sucesso em build/\n"
 
-### --------------------------------
-### Preview static build
-### --------------------------------
 preview: build
 	printf "👀 Iniciando pré-visualização de build/...\n"
 	$(NPM) run preview
 
-### ================================
-### CODE QUALITY & FORMATTING
-### ================================
-### --------------------------------
-### Format codebase with Prettier
-### --------------------------------
 format:
 	printf "🎨 Formatando arquivos com Prettier...\n"
 	$(NPM) run format
 
-### --------------------------------
-### Check formatting with Prettier
-### --------------------------------
 lint check:
 	printf "🔍 Verificando formatação com Prettier...\n"
 	$(NPM) run lint
 
-### ================================
-### GIT HOOKS INSTALLATION
-### ================================
-### --------------------------------
-### Configure and activate hooks
-### --------------------------------
 hooks:
 	printf "⚓ Configurando Git Hooks em .githooks/...\n"
 	chmod 0755 .githooks/* 2>/dev/null || true
 	$(GIT) config core.hooksPath .githooks
 	printf "✅ Quality gates locais ativados!\n"
 
-### ================================
-### TESTING & CI PIPELINE
-### ================================
-### --------------------------------
-### Complete validation and build
-### --------------------------------
 test ci: lint build
 	printf "✅ Pipeline de validação concluído com sucesso!\n"
 
-### ================================
-### MAINTENANCE & CLEANUP
-### ================================
-### --------------------------------
-### Clean build artifacts
-### --------------------------------
 clean:
 	printf "🧹 Limpando artefatos de compilação...\n"
 	rm -rf build .svelte-kit
 	printf "✅ Workspace limpo!\n"
 
-### ================================
-### DEPLOYMENT & SYNCHRONIZATION
-### ================================
-### --------------------------------
-### Deploy build artifacts to server
-### --------------------------------
 deploy: build
 	if [ -f "./update-server.sh" ]; then \
 		./update-server.sh $(TARGET_DIR); \

@@ -16,6 +16,7 @@ O website e portfólio oficial de Gabriel Frigo ([gabrielfrigo.dev.br](https://g
 ### 2. Regra da Clareza (_Rule of Clarity_)
 
 - Código HTML, CSS e JavaScript semântico, claro e legível, sem acrobacias crípticas de frameworks obscuros.
+- **Clean Code >>> Comentários:** O código deve ser 100% autoexplicativo por construção, sem poluição de comentários ruidosos em arquivos de código. A verdade reside na estrutura e nos identificadores claros; a documentação arquitetural reside em arquivos Markdown (`.md`).
 
 ### 3. Regra da Composição (_Rule of Composition_)
 
@@ -32,7 +33,7 @@ O website e portfólio oficial de Gabriel Frigo ([gabrielfrigo.dev.br](https://g
 ### 6. Regra da Parcimônia (_Rule of Parsimony_)
 
 - Não adicione bibliotecas externas do npm para funcionalidades que o CSS moderno ou o Svelte 5 resolvem nativamente.
-- **Ícones Vetoriais SVG Nativos:** Proibido instalar pacotes pesados de ícones (`lucide`, `font-awesome`) e proibido usar glifos Unicode frágeis (`⚙`, `↵`, `⏹`, `▾`) para controles de interface. Todo ícone deve ser SVG nativo inline com determinismo visual absoluto.
+- **Ícones Vetoriais SVG Nativos em Todo o Website:** Proibido instalar pacotes pesados de ícones (`lucide`, `font-awesome`) e estritamente proibido usar emojis ou glifos Unicode frágeis (`⚙`, `↵`, `⏹`, `▾`, `⚡`, `🧠`, `🎲`, `↗`, `↓`) para controles de interface, botões ou sinalização em qualquer ponto do site. Todo ícone deve ser SVG nativo inline com determinismo visual absoluto.
 
 ### 7. Regra da Transparência (_Rule of Transparency_)
 

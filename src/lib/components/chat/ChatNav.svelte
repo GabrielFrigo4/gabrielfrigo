@@ -19,12 +19,12 @@
 		onOpenPromptModal = () => {},
 	} = $props();
 
+	let mobileMenuOpen = $state(false);
 	let currentSpec = $derived(MODEL_SPECS[selectedModelKey] || MODEL_SPECS["qwen-3.5-0.8b"]);
 </script>
 
 <nav class="chat-nav">
 	<div class="nav-container">
-		<!-- Marca e Seção -->
 		<div class="nav-brand-group">
 			<a href="/" class="nav-brand" title="Gabriel Frigo — Página Inicial">
 				<span class="brand-symbol">λ</span>
@@ -35,7 +35,6 @@
 			<span class="nav-sep desktop-only">/</span>
 			<span class="nav-section-title desktop-only">chat</span>
 
-			<!-- Status da GPU / Modelo em tempo real -->
 			<div class="status-indicator">
 				{#if isGpuError}
 					<span class="pill pill-error" title={gpuStatus}>
@@ -70,9 +69,7 @@
 			</div>
 		</div>
 
-		<!-- Controles da Barra Superior -->
 		<div class="nav-controls">
-			<!-- Seletor de Modelo -->
 			<div class="select-wrapper">
 				<select
 					bind:value={selectedModelKey}
@@ -104,7 +101,6 @@
 				</svg>
 			</div>
 
-			<!-- Botão de Carregar Manual (opcional, só quando ainda não carregou) -->
 			{#if !isLoaded && !isLoading && !isGpuError}
 				<button
 					class="nav-btn btn-load desktop-only"
@@ -112,13 +108,21 @@
 					title="Carregar pesos na GPU agora"
 				>
 					<span>Carregar</span>
-					<span class="bolt-symbol">⚡</span>
+					<svg
+						class="bolt-icon"
+						width="13"
+						height="13"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+						aria-hidden="true"
+					>
+						<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+					</svg>
 				</button>
 			{/if}
 
-			<!-- Botão Prompt de Sistema -->
 			<button
-				class="nav-btn"
+				class="nav-btn desktop-only"
 				onclick={onOpenPromptModal}
 				title="Configurar Prompt de Sistema da IA"
 				aria-label="Configurar Prompt de Sistema"
@@ -140,14 +144,13 @@
 						d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
 					/>
 				</svg>
-				<span class="desktop-only">Prompt:</span>
-				<span class="prompt-name desktop-only">{activePromptName}</span>
+				<span>Prompt:</span>
+				<span class="prompt-name">{activePromptName}</span>
 			</button>
 
-			<!-- Botão Limpar Chat -->
 			{#if hasMessages}
 				<button
-					class="nav-btn"
+					class="nav-btn desktop-only"
 					onclick={onClearChat}
 					disabled={isLoading || isGenerating}
 					title="Limpar histórico da conversa"
@@ -169,12 +172,15 @@
 							d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
 						/>
 					</svg>
-					<span class="desktop-only">Limpar</span>
+					<span>Limpar</span>
 				</button>
 			{/if}
 
-			<!-- Link para voltar ao Portfólio -->
-			<a href="/" class="nav-link-btn" title="Retornar ao Portfólio Principal">
+			<a
+				href="/"
+				class="nav-link-btn desktop-only"
+				title="Retornar ao Portfólio Principal"
+			>
 				<svg
 					class="btn-icon icon-back"
 					width="15"
@@ -189,10 +195,154 @@
 				>
 					<path d="M19 12H5M12 19l-7-7 7-7" />
 				</svg>
-				<span class="desktop-only">Portfólio</span>
+				<span>Portfólio</span>
 			</a>
+
+			<button
+				type="button"
+				class="mobile-menu-btn mobile-only"
+				onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
+				aria-label="Menu de Navegação"
+				aria-expanded={mobileMenuOpen}
+			>
+				{#if mobileMenuOpen}
+					<svg
+						width="18"
+						height="18"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<line x1="18" y1="6" x2="6" y2="18" />
+						<line x1="6" y1="6" x2="18" y2="18" />
+					</svg>
+				{:else}
+					<svg
+						width="18"
+						height="18"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<line x1="4" y1="6" x2="20" y2="6" />
+						<line x1="4" y1="12" x2="20" y2="12" />
+						<line x1="4" y1="18" x2="20" y2="18" />
+					</svg>
+				{/if}
+			</button>
 		</div>
 	</div>
+
+	{#if mobileMenuOpen}
+		<div class="mobile-drawer">
+			{#if !isLoaded && !isLoading && !isGpuError}
+				<button
+					type="button"
+					class="mobile-drawer-btn mobile-btn-load"
+					onclick={() => {
+						mobileMenuOpen = false;
+						onLoadModel();
+					}}
+				>
+					<svg
+						class="drawer-icon"
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+						aria-hidden="true"
+					>
+						<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+					</svg>
+					<span>Carregar Modelo na GPU</span>
+				</button>
+			{/if}
+
+			<button
+				type="button"
+				class="mobile-drawer-btn"
+				onclick={() => {
+					mobileMenuOpen = false;
+					onOpenPromptModal();
+				}}
+			>
+				<svg
+					class="drawer-icon icon-prompt"
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<circle cx="12" cy="12" r="3" />
+					<path
+						d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+					/>
+				</svg>
+				<span>Prompt de Sistema ({activePromptName})</span>
+			</button>
+
+			{#if hasMessages}
+				<button
+					type="button"
+					class="mobile-drawer-btn"
+					disabled={isLoading || isGenerating}
+					onclick={() => {
+						mobileMenuOpen = false;
+						onClearChat();
+					}}
+				>
+					<svg
+						class="drawer-icon"
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<path
+							d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
+						/>
+					</svg>
+					<span>Limpar Histórico do Chat</span>
+				</button>
+			{/if}
+
+			<a href="/" class="mobile-drawer-link" onclick={() => (mobileMenuOpen = false)}>
+				<svg
+					class="drawer-icon"
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<path d="M19 12H5M12 19l-7-7 7-7" />
+				</svg>
+				<span>Retornar ao Portfólio</span>
+			</a>
+		</div>
+	{/if}
 </nav>
 
 <style>
@@ -438,9 +588,8 @@
 		background: rgba(88, 166, 255, 0.08);
 	}
 
-	.bolt-symbol {
-		display: inline-block;
-		margin-left: 2px;
+	.bolt-icon {
+		flex-shrink: 0;
 	}
 
 	.icon-prompt {
@@ -490,6 +639,94 @@
 		transform: translateX(-2.5px);
 	}
 
+	.mobile-menu-btn {
+		display: none;
+		background: var(--bg-surface);
+		border: 1px solid var(--border-subtle);
+		color: var(--text-main);
+		padding: 0.35rem;
+		border-radius: 6px;
+		cursor: pointer;
+		align-items: center;
+		justify-content: center;
+		min-width: 32px;
+		min-height: 32px;
+		transition:
+			border-color 0.15s ease,
+			color 0.15s ease;
+	}
+
+	.mobile-menu-btn:hover {
+		border-color: var(--border-hover);
+		color: var(--accent-blue);
+	}
+
+	.mobile-drawer {
+		display: flex;
+		flex-direction: column;
+		background: rgba(9, 13, 19, 0.98);
+		border-top: 1px solid var(--border-muted);
+		padding: 0.75rem 1rem 1rem 1rem;
+		gap: 0.35rem;
+		animation: slide-down 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	@keyframes slide-down {
+		from {
+			opacity: 0;
+			transform: translateY(-8px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.mobile-drawer-btn,
+	.mobile-drawer-link {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		padding: 0.75rem 0.6rem;
+		background: transparent;
+		border: none;
+		border-bottom: 1px solid var(--border-muted);
+		color: var(--text-muted);
+		font-family: var(--font-sans);
+		font-size: 0.9rem;
+		cursor: pointer;
+		text-decoration: none;
+		text-align: left;
+		width: 100%;
+		transition:
+			color 0.15s ease,
+			background-color 0.15s ease;
+	}
+
+	.mobile-drawer-btn:hover:not(:disabled),
+	.mobile-drawer-link:hover {
+		color: var(--text-main);
+		background: rgba(255, 255, 255, 0.03);
+	}
+
+	.mobile-btn-load {
+		color: var(--accent-blue);
+		font-weight: 600;
+	}
+
+	.mobile-drawer-btn:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	.drawer-icon {
+		flex-shrink: 0;
+	}
+
+	.mobile-only {
+		display: none !important;
+	}
+
 	@media (max-width: 900px) {
 		.select-wrapper select {
 			max-width: 180px;
@@ -504,6 +741,10 @@
 
 		.desktop-only {
 			display: none !important;
+		}
+
+		.mobile-only {
+			display: inline-flex !important;
 		}
 
 		.nav-brand-group {
@@ -535,15 +776,9 @@
 		}
 
 		.select-wrapper select {
-			max-width: 120px;
-			font-size: 0.72rem;
-			padding: 0.28rem 1.3rem 0.28rem 0.45rem;
-		}
-
-		.nav-btn,
-		.nav-link-btn {
-			padding: 0.3rem 0.45rem;
-			font-size: 0.75rem;
+			max-width: 130px;
+			font-size: 0.74rem;
+			padding: 0.3rem 1.3rem 0.3rem 0.5rem;
 		}
 	}
 
@@ -566,18 +801,13 @@
 		}
 
 		.select-wrapper select {
-			max-width: 95px;
+			max-width: 105px;
 			font-size: 0.7rem;
-			padding: 0.25rem 1.1rem 0.25rem 0.35rem;
+			padding: 0.28rem 1.1rem 0.28rem 0.4rem;
 		}
 
 		.nav-controls {
 			gap: 0.25rem;
-		}
-
-		.nav-btn,
-		.nav-link-btn {
-			padding: 0.28rem 0.35rem;
 		}
 	}
 </style>

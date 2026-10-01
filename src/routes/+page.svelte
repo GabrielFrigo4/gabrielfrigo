@@ -466,7 +466,7 @@
 			title: "Sovereign WebGPU Chat",
 			badge: "IA Local / WASM",
 			teaser: "Execute modelos como Qwen 3.5 e DeepSeek R1 no seu hardware local via WebGPU sem dados enviados à nuvem.",
-			action: "Abrir Chat ⚡",
+			action: "Abrir Chat",
 			type: "link",
 			link: "/chat/",
 		},
@@ -618,7 +618,6 @@
 	<title>Gabriel Frigo | Engenharia de Sistemas & Low-Level</title>
 </svelte:head>
 
-<!-- Navigation -->
 <nav class="nav">
 	<div class="nav-container">
 		<a href="/" class="nav-brand">
@@ -626,20 +625,61 @@
 			<span class="brand-text">gabriel<strong>frigo</strong></span>
 		</a>
 
-		<!-- Ações Mobile Diretas -->
 		<div class="nav-mobile-actions mobile-only">
-			<a href="/chat/" class="mobile-chat-btn">WebGPU ⚡</a>
+			<a href="/chat/" class="mobile-chat-btn">
+				<span>WebGPU</span>
+				<svg
+					class="ui-icon icon-bolt"
+					width="12"
+					height="12"
+					viewBox="0 0 24 24"
+					fill="currentColor"
+					aria-hidden="true"
+				>
+					<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+				</svg>
+			</a>
 			<button
 				class="mobile-menu-btn"
 				onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
 				aria-label="Abrir Menu de Navegação"
 				aria-expanded={mobileMenuOpen}
 			>
-				{mobileMenuOpen ? "✕" : "☰"}
+				{#if mobileMenuOpen}
+					<svg
+						width="18"
+						height="18"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<line x1="18" y1="6" x2="6" y2="18" />
+						<line x1="6" y1="6" x2="18" y2="18" />
+					</svg>
+				{:else}
+					<svg
+						width="18"
+						height="18"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<line x1="4" y1="6" x2="20" y2="6" />
+						<line x1="4" y1="12" x2="20" y2="12" />
+						<line x1="4" y1="18" x2="20" y2="18" />
+					</svg>
+				{/if}
 			</button>
 		</div>
 
-		<!-- Links Desktop -->
 		<div class="nav-links desktop-only">
 			<a href="#filosofia" class="nav-link">Filosofia</a>
 			<a href="#hubs" class="nav-link">Sexteto Federado</a>
@@ -652,21 +692,67 @@
 				title="Descobrir um local aleatório do ecossistema"
 				aria-label="Descobrir local aleatório"
 			>
-				🎲 Descobrir
+				<svg
+					class="ui-icon icon-dice"
+					width="13"
+					height="13"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<rect x="3" y="3" width="18" height="18" rx="3" />
+					<circle cx="8" cy="8" r="1.2" fill="currentColor" />
+					<circle cx="16" cy="8" r="1.2" fill="currentColor" />
+					<circle cx="12" cy="12" r="1.2" fill="currentColor" />
+					<circle cx="8" cy="16" r="1.2" fill="currentColor" />
+					<circle cx="16" cy="16" r="1.2" fill="currentColor" />
+				</svg>
+				<span>Descobrir</span>
 			</button>
-			<a href="/chat/" class="nav-link nav-link-highlight">WebGPU Chat ⚡</a>
+			<a href="/chat/" class="nav-link nav-link-highlight">
+				<span>WebGPU Chat</span>
+				<svg
+					class="ui-icon icon-bolt"
+					width="12"
+					height="12"
+					viewBox="0 0 24 24"
+					fill="currentColor"
+					aria-hidden="true"
+				>
+					<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+				</svg>
+			</a>
 			<a
 				href="https://github.com/GabrielFrigo4"
 				target="_blank"
 				rel="noopener noreferrer"
 				class="nav-link-btn"
 			>
-				GitHub ↗
+				<span>GitHub</span>
+				<svg
+					class="ui-icon icon-external"
+					width="11"
+					height="11"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.3"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+					<polyline points="15 3 21 3 21 9" />
+					<line x1="10" y1="14" x2="21" y2="3" />
+				</svg>
 			</a>
 		</div>
 	</div>
 
-	<!-- Gaveta Dropdown no Mobile -->
 	{#if mobileMenuOpen}
 		<div class="mobile-drawer">
 			<a href="#filosofia" class="mobile-link" onclick={() => (mobileMenuOpen = false)}>
@@ -689,14 +775,43 @@
 					randomTeleport();
 				}}
 			>
-				🎲 Descobrir Aleatório
+				<svg
+					class="ui-icon icon-dice"
+					width="14"
+					height="14"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<rect x="3" y="3" width="18" height="18" rx="3" />
+					<circle cx="8" cy="8" r="1.2" fill="currentColor" />
+					<circle cx="16" cy="8" r="1.2" fill="currentColor" />
+					<circle cx="12" cy="12" r="1.2" fill="currentColor" />
+					<circle cx="8" cy="16" r="1.2" fill="currentColor" />
+					<circle cx="16" cy="16" r="1.2" fill="currentColor" />
+				</svg>
+				<span>Descobrir Aleatório</span>
 			</button>
 			<a
 				href="/chat/"
 				class="mobile-link mobile-link-chat"
 				onclick={() => (mobileMenuOpen = false)}
 			>
-				WebGPU Chat (IA Local) ⚡
+				<span>WebGPU Chat (IA Local)</span>
+				<svg
+					class="ui-icon icon-bolt"
+					width="12"
+					height="12"
+					viewBox="0 0 24 24"
+					fill="currentColor"
+					aria-hidden="true"
+				>
+					<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+				</svg>
 			</a>
 			<a
 				href="https://github.com/GabrielFrigo4"
@@ -705,13 +820,28 @@
 				class="mobile-link mobile-link-gh"
 				onclick={() => (mobileMenuOpen = false)}
 			>
-				GitHub Institucional ↗
+				<span>GitHub Institucional</span>
+				<svg
+					class="ui-icon icon-external"
+					width="12"
+					height="12"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.3"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+					<polyline points="15 3 21 3 21 9" />
+					<line x1="10" y1="14" x2="21" y2="3" />
+				</svg>
 			</a>
 		</div>
 	{/if}
 </nav>
 
-<!-- Hero Section -->
 <header class="hero">
 	<div class="hero-container">
 		<div class="hero-badge">
@@ -731,7 +861,6 @@
 			anti-inchaço.
 		</p>
 
-		<!-- Terminal Card with Typewriter -->
 		<div class="terminal-card">
 			<div class="terminal-header">
 				<div class="terminal-dots">
@@ -752,11 +881,31 @@
 			</div>
 		</div>
 
-		<!-- Discovery Tip Bar (Dica Dinâmica de Exploração) -->
 		<div class="hero-discovery-bar">
 			<div class="discovery-header">
 				<div class="discovery-badge-group">
-					<span class="discovery-tag">🎲 DICA DE EXPLORAÇÃO</span>
+					<span class="discovery-tag">
+						<svg
+							class="ui-icon icon-dice"
+							width="12"
+							height="12"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<rect x="3" y="3" width="18" height="18" rx="3" />
+							<circle cx="8" cy="8" r="1.2" fill="currentColor" />
+							<circle cx="16" cy="8" r="1.2" fill="currentColor" />
+							<circle cx="12" cy="12" r="1.2" fill="currentColor" />
+							<circle cx="8" cy="16" r="1.2" fill="currentColor" />
+							<circle cx="16" cy="16" r="1.2" fill="currentColor" />
+						</svg>
+						<span>DICA DE EXPLORAÇÃO</span>
+					</span>
 					<span class="discovery-pill">{currentDiscovery.badge}</span>
 				</div>
 				<button
@@ -766,7 +915,24 @@
 					title="Sortear outro destino"
 					aria-label="Sortear outro destino"
 				>
-					<span class="reroll-icon">↻</span>
+					<span class="reroll-icon">
+						<svg
+							class="ui-icon"
+							width="12"
+							height="12"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2.3"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path
+								d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"
+							/>
+						</svg>
+					</span>
 					<span class="reroll-text">Outra dica</span>
 				</button>
 			</div>
@@ -782,7 +948,22 @@
 							class="discovery-cta"
 							onclick={() => focusProject(currentDiscovery.id)}
 						>
-							{currentDiscovery.action} ↓
+							<span>{currentDiscovery.action}</span>
+							<svg
+								class="ui-icon"
+								width="12"
+								height="12"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.3"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<line x1="12" y1="5" x2="12" y2="19" />
+								<polyline points="19 12 12 19 5 12" />
+							</svg>
 						</button>
 					{:else if currentDiscovery.type === "hub"}
 						<button
@@ -790,7 +971,22 @@
 							class="discovery-cta"
 							onclick={() => focusHub(currentDiscovery.id)}
 						>
-							{currentDiscovery.action} ↓
+							<span>{currentDiscovery.action}</span>
+							<svg
+								class="ui-icon"
+								width="12"
+								height="12"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.3"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<line x1="12" y1="5" x2="12" y2="19" />
+								<polyline points="19 12 12 19 5 12" />
+							</svg>
 						</button>
 					{:else}
 						<a
@@ -803,14 +999,13 @@
 								: undefined}
 							class="discovery-cta"
 						>
-							{currentDiscovery.action}
+							<span>{currentDiscovery.action}</span>
 						</a>
 					{/if}
 				</div>
 			</div>
 		</div>
 
-		<!-- Action CTA Buttons -->
 		<div class="hero-actions">
 			<a href="#projetos" class="btn btn-primary">Explorar Projetos</a>
 			<a href="#hubs" class="btn btn-secondary">O Sexteto Federado</a>
@@ -820,7 +1015,26 @@
 				onclick={randomTeleport}
 				title="Descobrir um local aleatório do ecossistema"
 			>
-				🎲 Descobrir Aleatório
+				<svg
+					class="ui-icon icon-dice"
+					width="13"
+					height="13"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<rect x="3" y="3" width="18" height="18" rx="3" />
+					<circle cx="8" cy="8" r="1.2" fill="currentColor" />
+					<circle cx="16" cy="8" r="1.2" fill="currentColor" />
+					<circle cx="12" cy="12" r="1.2" fill="currentColor" />
+					<circle cx="8" cy="16" r="1.2" fill="currentColor" />
+					<circle cx="16" cy="16" r="1.2" fill="currentColor" />
+				</svg>
+				<span>Descobrir Aleatório</span>
 			</button>
 			<a
 				href="https://github.com/GabrielFrigo4/resumes"
@@ -828,13 +1042,28 @@
 				rel="noopener noreferrer"
 				class="btn btn-outline"
 			>
-				Currículo (LaTeX) ↗
+				<span>Currículo (LaTeX)</span>
+				<svg
+					class="ui-icon icon-external"
+					width="12"
+					height="12"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.3"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+					<polyline points="15 3 21 3 21 9" />
+					<line x1="10" y1="14" x2="21" y2="3" />
+				</svg>
 			</a>
 		</div>
 	</div>
 </header>
 
-<!-- Section 1: A Tríade Canônica & Método Socrático -->
 <section id="filosofia" class="section">
 	<div class="section-container">
 		<div class="section-header">
@@ -848,9 +1077,24 @@
 		</div>
 
 		<div class="cards-grid triad-grid">
-			<!-- Card 1 -->
 			<div class="feature-card">
-				<div class="card-icon" style="color: var(--accent-blue);">📂</div>
+				<div class="card-icon" style="color: var(--accent-blue);">
+					<svg
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<path
+							d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"
+						/>
+					</svg>
+				</div>
 				<h3 class="card-title">1. Fundamentos de UNIX: File Descriptors & IDs</h3>
 				<p class="card-text">
 					No cerne dos sistemas UNIX verdadeiros, toda abstração de I/O colapsa em
@@ -878,9 +1122,31 @@
 				</ul>
 			</div>
 
-			<!-- Card 2 -->
 			<div class="feature-card">
-				<div class="card-icon" style="color: var(--accent-coral);">⚙️</div>
+				<div class="card-icon" style="color: var(--accent-coral);">
+					<svg
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<rect x="4" y="4" width="16" height="16" rx="2" />
+						<rect x="9" y="9" width="6" height="6" />
+						<line x1="9" y1="1" x2="9" y2="4" />
+						<line x1="15" y1="1" x2="15" y2="4" />
+						<line x1="9" y1="20" x2="9" y2="23" />
+						<line x1="15" y1="20" x2="15" y2="23" />
+						<line x1="20" y1="9" x2="23" y2="9" />
+						<line x1="20" y1="14" x2="23" y2="14" />
+						<line x1="1" y1="9" x2="4" y2="9" />
+						<line x1="1" y1="14" x2="4" y2="14" />
+					</svg>
+				</div>
 				<h3 class="card-title">2. Perto do Metal: O Mínimo Denominador Comum</h3>
 				<p class="card-text">
 					Eliminação de camadas desnecessárias de abstração. O código deve compreender
@@ -913,9 +1179,18 @@
 				</ul>
 			</div>
 
-			<!-- Card 3 -->
 			<div class="feature-card">
-				<div class="card-icon" style="color: var(--accent-green);">⚡</div>
+				<div class="card-icon" style="color: var(--accent-green);">
+					<svg
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+						aria-hidden="true"
+					>
+						<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+					</svg>
+				</div>
 				<h3 class="card-title">3. Compilador Determinístico & Anti-Inchaço</h3>
 				<p class="card-text">
 					A preferência inabalável por garantias matemáticas estáticas comprovadas em
@@ -941,9 +1216,30 @@
 				</ul>
 			</div>
 
-			<!-- Card 4 -->
 			<div class="feature-card full-width-card">
-				<div class="card-icon" style="color: var(--accent-purple);">🧠</div>
+				<div class="card-icon" style="color: var(--accent-purple);">
+					<svg
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<circle cx="12" cy="12" r="3" />
+						<circle cx="19" cy="5" r="2" />
+						<circle cx="5" cy="5" r="2" />
+						<circle cx="5" cy="19" r="2" />
+						<circle cx="19" cy="19" r="2" />
+						<line x1="7" y1="6" x2="10" y2="10" />
+						<line x1="17" y1="6" x2="14" y2="10" />
+						<line x1="7" y1="18" x2="10" y2="14" />
+						<line x1="17" y1="18" x2="14" y2="14" />
+					</svg>
+				</div>
 				<h3 class="card-title">O Método Socrático com Inteligência Artificial</h3>
 				<p class="card-text">
 					Inteligências Artificiais generativas são instrumentos de alavancagem
@@ -966,7 +1262,6 @@
 	</div>
 </section>
 
-<!-- Section 2: O Sexteto Federado -->
 <section id="hubs" class="section bg-alt">
 	<div class="section-container">
 		<div class="section-header">
@@ -994,7 +1289,25 @@
 						<span class="hub-name">{hub.name}/</span>
 						<div class="hub-badges">
 							{#if highlightedHubId === hub.name}
-								<span class="hub-badge highlighted-badge">✨ Sorteado</span>
+								<span class="hub-badge highlighted-badge">
+									<svg
+										class="ui-icon"
+										width="11"
+										height="11"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2.2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<polygon
+											points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+										/>
+									</svg>
+									<span>Sorteado</span>
+								</span>
 							{/if}
 							<span class="hub-badge">{hub.badge}</span>
 						</div>
@@ -1002,7 +1315,27 @@
 					<h3 class="hub-title">{hub.title}</h3>
 					<p class="hub-desc">{hub.desc}</p>
 					<div class="hub-footer">
-						<span class="hub-link-text">Ver no GitHub ↗</span>
+						<span class="hub-link-text">
+							<span>Ver no GitHub</span>
+							<svg
+								class="ui-icon icon-external"
+								width="12"
+								height="12"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.3"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path
+									d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+								/>
+								<polyline points="15 3 21 3 21 9" />
+								<line x1="10" y1="14" x2="21" y2="3" />
+							</svg>
+						</span>
 					</div>
 				</a>
 			{/each}
@@ -1010,7 +1343,6 @@
 	</div>
 </section>
 
-<!-- Section 3: Stack Tecnológico & Domínios -->
 <section id="stack" class="section">
 	<div class="section-container">
 		<div class="section-header">
@@ -1040,7 +1372,6 @@
 	</div>
 </section>
 
-<!-- Section 4: Projetos em Destaque -->
 <section id="projetos" class="section bg-alt">
 	<div class="section-container">
 		<div class="section-header">
@@ -1051,7 +1382,6 @@
 			</p>
 		</div>
 
-		<!-- Category Filter & Shuffle -->
 		<div class="filter-bar">
 			{#each categories as c}
 				<button
@@ -1069,11 +1399,29 @@
 				title="Sortear um projeto aleatório"
 				aria-label="Sortear um projeto aleatório"
 			>
-				<span class="shuffle-icon">🎲</span> Sorteador λ
+				<svg
+					class="ui-icon icon-dice"
+					width="13"
+					height="13"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<rect x="3" y="3" width="18" height="18" rx="3" />
+					<circle cx="8" cy="8" r="1.2" fill="currentColor" />
+					<circle cx="16" cy="8" r="1.2" fill="currentColor" />
+					<circle cx="12" cy="12" r="1.2" fill="currentColor" />
+					<circle cx="8" cy="16" r="1.2" fill="currentColor" />
+					<circle cx="16" cy="16" r="1.2" fill="currentColor" />
+				</svg>
+				<span>Sorteador λ</span>
 			</button>
 		</div>
 
-		<!-- Projects Grid -->
 		<div class="cards-grid projects-grid">
 			{#each filteredProjects as p (p.id)}
 				<div
@@ -1085,9 +1433,25 @@
 						<h3 class="project-title">{p.title}</h3>
 						<div class="project-badges">
 							{#if highlightedProjectId === p.id}
-								<span class="project-status-badge highlighted-badge"
-									>✨ Sorteado</span
-								>
+								<span class="project-status-badge highlighted-badge">
+									<svg
+										class="ui-icon"
+										width="11"
+										height="11"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2.2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<polygon
+											points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+										/>
+									</svg>
+									<span>Sorteado</span>
+								</span>
 							{/if}
 							{#if p.badge}
 								<span class="project-status-badge">{p.badge}</span>
@@ -1113,7 +1477,41 @@
 									: undefined}
 								class="btn-sm btn-primary-sm"
 							>
-								{p.link === "/chat/" ? "Abrir Chat ⚡" : "Demo / Live ↗"}
+								{#if p.link === "/chat/"}
+									<span>Abrir Chat</span>
+									<svg
+										class="ui-icon icon-bolt"
+										width="11"
+										height="11"
+										viewBox="0 0 24 24"
+										fill="currentColor"
+										aria-hidden="true"
+									>
+										<polygon
+											points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
+										/>
+									</svg>
+								{:else}
+									<span>Demo / Live</span>
+									<svg
+										class="ui-icon icon-external"
+										width="11"
+										height="11"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2.3"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<path
+											d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+										/>
+										<polyline points="15 3 21 3 21 9" />
+										<line x1="10" y1="14" x2="21" y2="3" />
+									</svg>
+								{/if}
 							</a>
 						{/if}
 						<a
@@ -1122,7 +1520,25 @@
 							rel="noopener noreferrer"
 							class="btn-sm btn-secondary-sm"
 						>
-							Repositório ↗
+							<span>Repositório</span>
+							<svg
+								class="ui-icon icon-external"
+								width="11"
+								height="11"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.3"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path
+									d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+								/>
+								<polyline points="15 3 21 3 21 9" />
+								<line x1="10" y1="14" x2="21" y2="3" />
+							</svg>
 						</a>
 					</div>
 				</div>
@@ -1131,10 +1547,8 @@
 	</div>
 </section>
 
-<!-- Footer -->
 <footer class="footer">
 	<div class="footer-container">
-		<!-- Dynamic UNIX / Systems Aphorism -->
 		<div class="footer-aphorism-card">
 			<div class="aphorism-header">
 				<span class="aphorism-tag">λ Aforismo UNIX & Engenharia de Sistemas</span>
@@ -1145,7 +1559,23 @@
 					title="Sortear outro aforismo"
 					aria-label="Sortear outro aforismo"
 				>
-					<span class="shuffle-symbol">↻</span> sortear
+					<svg
+						class="ui-icon"
+						width="12"
+						height="12"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2.3"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<path
+							d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"
+						/>
+					</svg>
+					<span>sortear</span>
 				</button>
 			</div>
 			<blockquote class="aphorism-quote">
@@ -1157,7 +1587,19 @@
 		</div>
 
 		<div class="footer-manifesto">
-			<p class="manifesto-title">⚡ Manifesto de Leveza & Soberania Digital</p>
+			<p class="manifesto-title">
+				<svg
+					class="ui-icon icon-bolt"
+					width="14"
+					height="14"
+					viewBox="0 0 24 24"
+					fill="currentColor"
+					aria-hidden="true"
+				>
+					<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+				</svg>
+				<span>Manifesto de Leveza & Soberania Digital</span>
+			</p>
 			<p class="manifesto-text">
 				Construído estaticamente com <strong>SvelteKit</strong> (<code
 					>@sveltejs/adapter-static</code
@@ -1189,7 +1631,12 @@
 </footer>
 
 <style>
-	/* Navigation */
+	.ui-icon {
+		display: inline-block;
+		flex-shrink: 0;
+		vertical-align: middle;
+	}
+
 	.nav {
 		position: sticky;
 		top: 0;
@@ -1247,6 +1694,9 @@
 	.nav-link-highlight {
 		color: var(--accent-green);
 		font-weight: 500;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
 	}
 
 	.nav-link-highlight:hover {
@@ -1263,6 +1713,9 @@
 		border: 1px solid var(--border-default);
 		color: var(--text-main);
 		transition: all 0.2s ease;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
 	}
 
 	.nav-link-btn:hover {
@@ -1282,7 +1735,7 @@
 		color: var(--accent-coral);
 		display: inline-flex;
 		align-items: center;
-		gap: 0.25rem;
+		gap: 0.35rem;
 		font-weight: 500;
 	}
 
@@ -1313,6 +1766,9 @@
 		font-size: 0.8rem;
 		font-weight: 700;
 		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
 	}
 
 	.mobile-menu-btn {
@@ -1346,6 +1802,9 @@
 		border-bottom: 1px solid var(--border-muted);
 		font-family: var(--font-sans);
 		transition: color 0.15s ease;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
 	}
 
 	button.mobile-link {
@@ -1376,7 +1835,6 @@
 		border-bottom: none;
 	}
 
-	/* Hero */
 	.hero {
 		padding: 5rem 1.5rem 4rem;
 		background: radial-gradient(
@@ -1439,7 +1897,6 @@
 		margin-bottom: 2.25rem;
 	}
 
-	/* Terminal Card */
 	.terminal-card {
 		width: 100%;
 		max-width: 780px;
@@ -1530,7 +1987,6 @@
 		}
 	}
 
-	/* Hero Discovery Bar */
 	.hero-discovery-bar {
 		max-width: 780px;
 		margin: 0 auto 2rem;
@@ -1660,7 +2116,6 @@
 		background: rgba(88, 166, 255, 0.08);
 	}
 
-	/* Hero Actions */
 	.hero-actions {
 		display: flex;
 		flex-wrap: wrap;
@@ -1726,7 +2181,6 @@
 		color: var(--text-main);
 	}
 
-	/* Sections */
 	.section {
 		padding: 5rem 1.5rem;
 	}
@@ -1771,7 +2225,6 @@
 		line-height: 1.6;
 	}
 
-	/* Grid & Cards */
 	.cards-grid {
 		display: grid;
 		gap: 1.5rem;
@@ -1844,7 +2297,6 @@
 		font-size: 0.82rem;
 	}
 
-	/* Hubs Grid */
 	.hubs-grid {
 		grid-template-columns: repeat(3, 1fr);
 	}
@@ -1941,7 +2393,6 @@
 		font-weight: 500;
 	}
 
-	/* Stack Grid */
 	.stack-grid {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
@@ -1989,7 +2440,6 @@
 		line-height: 1.4;
 	}
 
-	/* Projects Filter & Cards */
 	.filter-bar {
 		display: flex;
 		justify-content: center;
@@ -2035,10 +2485,6 @@
 		background: rgba(255, 123, 114, 0.12);
 		border-color: var(--accent-coral);
 		color: #ff9991;
-	}
-
-	.shuffle-icon {
-		font-size: 0.85rem;
 	}
 
 	.projects-grid {
@@ -2181,7 +2627,6 @@
 		color: var(--accent-blue);
 	}
 
-	/* Footer */
 	.footer {
 		background: #06090e;
 		border-top: 1px solid var(--border-muted);
@@ -2196,7 +2641,6 @@
 		gap: 2.5rem;
 	}
 
-	/* Dynamic Aphorism Card */
 	.footer-aphorism-card {
 		max-width: 800px;
 		margin: 0 auto;
@@ -2248,11 +2692,6 @@
 		border-color: var(--accent-coral);
 		color: var(--accent-coral);
 		background: rgba(255, 123, 114, 0.08);
-	}
-
-	.shuffle-symbol {
-		font-size: 0.85rem;
-		line-height: 1;
 	}
 
 	.aphorism-quote {
@@ -2337,7 +2776,6 @@
 		color: var(--border-default);
 	}
 
-	/* Responsive Media Queries */
 	@media (max-width: 1024px) {
 		.triad-grid,
 		.hubs-grid,

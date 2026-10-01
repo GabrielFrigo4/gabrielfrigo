@@ -1,8 +1,4 @@
 #!/usr/bin/env sh
-# ----------------------------------------------------------------
-# Hook: Git Semantic Commit-Message Validator
-# License: MIT (c) 2026 Gabriel Frigo
-# ----------------------------------------------------------------
 
 set -e
 
