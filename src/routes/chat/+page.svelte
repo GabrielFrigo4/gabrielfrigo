@@ -10,8 +10,8 @@
 	import ChatInput from "$lib/components/chat/ChatInput.svelte";
 
 	// Estado reativo Svelte 5 com Runes
-	let selectedModelKey = $state("llama-3.2-1b");
-	let selectedSpec = $derived(MODEL_SPECS[selectedModelKey] || MODEL_SPECS["llama-3.2-1b"]);
+	let selectedModelKey = $state("qwen-3.5-0.8b");
+	let selectedSpec = $derived(MODEL_SPECS[selectedModelKey] || MODEL_SPECS["qwen-3.5-0.8b"]);
 
 	let gpuStatus = $state("Verificando WebGPU...");
 	let shortGpuStatus = $state("GPU...");
@@ -65,11 +65,11 @@
 		isGpuError = gpuResult.isError;
 		isMobileDevice = gpuResult.isMobile;
 
-		// No mobile, seleciona SmolLM2 por padrão para evitar OOM
+		// No mobile, seleciona Qwen 3.5 (0.8B) por padrão para máxima fluidez
 		if (isMobileDevice) {
-			selectedModelKey = "smol-lm-360m";
+			selectedModelKey = "qwen-3.5-0.8b";
 		} else {
-			selectedModelKey = "llama-3.2-1b";
+			selectedModelKey = "deepseek-r1-1.5b";
 		}
 
 		markedInstance = await getMarked();

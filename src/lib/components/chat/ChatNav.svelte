@@ -18,7 +18,7 @@
 		onOpenPromptModal = () => {},
 	} = $props();
 
-	let currentSpec = $derived(MODEL_SPECS[selectedModelKey] || MODEL_SPECS["llama-3.2-1b"]);
+	let currentSpec = $derived(MODEL_SPECS[selectedModelKey] || MODEL_SPECS["qwen-3.5-0.8b"]);
 </script>
 
 <nav class="chat-nav">
