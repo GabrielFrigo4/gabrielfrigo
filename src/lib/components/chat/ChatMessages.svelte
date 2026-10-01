@@ -33,16 +33,12 @@
 		}
 	}
 
-	const suggestions = [
-		"Como funciona o kqueue no FreeBSD?",
-		"Qual a diferença entre /dev/dsp (OSS) e ALSA?",
-		"Por que o compilador determinístico supera runtimes dinâmicos?",
-		"Escreva um exemplo de servidor de sockets em C23",
-	];
+	const featuredPrompt =
+		"Como implementar multiplexação de I/O assíncrona com kqueue no FreeBSD?";
 </script>
 
 <div class="chat-window" bind:this={chatContainer}>
-	<!-- Hero Inicial Limpo (Estilo Portfólio) -->
+	<!-- Hero Inicial Limpo e Centralizado -->
 	{#if messages.length === 0}
 		<div class="welcome-hero">
 			<div class="welcome-badge">
@@ -56,19 +52,19 @@
 
 			<p class="welcome-desc">
 				Execute modelos de linguagem de última geração diretamente na GPU do seu
-				navegador. Privacidade absoluta: nenhum prompt ou tensor trafega pela nuvem.
+				navegador. Privacidade matemática absoluta: nenhum prompt ou tensor trafega pela
+				nuvem.
 			</p>
 
-			<div class="suggestions-container">
-				<span class="suggestions-title">Sugestões de Exploração:</span>
-				<div class="suggestions-grid">
-					{#each suggestions as sug}
-						<button class="suggestion-chip" onclick={() => onSelectPrompt(sug)}>
-							<span class="chip-symbol">›</span>
-							<span class="chip-text">{sug}</span>
-						</button>
-					{/each}
-				</div>
+			<!-- 1 Única Sugestão de Exploração Centralizada -->
+			<div class="single-suggestion-container">
+				<button
+					class="single-suggestion-chip"
+					onclick={() => onSelectPrompt(featuredPrompt)}
+				>
+					<span class="chip-symbol">›</span>
+					<span class="chip-text">{featuredPrompt}</span>
+				</button>
 			</div>
 		</div>
 	{/if}
@@ -111,7 +107,7 @@
 				{/if}
 			</div>
 
-			<!-- Rodapé de Telemetria Discreta (Whisper) para Mensagens da IA -->
+			<!-- Rodapé de Telemetria Whisper -->
 			{#if msg.role === "assistant" && msg.content}
 				<div class="msg-footer">
 					<div class="telemetry-whisper">
@@ -228,51 +224,37 @@
 		font-size: 0.95rem;
 		color: var(--text-muted);
 		line-height: 1.6;
-		margin-bottom: 2rem;
+		margin-bottom: 1.75rem;
 	}
 
-	.suggestions-container {
-		width: 100%;
-		max-width: 700px;
+	/* Sugestão Única Centralizada */
+	.single-suggestion-container {
 		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0.75rem;
-	}
-
-	.suggestions-title {
-		font-family: var(--font-mono);
-		font-size: 0.75rem;
-		color: var(--text-dim);
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
-	.suggestions-grid {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 0.6rem;
+		justify-content: center;
 		width: 100%;
+		max-width: 640px;
 	}
 
-	.suggestion-chip {
+	.single-suggestion-chip {
 		background: var(--bg-surface);
 		border: 1px solid var(--border-subtle);
 		border-radius: 6px;
-		padding: 0.65rem 0.85rem;
+		padding: 0.65rem 1.25rem;
 		color: var(--text-muted);
 		font-family: var(--font-mono);
-		font-size: 0.8rem;
+		font-size: 0.84rem;
 		cursor: pointer;
-		text-align: left;
-		display: flex;
+		display: inline-flex;
 		align-items: center;
-		gap: 0.5rem;
+		justify-content: center;
+		gap: 0.6rem;
 		transition: all 0.15s ease;
+		max-width: 100%;
+		text-align: center;
 	}
 
-	.suggestion-chip:hover {
-		border-color: var(--border-hover);
+	.single-suggestion-chip:hover {
+		border-color: var(--accent-blue);
 		color: var(--text-main);
 		background: var(--bg-card);
 		transform: translateY(-1px);
@@ -520,8 +502,9 @@
 			font-size: 1.6rem;
 		}
 
-		.suggestions-grid {
-			grid-template-columns: 1fr;
+		.single-suggestion-chip {
+			font-size: 0.78rem;
+			padding: 0.55rem 0.85rem;
 		}
 
 		.msg {
