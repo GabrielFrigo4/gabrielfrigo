@@ -34,6 +34,7 @@ O website e portfólio oficial de Gabriel Frigo ([gabrielfrigo.dev.br](https://g
 
 - Não adicione bibliotecas externas do npm para funcionalidades que o CSS moderno ou o Svelte 5 resolvem nativamente.
 - **Ícones Vetoriais SVG Nativos em Todo o Website:** Proibido instalar pacotes pesados de ícones (`lucide`, `font-awesome`) e estritamente proibido usar emojis ou glifos Unicode frágeis (`⚙`, `↵`, `⏹`, `▾`, `⚡`, `🧠`, `🎲`, `↗`, `↓`) para controles de interface, botões ou sinalização em qualquer ponto do site. Todo ícone deve ser SVG nativo inline com determinismo visual absoluto.
+- **Estado da Arte Absoluto (2025/2026) & Rejeição a Modelos Legados:** O portfólio rejeita categoricamente modelos ou ferramentas defasadas de safras passadas (como LLMs de 2024: SmolLM, Llama 3.2). O subsistema de inferência e as tecnologias adotadas devem espelhar estritamente a ponta de lança dos anos vigentes (**2025/2026**: Google Gemma 3, Alibaba Qwen 3.5, Mistral AI Ministral 3, Microsoft Phi-4, DeepSeek R1). Perto do metal e sem concessões para tecnologias obsoletas.
 
 ### 7. Regra da Transparência (_Rule of Transparency_)
 
