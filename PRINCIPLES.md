@@ -32,6 +32,7 @@ O website e portfólio oficial de Gabriel Frigo ([gabrielfrigo.dev.br](https://g
 ### 6. Regra da Parcimônia (_Rule of Parsimony_)
 
 - Não adicione bibliotecas externas do npm para funcionalidades que o CSS moderno ou o Svelte 5 resolvem nativamente.
+- **Ícones Vetoriais SVG Nativos:** Proibido instalar pacotes pesados de ícones (`lucide`, `font-awesome`) e proibido usar glifos Unicode frágeis (`⚙`, `↵`, `⏹`, `▾`) para controles de interface. Todo ícone deve ser SVG nativo inline com determinismo visual absoluto.
 
 ### 7. Regra da Transparência (_Rule of Transparency_)
 

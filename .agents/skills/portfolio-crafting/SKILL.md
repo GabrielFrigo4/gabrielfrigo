@@ -31,6 +31,7 @@ flowchart TD
 2. **Prerender Total:** Todo endpoint ou rota deve ter `export const prerender = true;`.
 3. **Estética Hacker & Perto do Metal:** Dark mode refinado (`#090d13`), fontes monoespaçadas (`Fira Code`), realces em tons de terminal (verde `#7ee787`, azul `#58a6ff`, coral `#ff7b72`, roxo `#d2a8ff`).
 4. **Hermetismo de Produção (`rm -rf .agents`):** A pasta `.agents/` serve exclusivamente para orientar o pair programming cognitivo e nunca deve ser referenciada por scripts de compilação ou deploy.
+5. **Ícones Vetoriais SVG Nativos (Zero Bloat & Zero Unicode Jitter):** Todo ícone de controle ou elemento interativo DEVE ser SVG inline nativo (`viewBox="0 0 24 24"`, `stroke="currentColor"`). É proibido instalar pacotes de ícones no npm e proibido usar emojis ou caracteres UTF-8 (`⚙`, `↵`, `⏹`, `▾`) em botões, garantindo determinismo visual idêntico em qualquer plataforma.
 
 ---
 

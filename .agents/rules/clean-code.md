@@ -17,10 +17,16 @@ Diretrizes canônicas para o repositório do portfólio web de Gabriel Frigo:
 - Animações, layouts e interações devem ser resolvidos primariamente via CSS moderno (`flexbox`, `grid`, `keyframes`, `backdrop-filter`).
 - O runtime de cliente deve se limitar estritamente à reatividade mínima de Svelte 5.
 
-## 4. Hermetismo de Produção (`rm -rf .agents`)
+## 4. Ícones Vetoriais SVG Nativos (Zero Bloat & Zero Unicode Jitter)
+
+- **Proibição de Pacotes de Ícones:** Não instale dependências do npm (`lucide-svelte`, `font-awesome`, `@iconify`).
+- **Proibição de Glifos Unicode Instáveis:** Não use caracteres UTF-8 ou emojis (`⚙`, `↵`, `⏹`, `▾`) para controles, pois sua renderização, tamanho e alinhamento vertical variam drasticamente entre sistemas operacionais (FreeBSD, Linux, Windows, macOS, Android, iOS).
+- **A Solução Canônica:** Utilize SVGs inline nativos (`viewBox="0 0 24 24"`), com `stroke="currentColor"` ou `fill="currentColor"`, dimensões explícitas, `aria-hidden="true"` e micro-interações via transições CSS.
+
+## 5. Hermetismo de Produção (`rm -rf .agents`)
 
 - Nada em `.agents/` ou `.githooks/` pode ser acoplado ao build estático em produção.
 
-## 5. Determinismo & Validação Contínua
+## 6. Determinismo & Validação Contínua
 
 - O código deve compilar sem warnings e passar com 100% de sucesso em `make lint` e `make build`.

@@ -25,6 +25,7 @@ O website reflete a identidade técnica, acadêmica e filosófica de Gabriel Fri
 3. **Hermetismo de Produção (`rm -rf .agents`):** A pasta `.agents/` serve exclusivamente para inteligência contextual local e não pode ser acoplada ao build.
 4. **Make como Interface Única:** Todas as ações devem ser validadas via `make lint`, `make build` e `make test`.
 5. **Quality Gates & Conventional Commits:** Todo commit deve respeitar as convenções de commit semântico (`feat:`, `fix:`, `docs:`, `chore:`, etc.).
+6. **Ícones Vetoriais SVG Nativos (Zero Bloat & Zero Unicode Jitter):** É proibido instalar bibliotecas de ícones no npm (`lucide`, `font-awesome`) e proibido usar glifos Unicode frágeis (`⚙`, `↵`, `⏹`, `▾`) para controles de interface. Todo ícone deve ser SVG inline nativo com `viewBox`, estilizado via CSS com `currentColor`, garantindo determinismo visual idêntico em qualquer sistema operacional.
 
 ---
 
