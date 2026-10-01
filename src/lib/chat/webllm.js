@@ -40,7 +40,18 @@ export async function checkWebGPU() {
 	}
 
 	try {
-		const adapter = await navigator.gpu.requestAdapter();
+		let adapter = null;
+		try {
+			adapter = await navigator.gpu.requestAdapter({
+				powerPreference: "high-performance",
+			});
+		} catch (e) {
+			// fallback
+		}
+		if (!adapter) {
+			adapter = await navigator.gpu.requestAdapter();
+		}
+
 		if (!adapter) {
 			return {
 				supported: false,
@@ -52,14 +63,40 @@ export async function checkWebGPU() {
 			};
 		}
 
-		const kind = adapter.isFallbackAdapter ? "Software" : "Hardware";
+		let info = null;
+		try {
+			info =
+				adapter.info ||
+				(typeof adapter.requestAdapterInfo === "function"
+					? await adapter.requestAdapterInfo()
+					: null);
+		} catch (e) {
+			// ignore
+		}
+
+		const deviceName =
+			info?.device ||
+			info?.description ||
+			(adapter.isFallbackAdapter ? "Software" : "GPU");
+		const isSoftware =
+			adapter.isFallbackAdapter ||
+			deviceName.toLowerCase().includes("llvmpipe") ||
+			deviceName.toLowerCase().includes("swiftshader") ||
+			deviceName.toLowerCase().includes("software");
+
 		const hasF16 = adapter.features ? adapter.features.has("shader-f16") : false;
+
+		let cleanName = deviceName;
+		if (cleanName.includes("Iris")) cleanName = "Intel Iris Xe";
+		else if (cleanName.includes("llvmpipe")) cleanName = "llvmpipe (CPU)";
+		else if (cleanName.length > 25) cleanName = cleanName.slice(0, 22) + "...";
 
 		return {
 			supported: true,
-			status: `WebGPU Ativa (${kind}${hasF16 ? " · f16" : " · f32"})`,
-			shortStatus: `${kind}${isMobile ? " 📱" : ""}`,
+			status: `WebGPU: ${cleanName} (${hasF16 ? "f16" : "f32"})`,
+			shortStatus: isSoftware ? "CPU (Lento) ⚠️" : `${cleanName} ⚡`,
 			isError: false,
+			isSoftware,
 			hasF16,
 			isMobile,
 		};
