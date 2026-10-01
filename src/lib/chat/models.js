@@ -14,7 +14,7 @@ export const MODEL_SPECS = {
 		lab: "Alibaba",
 		name: "Qwen 3.5 (0.8B)",
 		params: "800M Parâmetros",
-		vram: "~1.6 GB VRAM",
+		vram: "~1.1 GB VRAM",
 		desc: "Arquitetura Gated Delta de alta vazão para dispositivos e desktops leves.",
 		primaryId: "Qwen3.5-0.8B-q4f16_1-MLC",
 		fallbackId: "Qwen3.5-0.8B-q4f32_1-MLC",
@@ -116,7 +116,7 @@ export const MODEL_GROUPS = [
 		label: "Mobile & Ultra-Leve (< 1.0 GB VRAM)",
 		options: [
 			{ key: "gemma-3-1b", label: "Gemma 3 (1B) · ~710 MB VRAM (Google DeepMind)" },
-			{ key: "qwen-3.5-0.8b", label: "Qwen 3.5 (0.8B) · ~1.6 GB VRAM" },
+			{ key: "qwen-3.5-0.8b", label: "Qwen 3.5 (0.8B) · ~1.1 GB VRAM" },
 		],
 	},
 	{

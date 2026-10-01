@@ -113,8 +113,8 @@
 
 			const chatOpts = isMobileDevice
 				? {
-						context_window_size: 1536,
-						sliding_window_size: 768,
+						context_window_size: 1024,
+						sliding_window_size: 512,
 						attention_sink_size: 4,
 					}
 				: undefined;
