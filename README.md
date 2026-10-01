@@ -14,7 +14,8 @@
 
 [**🌐 Acessar Website (gabrielfrigo.dev.br)**](https://gabrielfrigo.dev.br) •
 [**📚 AGENTS.md**](AGENTS.md) •
-[**📜 PRINCIPLES.md**](PRINCIPLES.md)
+[**📜 PRINCIPLES.md**](PRINCIPLES.md) •
+[**📋 TODO.md**](TODO.md)
 
 </div>
 
