@@ -15,6 +15,9 @@
 	let isBlinking = $state(true);
 
 	onMount(() => {
+		aphorismIdx = Math.floor(Math.random() * aphorisms.length);
+		discoveryIdx = Math.floor(Math.random() * discoveries.length);
+
 		let phraseIdx = 0;
 		let charIdx = 0;
 		let isDeleting = false;
@@ -51,7 +54,11 @@
 
 		timer = setTimeout(tick, 500);
 
-		return () => clearTimeout(timer);
+		return () => {
+			clearTimeout(timer);
+			clearTimeout(highlightTimer);
+			clearTimeout(hubHighlightTimer);
+		};
 	});
 
 	let selectedCategory = $state("all");
@@ -385,6 +392,219 @@
 		},
 	];
 
+	const aphorisms = [
+		{
+			quote: "No cerne do UNIX verdadeiro, toda abstração de I/O colapsa em duas entidades elementares: File Descriptors (FD) e Identifiers (ID).",
+			author: "Gabriel Frigo",
+		},
+		{
+			quote: "Regra do Silêncio: Se o programa não tem nada surpreendente a dizer, deve permanecer calado.",
+			author: "Eric S. Raymond (A Arte da Filosofia UNIX)",
+		},
+		{
+			quote: "cat /dev/dsp > /dev/dsp — A simplicidade límpida do Open Sound System supera as convoluções bizantinas.",
+			author: "Ethos de Sistemas",
+		},
+		{
+			quote: "Faça apenas uma coisa, e faça-a bem.",
+			author: "Doug McIlroy (Pioneiro dos UNIX Pipes)",
+		},
+		{
+			quote: "Garantias matemáticas estáticas do compilador superam qualquer suposição em tempo de execução.",
+			author: "Compilador Determinístico",
+		},
+		{
+			quote: "Escreva programas que manipulem fluxos de texto, pois texto é a interface universal.",
+			author: "Ken Thompson & Dennis Ritchie",
+		},
+		{
+			quote: "Regra da Composição: Projete programas para serem conectados com outros programas.",
+			author: "Filosofia UNIX",
+		},
+		{
+			quote: "Zero Runtime Bloat: O código com execução mais rápida e sem falhas é aquele que você nunca precisou rodar.",
+			author: "Engenharia Anti-Inchaço",
+		},
+		{
+			quote: "pledge(2) e unveil(2): Defesa em profundidade começa restringindo estritamente as primitivas do kernel.",
+			author: "OpenBSD Security Ethos",
+		},
+		{
+			quote: "A complexidade é a causa raiz de quase todas as vulnerabilidades e falhas catastróficas de software.",
+			author: "Princípio da Simplicidade",
+		},
+		{
+			quote: "Deixe o kernel fazer o multiplexing: primitivas puras de kqueue e epoll dispensam abstrações convolutas.",
+			author: "Berkeley Sockets & POSIX",
+		},
+		{
+			quote: "Método Socrático com IA: Questionamento perpétuo. 99% de certeza não basta quando 100% é computável.",
+			author: "Gabriel Frigo",
+		},
+	];
+
+	let aphorismIdx = $state(0);
+	const currentAphorism = $derived(aphorisms[aphorismIdx]);
+
+	function shuffleAphorism() {
+		aphorismIdx =
+			(aphorismIdx + 1 + Math.floor(Math.random() * (aphorisms.length - 1))) %
+			aphorisms.length;
+	}
+
+	const discoveries = [
+		{
+			id: "sbl",
+			title: "Standard BSD Library (SBL)",
+			badge: "C23 / bmake",
+			teaser: "Implementação defensiva de bibliotecas BSD em C23 com compilação hermética e zero comportamento indefinido.",
+			action: "Ver Projeto",
+			type: "project",
+		},
+		{
+			id: "webgpu-chat",
+			title: "Sovereign WebGPU Chat",
+			badge: "IA Local / WASM",
+			teaser: "Execute modelos como Qwen 3.5 e DeepSeek R1 no seu hardware local via WebGPU sem dados enviados à nuvem.",
+			action: "Abrir Chat ⚡",
+			type: "link",
+			link: "/chat/",
+		},
+		{
+			id: "sock",
+			title: "Servidor HTTP Berkeley Sockets",
+			badge: "C23 / POSIX.1",
+			teaser: "Servidor web concorrente do zero em C23 explorando primitivas puras de kqueue/epoll e multi-processos.",
+			action: "Ver Projeto",
+			type: "project",
+		},
+		{
+			id: "environment",
+			title: "Universal Environment Hub",
+			badge: "Dotfiles / Setup",
+			teaser: "Orquestrador de estações UNIX, Helix, Vim, Neovim, Emacs e ambientes defensivos de terminal.",
+			action: "Acessar Hub",
+			type: "hub",
+		},
+		{
+			id: "flows",
+			title: "Network Flows & Otimização",
+			badge: "PIBIC / UFABC",
+			teaser: "Pesquisa acadêmica em Otimização Combinatória: Fluxo Máximo e Fluxo de Custo Mínimo com benchmarks DIMACS.",
+			action: "Ver Pesquisa",
+			type: "project",
+		},
+		{
+			id: "rng",
+			title: "RNG Engine Gráfica",
+			badge: "SDL3 / WebGPU",
+			teaser: "Motor autoral perto do metal com pipelines SDL_GPU, WebGPU, OpenGL e computação visual de shaders.",
+			action: "Ver Projeto",
+			type: "project",
+		},
+		{
+			id: "foundation",
+			title: "Foundation Hub",
+			badge: "C99 / POSIX.1",
+			teaser: "Utilitários essenciais de sistema, elevação de privilégios rtdo/rtgo e preservação digital técnica.",
+			action: "Acessar Hub",
+			type: "hub",
+		},
+		{
+			id: "icpc",
+			title: "Finalista Nacional ICPC 2026",
+			badge: "UFABC GRUB",
+			teaser: "Treinamento algorítmico intensivo, templates C++23 e CLI autoral cpt para maratonas de programação.",
+			action: "Ver Preparação",
+			type: "project",
+		},
+		{
+			id: "optilaser",
+			title: "OptiLaser — Motor Logístico VRPTW",
+			badge: "Go / OR-Tools",
+			teaser: "Plataforma de roteirização ótima de veículos com janelas de tempo, lasers e orquestração Podman.",
+			action: "Ver Projeto",
+			type: "project",
+		},
+		{
+			id: "research",
+			title: "Research Hub",
+			badge: "Ciência & Grafos",
+			teaser: "Hub de pesquisa acadêmica PIBIC/UFABC em Grafos, Otimização Combinatória e monografia em LaTeX.",
+			action: "Acessar Hub",
+			type: "hub",
+		},
+	];
+
+	let discoveryIdx = $state(0);
+	const currentDiscovery = $derived(discoveries[discoveryIdx]);
+
+	function rerollDiscovery() {
+		discoveryIdx =
+			(discoveryIdx + 1 + Math.floor(Math.random() * (discoveries.length - 1))) %
+			discoveries.length;
+	}
+
+	let highlightedProjectId = $state(null);
+	let highlightTimer;
+	let highlightedHubId = $state(null);
+	let hubHighlightTimer;
+
+	function focusProject(id) {
+		selectedCategory = "all";
+		highlightedProjectId = id;
+		setTimeout(() => {
+			const el = document.getElementById(`project-${id}`);
+			if (el) {
+				el.scrollIntoView({ behavior: "smooth", block: "center" });
+			}
+		}, 60);
+		clearTimeout(highlightTimer);
+		highlightTimer = setTimeout(() => {
+			highlightedProjectId = null;
+		}, 4000);
+	}
+
+	function focusHub(name) {
+		highlightedHubId = name;
+		setTimeout(() => {
+			const el = document.getElementById(`hub-${name}`);
+			if (el) {
+				el.scrollIntoView({ behavior: "smooth", block: "center" });
+			}
+		}, 60);
+		clearTimeout(hubHighlightTimer);
+		hubHighlightTimer = setTimeout(() => {
+			highlightedHubId = null;
+		}, 4000);
+	}
+
+	function shuffleProject() {
+		const pool = projects.filter((p) => p.id !== highlightedProjectId);
+		const pick = pool[Math.floor(Math.random() * pool.length)] || projects[0];
+		focusProject(pick.id);
+	}
+
+	function randomTeleport() {
+		rerollDiscovery();
+		const current = discoveries[discoveryIdx];
+		if (current.type === "project") {
+			focusProject(current.id);
+		} else if (current.type === "hub") {
+			focusHub(current.id);
+		} else if (current.link) {
+			if (current.link.startsWith("#")) {
+				const el = document.querySelector(current.link);
+				if (el) el.scrollIntoView({ behavior: "smooth" });
+			} else {
+				const bar = document.querySelector(".hero-discovery-bar");
+				if (bar) {
+					bar.scrollIntoView({ behavior: "smooth", block: "center" });
+				}
+			}
+		}
+	}
+
 	const filteredProjects = $derived(
 		selectedCategory === "all"
 			? projects
@@ -425,6 +645,15 @@
 			<a href="#hubs" class="nav-link">Sexteto Federado</a>
 			<a href="#stack" class="nav-link">Stack</a>
 			<a href="#projetos" class="nav-link">Projetos</a>
+			<button
+				type="button"
+				class="nav-link nav-link-dice"
+				onclick={randomTeleport}
+				title="Descobrir um local aleatório do ecossistema"
+				aria-label="Descobrir local aleatório"
+			>
+				🎲 Descobrir
+			</button>
 			<a href="/chat/" class="nav-link nav-link-highlight">WebGPU Chat ⚡</a>
 			<a
 				href="https://github.com/GabrielFrigo4"
@@ -452,6 +681,16 @@
 			<a href="#projetos" class="mobile-link" onclick={() => (mobileMenuOpen = false)}>
 				Projetos em Destaque
 			</a>
+			<button
+				type="button"
+				class="mobile-link mobile-link-dice"
+				onclick={() => {
+					mobileMenuOpen = false;
+					randomTeleport();
+				}}
+			>
+				🎲 Descobrir Aleatório
+			</button>
 			<a
 				href="/chat/"
 				class="mobile-link mobile-link-chat"
@@ -513,10 +752,76 @@
 			</div>
 		</div>
 
+		<!-- Discovery Tip Bar (Dica Dinâmica de Exploração) -->
+		<div class="hero-discovery-bar">
+			<div class="discovery-header">
+				<div class="discovery-badge-group">
+					<span class="discovery-tag">🎲 DICA DE EXPLORAÇÃO</span>
+					<span class="discovery-pill">{currentDiscovery.badge}</span>
+				</div>
+				<button
+					type="button"
+					class="discovery-reroll-btn"
+					onclick={rerollDiscovery}
+					title="Sortear outro destino"
+					aria-label="Sortear outro destino"
+				>
+					<span class="reroll-icon">↻</span>
+					<span class="reroll-text">Outra dica</span>
+				</button>
+			</div>
+			<div class="discovery-body">
+				<div class="discovery-text-content">
+					<span class="discovery-title">{currentDiscovery.title}:</span>
+					<span class="discovery-teaser">{currentDiscovery.teaser}</span>
+				</div>
+				<div class="discovery-action-wrap">
+					{#if currentDiscovery.type === "project"}
+						<button
+							type="button"
+							class="discovery-cta"
+							onclick={() => focusProject(currentDiscovery.id)}
+						>
+							{currentDiscovery.action} ↓
+						</button>
+					{:else if currentDiscovery.type === "hub"}
+						<button
+							type="button"
+							class="discovery-cta"
+							onclick={() => focusHub(currentDiscovery.id)}
+						>
+							{currentDiscovery.action} ↓
+						</button>
+					{:else}
+						<a
+							href={currentDiscovery.link}
+							target={currentDiscovery.link?.startsWith("http")
+								? "_blank"
+								: undefined}
+							rel={currentDiscovery.link?.startsWith("http")
+								? "noopener noreferrer"
+								: undefined}
+							class="discovery-cta"
+						>
+							{currentDiscovery.action}
+						</a>
+					{/if}
+				</div>
+			</div>
+		</div>
+
 		<!-- Action CTA Buttons -->
 		<div class="hero-actions">
 			<a href="#projetos" class="btn btn-primary">Explorar Projetos</a>
 			<a href="#hubs" class="btn btn-secondary">O Sexteto Federado</a>
+			<button
+				type="button"
+				class="btn btn-random"
+				onclick={randomTeleport}
+				title="Descobrir um local aleatório do ecossistema"
+			>
+				🎲 Descobrir Aleatório
+			</button>
 			<a
 				href="https://github.com/GabrielFrigo4/resumes"
 				target="_blank"
@@ -677,15 +982,22 @@
 		<div class="cards-grid hubs-grid">
 			{#each hubs as hub}
 				<a
+					id="hub-{hub.name}"
 					href={hub.url}
 					target="_blank"
 					rel="noopener noreferrer"
 					class="hub-card"
+					class:highlighted={highlightedHubId === hub.name}
 					style="--hub-color: {hub.color};"
 				>
 					<div class="hub-header">
 						<span class="hub-name">{hub.name}/</span>
-						<span class="hub-badge">{hub.badge}</span>
+						<div class="hub-badges">
+							{#if highlightedHubId === hub.name}
+								<span class="hub-badge highlighted-badge">✨ Sorteado</span>
+							{/if}
+							<span class="hub-badge">{hub.badge}</span>
+						</div>
 					</div>
 					<h3 class="hub-title">{hub.title}</h3>
 					<p class="hub-desc">{hub.desc}</p>
@@ -739,7 +1051,7 @@
 			</p>
 		</div>
 
-		<!-- Category Filter -->
+		<!-- Category Filter & Shuffle -->
 		<div class="filter-bar">
 			{#each categories as c}
 				<button
@@ -750,17 +1062,37 @@
 					{c.label}
 				</button>
 			{/each}
+			<button
+				type="button"
+				class="filter-btn filter-btn-shuffle"
+				onclick={shuffleProject}
+				title="Sortear um projeto aleatório"
+				aria-label="Sortear um projeto aleatório"
+			>
+				<span class="shuffle-icon">🎲</span> Sorteador λ
+			</button>
 		</div>
 
 		<!-- Projects Grid -->
 		<div class="cards-grid projects-grid">
 			{#each filteredProjects as p (p.id)}
-				<div class="project-card">
+				<div
+					id="project-{p.id}"
+					class="project-card"
+					class:highlighted={highlightedProjectId === p.id}
+				>
 					<div class="project-header">
 						<h3 class="project-title">{p.title}</h3>
-						{#if p.badge}
-							<span class="project-status-badge">{p.badge}</span>
-						{/if}
+						<div class="project-badges">
+							{#if highlightedProjectId === p.id}
+								<span class="project-status-badge highlighted-badge"
+									>✨ Sorteado</span
+								>
+							{/if}
+							{#if p.badge}
+								<span class="project-status-badge">{p.badge}</span>
+							{/if}
+						</div>
 					</div>
 
 					<p class="project-desc">{p.desc}</p>
@@ -802,6 +1134,28 @@
 <!-- Footer -->
 <footer class="footer">
 	<div class="footer-container">
+		<!-- Dynamic UNIX / Systems Aphorism -->
+		<div class="footer-aphorism-card">
+			<div class="aphorism-header">
+				<span class="aphorism-tag">λ Aforismo UNIX & Engenharia de Sistemas</span>
+				<button
+					type="button"
+					class="aphorism-shuffle-btn"
+					onclick={shuffleAphorism}
+					title="Sortear outro aforismo"
+					aria-label="Sortear outro aforismo"
+				>
+					<span class="shuffle-symbol">↻</span> sortear
+				</button>
+			</div>
+			<blockquote class="aphorism-quote">
+				"{currentAphorism.quote}"
+			</blockquote>
+			{#if currentAphorism.author}
+				<cite class="aphorism-author">— {currentAphorism.author}</cite>
+			{/if}
+		</div>
+
 		<div class="footer-manifesto">
 			<p class="manifesto-title">⚡ Manifesto de Leveza & Soberania Digital</p>
 			<p class="manifesto-text">
@@ -916,6 +1270,26 @@
 		color: var(--accent-blue);
 	}
 
+	button.nav-link {
+		background: none;
+		border: none;
+		cursor: pointer;
+		font-family: inherit;
+		padding: 0;
+	}
+
+	.nav-link-dice {
+		color: var(--accent-coral);
+		display: inline-flex;
+		align-items: center;
+		gap: 0.25rem;
+		font-weight: 500;
+	}
+
+	.nav-link-dice:hover {
+		color: #ff9991;
+	}
+
 	.mobile-only {
 		display: none;
 	}
@@ -972,6 +1346,20 @@
 		border-bottom: 1px solid var(--border-muted);
 		font-family: var(--font-sans);
 		transition: color 0.15s ease;
+	}
+
+	button.mobile-link {
+		background: none;
+		border: none;
+		border-bottom: 1px solid var(--border-muted);
+		cursor: pointer;
+		text-align: left;
+		width: 100%;
+	}
+
+	.mobile-link-dice {
+		color: var(--accent-coral);
+		font-weight: 600;
 	}
 
 	.mobile-link:hover {
@@ -1142,6 +1530,136 @@
 		}
 	}
 
+	/* Hero Discovery Bar */
+	.hero-discovery-bar {
+		max-width: 780px;
+		margin: 0 auto 2rem;
+		background: rgba(22, 27, 34, 0.6);
+		border: 1px solid var(--border-muted);
+		border-radius: 8px;
+		padding: 0.9rem 1.25rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+		text-align: left;
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		transition: all 0.25s ease;
+	}
+
+	.hero-discovery-bar:hover {
+		border-color: var(--border-default);
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+	}
+
+	.discovery-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+	}
+
+	.discovery-badge-group {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+	}
+
+	.discovery-tag {
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: var(--accent-coral);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.discovery-pill {
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		background: rgba(88, 166, 255, 0.12);
+		color: var(--accent-blue);
+		padding: 0.15rem 0.5rem;
+		border-radius: 12px;
+		border: 1px solid rgba(88, 166, 255, 0.25);
+	}
+
+	.discovery-reroll-btn {
+		background: transparent;
+		border: 1px solid var(--border-muted);
+		color: var(--text-muted);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		padding: 0.2rem 0.55rem;
+		border-radius: 4px;
+		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		transition: all 0.2s ease;
+	}
+
+	.discovery-reroll-btn:hover {
+		border-color: var(--accent-blue);
+		color: var(--accent-blue);
+		background: rgba(88, 166, 255, 0.08);
+	}
+
+	.reroll-icon {
+		font-size: 0.85rem;
+		line-height: 1;
+	}
+
+	.discovery-body {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.25rem;
+	}
+
+	.discovery-text-content {
+		font-size: 0.88rem;
+		line-height: 1.5;
+		color: var(--text-muted);
+	}
+
+	.discovery-title {
+		font-weight: 600;
+		color: var(--text-main);
+		margin-right: 0.4rem;
+	}
+
+	.discovery-teaser {
+		color: var(--text-muted);
+	}
+
+	.discovery-action-wrap {
+		flex-shrink: 0;
+	}
+
+	.discovery-cta {
+		background: var(--bg-surface);
+		border: 1px solid var(--border-default);
+		color: var(--text-main);
+		font-family: var(--font-mono);
+		font-size: 0.8rem;
+		font-weight: 500;
+		padding: 0.4rem 0.85rem;
+		border-radius: 5px;
+		white-space: nowrap;
+		cursor: pointer;
+		text-decoration: none;
+		transition: all 0.2s ease;
+		display: inline-flex;
+		align-items: center;
+	}
+
+	.discovery-cta:hover {
+		border-color: var(--accent-blue);
+		color: var(--accent-blue);
+		background: rgba(88, 166, 255, 0.08);
+	}
+
 	/* Hero Actions */
 	.hero-actions {
 		display: flex;
@@ -1183,6 +1701,18 @@
 	.btn-secondary:hover {
 		border-color: var(--accent-blue);
 		color: var(--accent-blue);
+	}
+
+	.btn-random {
+		background: rgba(255, 123, 114, 0.08);
+		color: var(--accent-coral);
+		border: 1px solid rgba(255, 123, 114, 0.35);
+	}
+
+	.btn-random:hover {
+		background: rgba(255, 123, 114, 0.18);
+		border-color: var(--accent-coral);
+		box-shadow: 0 0 16px rgba(255, 123, 114, 0.25);
 	}
 
 	.btn-outline {
@@ -1348,6 +1878,14 @@
 		box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
 	}
 
+	.hub-card.highlighted {
+		border-color: var(--hub-color, var(--accent-blue)) !important;
+		box-shadow:
+			0 0 0 2px var(--hub-color, var(--accent-blue)),
+			0 0 24px rgba(88, 166, 255, 0.35);
+		transform: translateY(-4px);
+	}
+
 	.hub-header {
 		display: flex;
 		justify-content: space-between;
@@ -1360,6 +1898,12 @@
 		font-size: 0.85rem;
 		color: var(--hub-color);
 		font-weight: 600;
+	}
+
+	.hub-badges {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
 	}
 
 	.hub-badge {
@@ -1478,6 +2022,25 @@
 		font-weight: 600;
 	}
 
+	.filter-btn-shuffle {
+		border-color: rgba(255, 123, 114, 0.4);
+		color: var(--accent-coral);
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		font-weight: 600;
+	}
+
+	.filter-btn-shuffle:hover {
+		background: rgba(255, 123, 114, 0.12);
+		border-color: var(--accent-coral);
+		color: #ff9991;
+	}
+
+	.shuffle-icon {
+		font-size: 0.85rem;
+	}
+
 	.projects-grid {
 		grid-template-columns: repeat(3, 1fr);
 	}
@@ -1498,12 +2061,27 @@
 		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 	}
 
+	.project-card.highlighted {
+		border-color: var(--accent-blue) !important;
+		box-shadow:
+			0 0 0 2px var(--accent-blue),
+			0 0 26px rgba(88, 166, 255, 0.35);
+		transform: translateY(-4px);
+	}
+
 	.project-header {
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;
 		margin-bottom: 0.75rem;
 		gap: 0.5rem;
+	}
+
+	.project-badges {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		flex-shrink: 0;
 	}
 
 	.project-title {
@@ -1521,6 +2099,23 @@
 		color: var(--accent-coral);
 		border: 1px solid rgba(255, 123, 114, 0.3);
 		white-space: nowrap;
+	}
+
+	.highlighted-badge {
+		background: rgba(88, 166, 255, 0.18) !important;
+		color: var(--accent-blue) !important;
+		border: 1px solid var(--accent-blue) !important;
+		animation: pulse-glow 1.5s infinite alternate;
+	}
+
+	@keyframes pulse-glow {
+		0% {
+			opacity: 0.75;
+		}
+		100% {
+			opacity: 1;
+			box-shadow: 0 0 8px rgba(88, 166, 255, 0.5);
+		}
 	}
 
 	.project-desc {
@@ -1599,6 +2194,82 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2.5rem;
+	}
+
+	/* Dynamic Aphorism Card */
+	.footer-aphorism-card {
+		max-width: 800px;
+		margin: 0 auto;
+		width: 100%;
+		text-align: left;
+		padding: 1.5rem;
+		background: rgba(22, 27, 34, 0.4);
+		border: 1px solid var(--border-muted);
+		border-left: 3px solid var(--accent-coral);
+		border-radius: 6px;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		box-sizing: border-box;
+	}
+
+	.aphorism-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+
+	.aphorism-tag {
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: var(--accent-coral);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+	}
+
+	.aphorism-shuffle-btn {
+		background: transparent;
+		border: 1px solid var(--border-muted);
+		color: var(--text-muted);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		padding: 0.2rem 0.55rem;
+		border-radius: 4px;
+		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		transition: all 0.2s ease;
+	}
+
+	.aphorism-shuffle-btn:hover {
+		border-color: var(--accent-coral);
+		color: var(--accent-coral);
+		background: rgba(255, 123, 114, 0.08);
+	}
+
+	.shuffle-symbol {
+		font-size: 0.85rem;
+		line-height: 1;
+	}
+
+	.aphorism-quote {
+		margin: 0;
+		font-family: var(--font-mono);
+		font-size: 0.92rem;
+		line-height: 1.6;
+		color: var(--text-main);
+		font-style: italic;
+	}
+
+	.aphorism-author {
+		font-family: var(--font-mono);
+		font-size: 0.8rem;
+		color: var(--text-dim);
+		font-style: normal;
+		text-align: right;
 	}
 
 	.footer-manifesto {
@@ -1706,6 +2377,25 @@
 
 		.hero-actions .btn {
 			width: 100%;
+		}
+
+		.hero-discovery-bar {
+			padding: 0.85rem 1rem;
+		}
+
+		.discovery-body {
+			flex-direction: column;
+			align-items: stretch;
+			gap: 0.75rem;
+		}
+
+		.discovery-action-wrap {
+			width: 100%;
+		}
+
+		.discovery-cta {
+			width: 100%;
+			justify-content: center;
 		}
 
 		.filter-bar {
