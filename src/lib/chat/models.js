@@ -1,25 +1,14 @@
 export const MODEL_SPECS = {
-	"smollm-360m": {
-		lab: "Hugging Face",
-		name: "SmolLM2 (360M)",
-		params: "360M Parâmetros",
-		vram: "~380 MB VRAM",
-		desc: "Modelo ultracompacto para celulares e tablets. Rápido, leve e imune a OOM em navegadores móveis.",
-		primaryId: "SmolLM2-360M-Instruct-q4f16_1-MLC",
-		fallbackId: "SmolLM2-360M-Instruct-q4f32_1-MLC",
-		group: "Mobile & Ultra-Leve (< 500 MB)",
-		badge: "Top Mobile",
-	},
-	"llama-3.2-1b": {
-		lab: "Meta",
-		name: "Llama 3.2 (1B)",
+	"gemma-3-1b": {
+		lab: "Google",
+		name: "Gemma 3 (1B)",
 		params: "1.0B Parâmetros",
-		vram: "~880 MB VRAM",
-		desc: "Lançamento da Meta otimizado para inferência no edge e dispositivos móveis.",
-		primaryId: "Llama-3.2-1B-Instruct-q4f16_1-MLC",
-		fallbackId: "Llama-3.2-1B-Instruct-q4f32_1-MLC",
+		vram: "~710 MB VRAM",
+		desc: "Lançamento da Google DeepMind. Hiper-eficiente, raciocínio afiado e ideal para celulares e edge.",
+		primaryId: "gemma3-1b-it-q4f16_1-MLC",
+		fallbackId: "gemma3-1b-it-q4f16_1-MLC",
 		group: "Mobile & Ultra-Leve (< 1.0 GB)",
-		badge: "Meta Edge",
+		badge: "Google DeepMind",
 	},
 	"qwen-3.5-0.8b": {
 		lab: "Alibaba",
@@ -126,8 +115,7 @@ export const MODEL_GROUPS = [
 	{
 		label: "Mobile & Ultra-Leve (< 1.0 GB VRAM)",
 		options: [
-			{ key: "smollm-360m", label: "SmolLM2 (360M) · ~380 MB VRAM (Top Mobile)" },
-			{ key: "llama-3.2-1b", label: "Llama 3.2 (1B) · ~880 MB VRAM (Meta Edge)" },
+			{ key: "gemma-3-1b", label: "Gemma 3 (1B) · ~710 MB VRAM (Google DeepMind)" },
 			{ key: "qwen-3.5-0.8b", label: "Qwen 3.5 (0.8B) · ~1.6 GB VRAM" },
 		],
 	},

@@ -9,8 +9,8 @@
 	import ChatMessages from "$lib/components/chat/ChatMessages.svelte";
 	import ChatInput from "$lib/components/chat/ChatInput.svelte";
 
-	let selectedModelKey = $state("smollm-360m");
-	let selectedSpec = $derived(MODEL_SPECS[selectedModelKey] || MODEL_SPECS["smollm-360m"]);
+	let selectedModelKey = $state("gemma-3-1b");
+	let selectedSpec = $derived(MODEL_SPECS[selectedModelKey] || MODEL_SPECS["gemma-3-1b"]);
 
 	let gpuStatus = $state("Verificando WebGPU...");
 	let shortGpuStatus = $state("GPU...");
@@ -70,9 +70,9 @@
 		hasF16Support = gpuResult.hasF16 ?? true;
 
 		if (isMobileDevice) {
-			selectedModelKey = "smollm-360m";
+			selectedModelKey = "gemma-3-1b";
 		} else {
-			selectedModelKey = "llama-3.2-1b";
+			selectedModelKey = "qwen-3.5-0.8b";
 		}
 
 		markedInstance = await getMarked();
@@ -159,7 +159,7 @@
 						metaRight: "Aviso de VRAM",
 						content:
 							"⚠️ **Limite de Memória Gráfica (VRAM):**\n\n" +
-							"A GPU não conseguiu alocar o modelo selecionado. Experimente o **SmolLM2 (360M)** ou **Llama 3.2 (1B)**.",
+							"A GPU não conseguiu alocar o modelo selecionado. Experimente o **Gemma 3 (1B)** ou **Qwen 3.5 (0.8B)**.",
 					},
 				];
 			}
