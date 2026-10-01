@@ -60,11 +60,37 @@
 						aria-label="Interromper geração"
 						title="Parar geração imediatamente (Esc)"
 					>
-						<span>⏹ Parar</span>
+						<svg
+							class="btn-icon"
+							width="12"
+							height="12"
+							viewBox="0 0 24 24"
+							fill="currentColor"
+							aria-hidden="true"
+						>
+							<rect x="4" y="4" width="16" height="16" rx="2" />
+						</svg>
+						<span>Parar</span>
 					</button>
 				{:else if isLoading}
 					<button class="btn-action btn-loading" disabled>
-						<span class="btn-spinner"></span>
+						<svg
+							class="btn-spinner"
+							width="13"
+							height="13"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2.5"
+							aria-hidden="true"
+						>
+							<circle cx="12" cy="12" r="10" stroke="rgba(139, 148, 158, 0.3)" />
+							<path
+								d="M12 2a10 10 0 0 1 10 10"
+								stroke="var(--accent-blue)"
+								stroke-linecap="round"
+							/>
+						</svg>
 						<span>Carregando...</span>
 					</button>
 				{:else}
@@ -75,7 +101,21 @@
 						aria-label="Enviar mensagem"
 					>
 						<span>Enviar</span>
-						<span class="arrow-symbol">↵</span>
+						<svg
+							class="btn-icon icon-send"
+							width="13"
+							height="13"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2.4"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<line x1="22" y1="2" x2="11" y2="13" />
+							<polygon points="22 2 15 22 11 13 2 9 22 2" />
+						</svg>
 					</button>
 				{/if}
 			</div>
@@ -161,20 +201,36 @@
 		display: flex;
 		align-items: center;
 		margin-left: auto;
+		flex-shrink: 0;
 	}
 
 	.btn-action {
 		display: inline-flex;
 		align-items: center;
-		gap: 5px;
-		padding: 0.35rem 0.85rem;
+		justify-content: center;
+		gap: 6px;
+		height: 32px;
+		min-width: 92px;
+		padding: 0 0.85rem;
 		border-radius: 6px;
 		font-family: var(--font-mono);
 		font-size: 0.82rem;
 		cursor: pointer;
-		transition: all 0.15s ease;
+		transition:
+			background-color 0.15s ease,
+			border-color 0.15s ease,
+			color 0.15s ease,
+			opacity 0.15s ease;
 		border: 1px solid transparent;
 		white-space: nowrap;
+		box-sizing: border-box;
+		line-height: 1;
+	}
+
+	.btn-icon {
+		display: inline-block;
+		flex-shrink: 0;
+		transition: transform 0.15s ease;
 	}
 
 	.btn-send {
@@ -187,16 +243,16 @@
 		background: #79b8ff;
 	}
 
+	.btn-send:hover:not(:disabled) .icon-send {
+		transform: translate(1px, -1px);
+	}
+
 	.btn-send:disabled {
 		opacity: 0.4;
 		cursor: not-allowed;
 		background: var(--bg-card);
 		color: var(--text-dim);
 		border-color: var(--border-muted);
-	}
-
-	.arrow-symbol {
-		font-weight: 700;
 	}
 
 	.btn-stop {
@@ -215,14 +271,11 @@
 		border-color: var(--border-muted);
 		color: var(--text-muted);
 		cursor: wait;
+		min-width: 120px;
 	}
 
 	.btn-spinner {
-		width: 10px;
-		height: 10px;
-		border: 1.5px solid rgba(139, 148, 158, 0.3);
-		border-top-color: var(--accent-blue);
-		border-radius: 50%;
+		flex-shrink: 0;
 		animation: spin 0.8s linear infinite;
 	}
 
@@ -238,7 +291,7 @@
 		}
 
 		.input-card {
-			padding: 0.75rem 0.85rem 0.5rem 0.85rem;
+			padding: 0.65rem 0.75rem 0.5rem 0.75rem;
 		}
 
 		textarea {
@@ -247,8 +300,14 @@
 		}
 
 		.btn-action {
-			padding: 0.3rem 0.75rem;
+			height: 30px;
+			min-width: 84px;
+			padding: 0 0.65rem;
 			font-size: 0.78rem;
+		}
+
+		.btn-loading {
+			min-width: 110px;
 		}
 	}
 </style>

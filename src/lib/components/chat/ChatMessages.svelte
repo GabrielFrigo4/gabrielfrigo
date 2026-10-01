@@ -259,16 +259,22 @@
 		display: flex;
 		flex-direction: column;
 		min-height: 0;
+		min-width: 0;
+		width: 100%;
+		max-width: 100%;
 		overflow: hidden;
 	}
 
 	.chat-window {
 		flex: 1;
 		overflow-y: auto;
+		overflow-x: hidden;
 		display: flex;
 		flex-direction: column;
 		gap: 1.25rem;
 		padding: 1.5rem 0.5rem 1rem 0;
+		min-width: 0;
+		width: 100%;
 	}
 
 	/* Botão Flutuante de Voltar ao Fim / Acompanhar Geração */
@@ -394,6 +400,9 @@
 		font-size: 0.78rem;
 		color: var(--text-dim);
 		margin-bottom: 1.25rem;
+		max-width: 100%;
+		box-sizing: border-box;
+		word-break: break-word;
 	}
 
 	.welcome-badge-warn {
@@ -444,17 +453,22 @@
 		justify-content: center;
 		width: 100%;
 		max-width: 680px;
+		min-width: 0;
+		box-sizing: border-box;
 	}
 
 	.suggestion-pill {
-		display: inline-flex;
+		display: flex;
 		align-items: center;
 		background: var(--bg-surface);
 		border: 1px solid var(--border-subtle);
 		border-radius: 6px;
 		transition: all 0.15s ease;
+		width: 100%;
 		max-width: 100%;
+		min-width: 0;
 		overflow: hidden;
+		box-sizing: border-box;
 	}
 
 	.suggestion-pill:hover {
@@ -474,6 +488,7 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.6rem;
+		flex: 1 1 auto;
 		min-width: 0;
 		text-align: left;
 		transition: color 0.15s ease;
@@ -532,14 +547,17 @@
 		border-radius: 8px;
 		line-height: 1.6;
 		font-size: 0.92rem;
-		word-wrap: break-word;
+		word-break: break-word;
+		overflow-wrap: anywhere;
+		min-width: 0;
+		max-width: 100%;
+		box-sizing: border-box;
 		transition: border-color 0.15s ease;
 	}
 
 	.msg-user {
 		align-self: flex-end;
 		max-width: 80%;
-		min-width: 170px;
 		background: var(--bg-surface);
 		border: 1px solid var(--border-subtle);
 		color: var(--text-main);
@@ -557,7 +575,8 @@
 		justify-content: space-between;
 		align-items: center;
 		margin-bottom: 0.65rem;
-		gap: 2rem;
+		gap: 1rem;
+		flex-wrap: wrap;
 	}
 
 	.msg-author-group {
@@ -566,6 +585,7 @@
 		gap: 0.35rem;
 		font-family: var(--font-mono);
 		font-size: 0.78rem;
+		min-width: 0;
 	}
 
 	.author-symbol {
@@ -592,6 +612,8 @@
 	.user-text {
 		margin: 0;
 		white-space: pre-wrap;
+		word-break: break-word;
+		overflow-wrap: anywhere;
 	}
 
 	/* Telemetria Whisper */
@@ -599,15 +621,23 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.5rem;
 		margin-top: 1rem;
 		padding-top: 0.65rem;
 		border-top: 1px solid var(--border-muted);
 		font-family: var(--font-mono);
 		font-size: 0.75rem;
+		width: 100%;
+		min-width: 0;
 	}
 
 	.telemetry-whisper {
 		color: var(--text-dim);
+		min-width: 0;
+		flex: 1 1 auto;
+		word-break: break-word;
+		line-height: 1.4;
 	}
 
 	.copy-btn {
@@ -704,6 +734,9 @@
 		border-radius: 6px;
 		padding: 0.85rem 1rem;
 		overflow-x: auto;
+		max-width: 100%;
+		box-sizing: border-box;
+		-webkit-overflow-scrolling: touch;
 		margin: 0.8rem 0;
 	}
 
@@ -712,6 +745,9 @@
 		padding: 0;
 		border: none;
 		color: var(--text-main);
+		white-space: pre;
+		word-break: normal;
+		overflow-wrap: normal;
 	}
 
 	:global(.think-block) {
@@ -720,6 +756,8 @@
 		border-radius: 6px;
 		margin: 0.75rem 0;
 		overflow: hidden;
+		max-width: 100%;
+		box-sizing: border-box;
 	}
 
 	:global(.think-summary) {
@@ -752,26 +790,69 @@
 	}
 
 	@media (max-width: 768px) {
+		.chat-window {
+			padding: 1rem 0.25rem 0.75rem 0;
+			gap: 1rem;
+		}
+
+		.welcome-hero {
+			padding: 1.75rem 0.5rem 1.25rem;
+		}
+
 		.welcome-title {
-			font-size: 1.6rem;
+			font-size: clamp(1.4rem, 6vw, 1.8rem);
+		}
+
+		.welcome-desc {
+			font-size: 0.88rem;
+			padding: 0 0.25rem;
 		}
 
 		.suggestion-content-btn {
-			font-size: 0.78rem;
-			padding: 0.55rem 0.75rem 0.55rem 0.85rem;
+			font-size: 0.75rem;
+			padding: 0.5rem 0.65rem 0.5rem 0.75rem;
+		}
+
+		.suggestion-refresh-btn {
+			padding: 0.5rem 0.65rem;
 		}
 
 		.msg {
-			padding: 1rem;
+			padding: 0.85rem 0.95rem;
+			font-size: 0.88rem;
 		}
 
 		.msg-user {
-			max-width: 90%;
-			min-width: 150px;
+			max-width: 92%;
 		}
 
 		.msg-header {
-			gap: 1.5rem;
+			gap: 0.75rem;
+		}
+
+		.telemetry-whisper {
+			font-size: 0.7rem;
+		}
+
+		.copy-btn {
+			padding: 2px 6px;
+			font-size: 0.7rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.msg-user {
+			max-width: 96%;
+		}
+
+		.msg {
+			padding: 0.75rem 0.85rem;
+		}
+
+		.scroll-bottom-btn {
+			bottom: 0.75rem;
+			padding: 0.35rem 0.75rem;
+			font-size: 0.72rem;
 		}
 	}
 </style>

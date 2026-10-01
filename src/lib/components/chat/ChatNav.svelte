@@ -28,10 +28,12 @@
 		<div class="nav-brand-group">
 			<a href="/" class="nav-brand" title="Gabriel Frigo — Página Inicial">
 				<span class="brand-symbol">λ</span>
-				<span class="brand-text">gabriel<strong>frigo</strong></span>
+				<span class="brand-text"
+					><span class="brand-name-full">gabriel</span><strong>frigo</strong></span
+				>
 			</a>
-			<span class="nav-sep">/</span>
-			<span class="nav-section-title">chat</span>
+			<span class="nav-sep desktop-only">/</span>
+			<span class="nav-section-title desktop-only">chat</span>
 
 			<!-- Status da GPU / Modelo em tempo real -->
 			<div class="status-indicator">
@@ -490,23 +492,92 @@
 
 	@media (max-width: 900px) {
 		.select-wrapper select {
-			max-width: 200px;
+			max-width: 180px;
 		}
 	}
 
 	@media (max-width: 768px) {
 		.nav-container {
-			padding: 0.6rem 1rem;
+			padding: 0.5rem 0.75rem;
+			gap: 0.5rem;
 		}
 
 		.desktop-only {
 			display: none !important;
 		}
 
+		.nav-brand-group {
+			gap: 0.4rem;
+		}
+
+		.brand-name-full {
+			display: none;
+		}
+
+		.brand-text {
+			font-size: 1.05rem;
+		}
+
+		.status-indicator .pill {
+			padding: 2px 6px;
+			font-size: 0.7rem;
+			max-width: 85px;
+		}
+
+		.status-indicator .pill-text {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.nav-controls {
+			gap: 0.35rem;
+		}
+
 		.select-wrapper select {
-			max-width: 140px;
+			max-width: 120px;
+			font-size: 0.72rem;
+			padding: 0.28rem 1.3rem 0.28rem 0.45rem;
+		}
+
+		.nav-btn,
+		.nav-link-btn {
+			padding: 0.3rem 0.45rem;
 			font-size: 0.75rem;
-			padding: 0.3rem 1.4rem 0.3rem 0.5rem;
+		}
+	}
+
+	@media (max-width: 440px) {
+		.nav-container {
+			padding: 0.45rem 0.5rem;
+			gap: 0.35rem;
+		}
+
+		.status-indicator .pill {
+			padding: 3px;
+			min-width: 14px;
+			height: 14px;
+			border-radius: 50%;
+			justify-content: center;
+		}
+
+		.status-indicator .pill-text {
+			display: none;
+		}
+
+		.select-wrapper select {
+			max-width: 95px;
+			font-size: 0.7rem;
+			padding: 0.25rem 1.1rem 0.25rem 0.35rem;
+		}
+
+		.nav-controls {
+			gap: 0.25rem;
+		}
+
+		.nav-btn,
+		.nav-link-btn {
+			padding: 0.28rem 0.35rem;
 		}
 	}
 </style>

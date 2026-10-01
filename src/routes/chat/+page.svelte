@@ -472,12 +472,15 @@
 		height: 100dvh;
 		max-height: 100vh;
 		max-height: 100dvh;
+		width: 100%;
+		max-width: 100vw;
 		background:
 			radial-gradient(circle at 50% 0%, rgba(88, 166, 255, 0.05) 0%, transparent 60%),
 			var(--bg-base);
 		color: var(--text-main);
 		overflow: hidden;
 		position: relative;
+		box-sizing: border-box;
 	}
 
 	.chat-main-container {
@@ -487,6 +490,8 @@
 		overflow: hidden;
 		max-width: 900px;
 		width: 100%;
+		min-width: 0;
+		box-sizing: border-box;
 		margin: 0 auto;
 		padding: 0.5rem 1.5rem 1rem 1.5rem;
 		padding-bottom: max(1rem, env(safe-area-inset-bottom));
@@ -745,13 +750,25 @@
 		background: #79b8ff;
 	}
 
-	@media (max-width: 640px) {
+	@media (max-width: 768px) {
 		.chat-main-container {
-			padding: 0.5rem 1rem 0.75rem 1rem;
+			padding: 0.4rem 0.75rem 0.65rem 0.75rem;
+			padding-bottom: max(0.65rem, env(safe-area-inset-bottom));
 		}
 
 		.presets-grid {
 			grid-template-columns: 1fr;
+		}
+
+		.modal-card {
+			margin: 8px;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.chat-main-container {
+			padding: 0.35rem 0.5rem 0.5rem 0.5rem;
+			padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
 		}
 	}
 </style>
