@@ -16,6 +16,8 @@
 	let gpuStatus = $state("Verificando WebGPU...");
 	let shortGpuStatus = $state("GPU...");
 	let isGpuError = $state(false);
+	let isGpuSoftware = $state(false);
+	let gpuDeviceName = $state("WebGPU");
 	let isMobileDevice = $state(false);
 
 	let isLoading = $state(false);
@@ -63,6 +65,8 @@
 		gpuStatus = gpuResult.status;
 		shortGpuStatus = gpuResult.shortStatus;
 		isGpuError = gpuResult.isError;
+		isGpuSoftware = gpuResult.isSoftware || false;
+		gpuDeviceName = gpuResult.cleanName || gpuResult.shortStatus || "WebGPU";
 		isMobileDevice = gpuResult.isMobile;
 
 		// No mobile, seleciona Qwen 3.5 (0.8B) por padrão para máxima fluidez
@@ -245,7 +249,7 @@
 					messages[assistantIndex] = {
 						role: "assistant",
 						sender: activeModelName || "Assistente Local",
-						metaRight: `${tokPerSec} tok/s · ${tokenCount} tokens · WebGPU`,
+						metaRight: `${tokPerSec} tok/s · ${tokenCount} tokens · ${gpuDeviceName}`,
 						content: fullResponse,
 					};
 				}
@@ -297,6 +301,7 @@
 		{gpuStatus}
 		{shortGpuStatus}
 		{isGpuError}
+		{isGpuSoftware}
 		{isLoading}
 		{isLoaded}
 		{isGenerating}
@@ -316,6 +321,8 @@
 			{messages}
 			{markedInstance}
 			{isGenerating}
+			{gpuStatus}
+			{isGpuSoftware}
 			onSelectPrompt={handleSelectPrompt}
 		/>
 

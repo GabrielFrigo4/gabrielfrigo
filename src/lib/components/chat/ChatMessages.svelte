@@ -6,6 +6,8 @@
 		messages = [],
 		markedInstance = null,
 		isGenerating = false,
+		gpuStatus = "Verificando WebGPU...",
+		isGpuSoftware = false,
 		onSelectPrompt = () => {},
 	} = $props();
 
@@ -123,9 +125,9 @@
 		<!-- Hero Inicial Limpo com Sugestão Dinâmica/Aleatória -->
 		{#if messages.length === 0}
 			<div class="welcome-hero">
-				<div class="welcome-badge">
-					<span class="badge-dot"></span>
-					<span>Inferência 100% Local · Shaders WebGPU · Zero Nuvem</span>
+				<div class="welcome-badge" class:welcome-badge-warn={isGpuSoftware}>
+					<span class="badge-dot" class:badge-dot-warn={isGpuSoftware}></span>
+					<span>{gpuStatus} · Shaders WebGPU</span>
 				</div>
 
 				<h1 class="welcome-title">
@@ -394,12 +396,22 @@
 		margin-bottom: 1.25rem;
 	}
 
+	.welcome-badge-warn {
+		border-color: rgba(255, 123, 114, 0.3);
+		color: var(--accent-coral);
+	}
+
 	.badge-dot {
 		width: 7px;
 		height: 7px;
 		border-radius: 50%;
 		background: var(--accent-green);
 		box-shadow: 0 0 6px var(--accent-green);
+	}
+
+	.badge-dot-warn {
+		background: var(--accent-coral) !important;
+		box-shadow: 0 0 6px var(--accent-coral) !important;
 	}
 
 	.welcome-title {

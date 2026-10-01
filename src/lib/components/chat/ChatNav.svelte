@@ -6,6 +6,7 @@
 		gpuStatus = "Verificando WebGPU...",
 		shortGpuStatus = "WebGPU",
 		isGpuError = false,
+		isGpuSoftware = false,
 		isLoading = false,
 		isLoaded = false,
 		isGenerating = false,
@@ -45,15 +46,26 @@
 						<span class="pill-text">{progressPct}%</span>
 					</span>
 				{:else if isLoaded}
-					<span class="pill pill-ready" title="Modelo carregado na GPU">
-						<span class="dot-ready"></span>
-						<span class="pill-text desktop-only">{currentSpec.name}</span>
-						<span class="pill-text mobile-only">Pronto</span>
+					<span
+						class="pill"
+						class:pill-ready={!isGpuSoftware}
+						class:pill-warn={isGpuSoftware}
+						title={gpuStatus}
+					>
+						<span class="dot-ready" class:dot-warn={isGpuSoftware}></span>
+						<span class="pill-text desktop-only"
+							>{shortGpuStatus} · {currentSpec.name}</span
+						>
+						<span class="pill-text mobile-only">{shortGpuStatus}</span>
 					</span>
 				{:else}
-					<span class="pill pill-idle" title={gpuStatus}>
-						<span class="dot-idle"></span>
-						<span class="pill-text">WebGPU</span>
+					<span
+						class="pill pill-idle"
+						class:pill-warn={isGpuSoftware}
+						title={gpuStatus}
+					>
+						<span class="dot-idle" class:dot-warn={isGpuSoftware}></span>
+						<span class="pill-text">{shortGpuStatus}</span>
 					</span>
 				{/if}
 			</div>
@@ -226,6 +238,20 @@
 		border-radius: 50%;
 		background: var(--accent-green);
 		box-shadow: 0 0 6px var(--accent-green);
+	}
+
+	.pill-warn {
+		background: rgba(255, 123, 114, 0.12) !important;
+		color: var(--accent-coral) !important;
+		border-color: rgba(255, 123, 114, 0.3) !important;
+	}
+
+	.dot-warn {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--accent-coral) !important;
+		box-shadow: 0 0 6px var(--accent-coral) !important;
 	}
 
 	.pill-loading {

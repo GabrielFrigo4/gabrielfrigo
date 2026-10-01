@@ -74,27 +74,41 @@ export async function checkWebGPU() {
 			// ignore
 		}
 
-		const deviceName =
+		const rawDevice = (
 			info?.device ||
 			info?.description ||
-			(adapter.isFallbackAdapter ? "Software" : "GPU");
-		const isSoftware =
-			adapter.isFallbackAdapter ||
-			deviceName.toLowerCase().includes("llvmpipe") ||
-			deviceName.toLowerCase().includes("swiftshader") ||
-			deviceName.toLowerCase().includes("software");
+			info?.architecture ||
+			info?.vendor ||
+			""
+		).trim();
 
 		const hasF16 = adapter.features ? adapter.features.has("shader-f16") : false;
+		const isSoftware =
+			adapter.isFallbackAdapter ||
+			rawDevice.toLowerCase().includes("llvmpipe") ||
+			rawDevice.toLowerCase().includes("swiftshader") ||
+			rawDevice.toLowerCase().includes("software");
 
-		let cleanName = deviceName;
-		if (cleanName.includes("Iris")) cleanName = "Intel Iris Xe";
-		else if (cleanName.includes("llvmpipe")) cleanName = "llvmpipe (CPU)";
-		else if (cleanName.length > 25) cleanName = cleanName.slice(0, 22) + "...";
+		let cleanName = "GPU";
+		if (rawDevice.toLowerCase().includes("iris")) {
+			cleanName = "Intel Iris Xe";
+		} else if (rawDevice.toLowerCase().includes("llvmpipe")) {
+			cleanName = "llvmpipe (CPU)";
+		} else if (rawDevice.toLowerCase().includes("swiftshader")) {
+			cleanName = "SwiftShader (CPU)";
+		} else if (rawDevice) {
+			cleanName = rawDevice.length > 22 ? rawDevice.slice(0, 19) + "..." : rawDevice;
+		} else if (adapter.isFallbackAdapter || isSoftware) {
+			cleanName = "CPU (Fallback)";
+		} else {
+			cleanName = hasF16 ? "Hardware GPU" : "GPU (f32)";
+		}
 
 		return {
 			supported: true,
 			status: `WebGPU: ${cleanName} (${hasF16 ? "f16" : "f32"})`,
 			shortStatus: isSoftware ? "CPU (Lento) ⚠️" : `${cleanName} ⚡`,
+			cleanName,
 			isError: false,
 			isSoftware,
 			hasF16,
