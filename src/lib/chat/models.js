@@ -1,14 +1,36 @@
 export const MODEL_SPECS = {
+	"smollm2-135m": {
+		lab: "Hugging Face",
+		name: "SmolLM2 (135M)",
+		params: "135M Parâmetros",
+		vram: "~360 MB VRAM",
+		desc: "Micro-modelo ultra-compacto para carregamento instantâneo e consumo mínimo de memória.",
+		primaryId: "SmolLM2-135M-Instruct-q0f16-MLC",
+		fallbackId: "SmolLM2-135M-Instruct-q0f32-MLC",
+		group: "Micro-Edge / Baixa Latência (< 500 MB)",
+		badge: "Micro-Edge",
+	},
+	"smollm2-360m": {
+		lab: "Hugging Face",
+		name: "SmolLM2 (360M)",
+		params: "360M Parâmetros",
+		vram: "~380 MB VRAM",
+		desc: "Arquitetura leve quantizada em 4-bit, balanceada para downloads rápidos no edge.",
+		primaryId: "SmolLM2-360M-Instruct-q4f16_1-MLC",
+		fallbackId: "SmolLM2-360M-Instruct-q4f32_1-MLC",
+		group: "Micro-Edge / Baixa Latência (< 500 MB)",
+		badge: "Ultra-Leve",
+	},
 	"gemma-3-1b": {
 		lab: "Google",
 		name: "Gemma 3 (1B)",
 		params: "1.0B Parâmetros",
 		vram: "~710 MB VRAM",
-		desc: "Lançamento da Google DeepMind. Hiper-eficiente, raciocínio afiado e ideal para celulares e edge.",
+		desc: "Hiper-eficiente, raciocínio afiado e ideal para celulares e dispositivos edge.",
 		primaryId: "gemma3-1b-it-q4f16_1-MLC",
 		fallbackId: "gemma3-1b-it-q4f16_1-MLC",
-		group: "Mobile & Ultra-Leve (< 1.0 GB)",
-		badge: "Google DeepMind",
+		group: "Mobile & Eficiência (700 MB a 1.8 GB)",
+		badge: "Edge 1B",
 	},
 	"qwen-3.5-0.8b": {
 		lab: "Alibaba",
@@ -18,8 +40,19 @@ export const MODEL_SPECS = {
 		desc: "Arquitetura Gated Delta de alta vazão para dispositivos e desktops leves.",
 		primaryId: "Qwen3.5-0.8B-q4f16_1-MLC",
 		fallbackId: "Qwen3.5-0.8B-q4f32_1-MLC",
-		group: "Mobile & Ultra-Leve (< 1.0 GB)",
+		group: "Mobile & Eficiência (700 MB a 1.8 GB)",
 		badge: "Gated Delta",
+	},
+	"smollm2-1.7b": {
+		lab: "Hugging Face",
+		name: "SmolLM2 (1.7B)",
+		params: "1.7B Parâmetros",
+		vram: "~1.8 GB VRAM",
+		desc: "Versão intermediária da série SmolLM2 com equilíbrio entre tamanho e conversação.",
+		primaryId: "SmolLM2-1.7B-Instruct-q4f16_1-MLC",
+		fallbackId: "SmolLM2-1.7B-Instruct-q4f32_1-MLC",
+		group: "Mobile & Eficiência (700 MB a 1.8 GB)",
+		badge: "Edge 1.7B",
 	},
 	"qwen-3.5-2b": {
 		lab: "Alibaba",
@@ -113,16 +146,24 @@ export const MODEL_SPECS = {
 
 export const MODEL_GROUPS = [
 	{
-		label: "Mobile & Ultra-Leve (< 1.0 GB VRAM)",
+		label: "Micro-Edge / Baixa Latência (< 500 MB VRAM)",
 		options: [
-			{ key: "gemma-3-1b", label: "Gemma 3 (1B) · ~710 MB VRAM (Google DeepMind)" },
-			{ key: "qwen-3.5-0.8b", label: "Qwen 3.5 (0.8B) · ~1.1 GB VRAM" },
+			{ key: "smollm2-135m", label: "SmolLM2 (135M) · ~360 MB VRAM" },
+			{ key: "smollm2-360m", label: "SmolLM2 (360M) · ~380 MB VRAM" },
 		],
 	},
 	{
-		label: "Desktop iGPU / Equilíbrio (1.8 GB a 2.8 GB VRAM)",
+		label: "Mobile & Eficiência (700 MB a 1.8 GB VRAM)",
 		options: [
+			{ key: "gemma-3-1b", label: "Gemma 3 (1B) · ~710 MB VRAM" },
+			{ key: "qwen-3.5-0.8b", label: "Qwen 3.5 (0.8B) · ~1.1 GB VRAM" },
+			{ key: "smollm2-1.7b", label: "SmolLM2 (1.7B) · ~1.8 GB VRAM" },
 			{ key: "qwen-3.5-2b", label: "Qwen 3.5 (2B) · ~1.8 GB VRAM" },
+		],
+	},
+	{
+		label: "Desktop iGPU / Equilíbrio (2.4 GB a 2.8 GB VRAM)",
+		options: [
 			{ key: "ministral-3-3b", label: "Ministral 3 (3B) · ~2.4 GB VRAM" },
 			{
 				key: "ministral-3-reasoning",

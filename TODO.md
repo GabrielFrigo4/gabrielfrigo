@@ -149,5 +149,6 @@ deploy:
 - [x] **Responsividade Mobile no Chat Web:** Correção de overflow horizontal na navbar, whisper telemetry e blocos `<pre>`.
 - [x] **Blindagem de Cache HTTP:** Adição de `Cache-Control: no-cache` em HTMLs e `immutable` em assets versionados no Caddy.
 - [ ] **Automação de CI/CD Completa:** Executar o pipeline do Modelo A detalhado acima.
+- [ ] **Modelos de IA de Próxima Geração (Gemma 4 & SmolLM3):** Integrar ao catálogo WebGPU do chat os modelos de última geração Gemma 4 (Google DeepMind) e SmolLM3 (Hugging Face) assim que o runtime WebLLM (`@mlc-ai/web-llm`) disponibilizar quantizações canônicas e binários WASM suportados no ecossistema WebGPU.
 - [ ] **Cache de Shaders WebGPU Offline:** Implementar persistência local de shaders compilados via IndexedDB/Cache API para acelerar cold start do WebLLM.
 - [ ] **Modo Alto Contraste:** Adicionar suporte sutil a `prefers-contrast` no CSS canônico.
