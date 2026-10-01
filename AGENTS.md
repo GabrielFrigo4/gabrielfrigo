@@ -50,6 +50,7 @@ Portfolio/
 ├── PRINCIPLES.md              # 22 Princípios de Engenharia
 ├── README.md                  # Documentação institucional do repositório
 ├── TODO.md                    # Backlog & Roadmap técnico (CI/CD Modelo A)
+├── INFRASTRUCTURE.md          # Arquitetura Caddy, Edge Gateway e Políticas de Cache
 ├── package.json               # Dependências estritas de SvelteKit e Vite
 ├── svelte.config.js           # Configuração de adapter-static
 └── vite.config.js             # Configuração do Vite
