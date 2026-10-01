@@ -74,6 +74,27 @@ export async function checkWebGPU() {
 			// ignore
 		}
 
+		let webglRenderer = "";
+		if (typeof document !== "undefined") {
+			try {
+				const canvas = document.createElement("canvas");
+				const gl =
+					canvas.getContext("webgl2") ||
+					canvas.getContext("webgl") ||
+					canvas.getContext("experimental-webgl");
+				if (gl) {
+					const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+					if (debugInfo) {
+						webglRenderer = (
+							gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || ""
+						).trim();
+					}
+				}
+			} catch (_) {
+				// ignore
+			}
+		}
+
 		const rawDevice = (
 			info?.device ||
 			info?.description ||
@@ -82,24 +103,48 @@ export async function checkWebGPU() {
 			""
 		).trim();
 
+		const detectedDevice = (rawDevice || webglRenderer).trim();
+		const lowerDevice = detectedDevice.toLowerCase();
+
 		const hasF16 = adapter.features ? adapter.features.has("shader-f16") : false;
 		const isSoftware =
 			adapter.isFallbackAdapter ||
-			rawDevice.toLowerCase().includes("llvmpipe") ||
-			rawDevice.toLowerCase().includes("swiftshader") ||
-			rawDevice.toLowerCase().includes("software");
+			lowerDevice.includes("llvmpipe") ||
+			lowerDevice.includes("swiftshader") ||
+			lowerDevice.includes("software");
 
-		let cleanName = "GPU";
-		if (rawDevice.toLowerCase().includes("iris")) {
+		let cleanName = "Hardware GPU";
+		if (lowerDevice.includes("iris")) {
 			cleanName = "Intel Iris Xe";
-		} else if (rawDevice.toLowerCase().includes("llvmpipe")) {
+		} else if (
+			lowerDevice.includes("geforce") ||
+			lowerDevice.includes("rtx") ||
+			lowerDevice.includes("gtx")
+		) {
+			cleanName = "NVIDIA GeForce";
+		} else if (lowerDevice.includes("radeon")) {
+			cleanName = "AMD Radeon";
+		} else if (
+			lowerDevice.includes("apple") ||
+			lowerDevice.includes("m1") ||
+			lowerDevice.includes("m2") ||
+			lowerDevice.includes("m3") ||
+			lowerDevice.includes("m4")
+		) {
+			cleanName = "Apple Silicon";
+		} else if (lowerDevice.includes("intel")) {
+			cleanName = "Intel Graphics";
+		} else if (lowerDevice.includes("llvmpipe")) {
 			cleanName = "llvmpipe (CPU)";
-		} else if (rawDevice.toLowerCase().includes("swiftshader")) {
+		} else if (lowerDevice.includes("swiftshader")) {
 			cleanName = "SwiftShader (CPU)";
-		} else if (rawDevice) {
-			cleanName = rawDevice.length > 22 ? rawDevice.slice(0, 19) + "..." : rawDevice;
-		} else if (adapter.isFallbackAdapter || isSoftware) {
+		} else if (isSoftware || adapter.isFallbackAdapter) {
 			cleanName = "CPU (Fallback)";
+		} else if (detectedDevice && !lowerDevice.includes("gpu")) {
+			cleanName =
+				detectedDevice.length > 20
+					? detectedDevice.slice(0, 18) + "..."
+					: detectedDevice;
 		} else {
 			cleanName = hasF16 ? "Hardware GPU" : "GPU (f32)";
 		}
