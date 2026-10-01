@@ -89,7 +89,20 @@
 						</optgroup>
 					{/each}
 				</select>
-				<span class="select-arrow">▾</span>
+				<svg
+					class="select-arrow"
+					width="12"
+					height="12"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<polyline points="6 9 12 15 18 9" />
+				</svg>
 			</div>
 
 			<!-- Botão de Carregar Manual (opcional, só quando ainda não carregou) -->
@@ -99,7 +112,8 @@
 					onclick={onLoadModel}
 					title="Carregar pesos na GPU agora"
 				>
-					Carregar ⚡
+					<span>Carregar</span>
+					<span class="bolt-symbol">⚡</span>
 				</button>
 			{/if}
 
@@ -110,7 +124,23 @@
 				title="Configurar Prompt de Sistema da IA"
 				aria-label="Configurar Prompt de Sistema"
 			>
-				<span>⚙</span>
+				<svg
+					class="btn-icon icon-prompt"
+					width="15"
+					height="15"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<circle cx="12" cy="12" r="3" />
+					<path
+						d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+					/>
+				</svg>
 				<span class="desktop-only">Prompt:</span>
 				<span class="prompt-name desktop-only">{activePromptName}</span>
 			</button>
@@ -124,14 +154,43 @@
 					title="Limpar histórico da conversa"
 					aria-label="Limpar histórico da conversa"
 				>
-					Limpar
+					<svg
+						class="btn-icon"
+						width="14"
+						height="14"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<path
+							d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
+						/>
+					</svg>
+					<span class="desktop-only">Limpar</span>
 				</button>
 			{/if}
 
 			<!-- Link para voltar ao Portfólio -->
 			<a href="/" class="nav-link-btn" title="Retornar ao Portfólio Principal">
-				<span class="desktop-only">← Portfólio</span>
-				<span class="mobile-only">←</span>
+				<svg
+					class="btn-icon icon-back"
+					width="15"
+					height="15"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<path d="M19 12H5M12 19l-7-7 7-7" />
+				</svg>
+				<span class="desktop-only">Portfólio</span>
 			</a>
 		</div>
 	</div>
@@ -328,17 +387,24 @@
 
 	.select-arrow {
 		position: absolute;
-		right: 0.6rem;
+		right: 0.65rem;
+		top: 50%;
+		transform: translateY(-50%);
 		pointer-events: none;
 		color: var(--text-dim);
-		font-size: 0.75rem;
+	}
+
+	.btn-icon {
+		display: inline-block;
+		flex-shrink: 0;
+		vertical-align: middle;
 	}
 
 	.nav-btn {
 		display: inline-flex;
 		align-items: center;
-		gap: 5px;
-		padding: 0.35rem 0.75rem;
+		gap: 6px;
+		padding: 0.38rem 0.75rem;
 		background: var(--bg-surface);
 		border: 1px solid var(--border-subtle);
 		border-radius: 6px;
@@ -348,6 +414,7 @@
 		cursor: pointer;
 		transition: all 0.15s ease;
 		white-space: nowrap;
+		line-height: 1;
 	}
 
 	.nav-btn:hover:not(:disabled) {
@@ -370,12 +437,29 @@
 		background: rgba(88, 166, 255, 0.08);
 	}
 
+	.bolt-symbol {
+		display: inline-block;
+		margin-left: 2px;
+	}
+
+	.icon-prompt {
+		color: var(--accent-blue);
+		transition: transform 0.25s ease;
+	}
+
+	.nav-btn:hover:not(:disabled) .icon-prompt {
+		transform: rotate(45deg);
+	}
+
 	.prompt-name {
 		color: var(--text-main);
 	}
 
 	.nav-link-btn {
-		padding: 0.35rem 0.75rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 0.38rem 0.75rem;
 		background: var(--bg-surface);
 		border: 1px solid var(--border-subtle);
 		border-radius: 6px;
@@ -385,10 +469,24 @@
 		text-decoration: none;
 		transition: all 0.15s ease;
 		white-space: nowrap;
+		line-height: 1;
 	}
 
 	.nav-link-btn:hover {
 		border-color: var(--border-hover);
+		color: var(--accent-blue);
+	}
+
+	.icon-back {
+		color: var(--text-muted);
+		transition:
+			transform 0.15s ease,
+			color 0.15s ease;
+	}
+
+	.nav-link-btn:hover .icon-back {
+		color: var(--accent-blue);
+		transform: translateX(-2.5px);
 	}
 
 	@media (max-width: 900px) {
