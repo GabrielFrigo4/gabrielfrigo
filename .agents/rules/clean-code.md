@@ -24,7 +24,7 @@ Diretrizes canônicas para o repositório do portfólio web de Gabriel Frigo:
 - **Proibição de Glifos Unicode e Emojis em Controles:** É expressamente proibido usar caracteres UTF-8 ou emojis (`⚙`, `↵`, `⏹`, `▾`, `⚡`, `🧠`, `🎲`, `↗`, `↓`) para botões, controles de interface ou sinalizadores visuais. A renderização, altura de linha, tamanho e alinhamento variam drasticamente entre sistemas operacionais (FreeBSD, Linux, Windows, macOS, Android, iOS). Emojis só são admitidos quando representam dados literais de texto.
 - **A Solução Canônica:** Utilize SVGs inline nativos (`viewBox="0 0 24 24"`), com `stroke="currentColor"` ou `fill="currentColor"`, dimensões explícitas, `aria-hidden="true"` e estilização determinística via CSS.
 
-## 5. Proibição Absoluta de Comentários no Código (Clean Code >>> Comentários)
+## 5. Código Sem Comentários (Clean Code Declarativo)
 
 - **Zero Comentários em Código Fonte:** Comentários em arquivos `.svelte`, `.js`, `.css` e HTML são expressamente proibidos (`//`, `/* */`, `<!-- -->`).
 - **Autoexplicabilidade:** O código deve ser autoexplicativo por construção, empregando nomes reveladores de intenção, funções puras coesas e clareza estrutural. Comentários frequentemente mascaram código ruim ou ficam defasados; código limpo expressa a verdade matemática imediata.
