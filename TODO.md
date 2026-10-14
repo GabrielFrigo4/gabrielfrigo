@@ -1,4 +1,4 @@
-# 📋 Backlog & Roadmap Técnico — Gabriel Frigo Portfolio
+# 🗺️ Roadmap & Backlog
 
 > Registro formal de arquitetura, melhorias planejadas e tarefas pendentes para o portfólio oficial ([gabrielfrigo.dev.br](https://gabrielfrigo.dev.br)), mantendo fidelidade estrita à **Filosofia Anti-Inchaço**, **Fundamentos de UNIX** e **Engenharia Soberana**.
 
@@ -225,3 +225,8 @@ deploy:
 - [ ] **Modelos de IA de Próxima Geração (Gemma 4 & SmolLM3):** Integrar ao catálogo WebGPU do chat os modelos de última geração Gemma 4 (Google DeepMind) e SmolLM3 (Hugging Face) assim que o runtime WebLLM (`@mlc-ai/web-llm`) disponibilizar quantizações canônicas e binários WASM suportados no ecossistema WebGPU.
 - [ ] **Cache de Shaders WebGPU Offline:** Implementar persistência local de shaders compilados via IndexedDB/Cache API para acelerar cold start do WebLLM.
 - [ ] **Modo Alto Contraste:** Adicionar suporte sutil a `prefers-contrast` no CSS canônico.
+
+---
+
+> [!TIP]
+> Para detalhes sobre convenções de código e diretrizes de engenharia, consulte o [PRINCIPLES.md](PRINCIPLES.md).
