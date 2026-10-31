@@ -12,7 +12,7 @@ cd "${_repo_root}"
 echo "🔍 [pre-commit] Executing Portfolio quality gates..."
 
 ### --------------------------------
-### Whitespace & Formatting Check
+### WHITESPACE & FORMATTING CHECK
 ### --------------------------------
 echo "  ↳ Checking whitespace and formatting (git diff --check)..."
 if ! git diff --check --cached; then
@@ -22,7 +22,7 @@ if ! git diff --check --cached; then
 fi
 
 ### --------------------------------
-### Git Index File Modes Check
+### GIT INDEX FILE MODES CHECK
 ### --------------------------------
 echo "  ↳ Validating Git Index file modes (0755 vs 0644)..."
 _staged_files=$(git diff --cached --name-only --diff-filter=d 2> "/dev/null" || true)
@@ -87,13 +87,13 @@ if [ -n "${_staged_files}" ]; then
 fi
 
 ### --------------------------------
-### Shell Scripts Syntax Check
+### SHELL SCRIPTS SYNTAX CHECK
 ### --------------------------------
 echo "  ↳ Validating shell scripts syntax..."
 find . -name "*.sh" -not -path "*/.git/*" -not -path "*/node_modules/*" -exec sh -n {} +
 
 ### --------------------------------
-### Prettier Validation (SvelteKit)
+### PRETTIER VALIDATION SVELTEKIT
 ### --------------------------------
 if command -v npx > "/dev/null" 2>&1; then
 	echo "  ↳ Validating staged files formatting with Prettier..."

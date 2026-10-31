@@ -3,32 +3,32 @@
 # ----------------------------------------------------------------
 
 # ================================================================
-# Dependencies & Package Managers
+# DEPENDENCIES & PACKAGE MANAGERS
 # ================================================================
 node_modules/
 
 # ================================================================
-# SvelteKit Build Outputs & Cache
+# SVELTEKIT BUILD OUTPUTS & CACHE
 # ================================================================
 .svelte-kit/
 build/
 
 # ================================================================
-# Environment Configurations & Secrets
+# ENVIRONMENT CONFIGURATIONS & SECRETS
 # ================================================================
 .env
 .env.*
 !.env.example
 
 # ================================================================
-# Logs & Diagnostic Files
+# LOGS & DIAGNOSTIC FILES
 # ================================================================
 *.log
 npm-debug.log*
 yarn-debug.log*
 
 # ================================================================
-# Operating System & Editor Artefacts
+# OPERATING SYSTEM & EDITOR ARTEFACTS
 # ================================================================
 .vscode/
 .idea/
