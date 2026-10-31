@@ -37,7 +37,7 @@ O website reflete a identidade técnica, acadêmica e filosófica de Gabriel Fri
 Portfolio/
 ├── .agents/                   # Governança e runbooks de IA
 │   ├── rules/                 # Diretrizes de Clean Code
-│   └── skills/                # Runbooks de portfolio-crafting
+│   └── skills/                # Runbooks de developer-identity-crafting
 ├── .githooks/                 # Quality gates locais (pre-commit, commit-msg)
 ├── .github/workflows/         # Pipeline de CI/CD (GitHub Actions)
 ├── src/
