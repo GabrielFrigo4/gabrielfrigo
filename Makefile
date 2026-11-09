@@ -92,6 +92,7 @@ test ci: lint build
 ### CLEANUP
 ### ================================
 clean:
-	printf "🧹 Limpando artefatos de compilação...\n"
-	rm -rf build .svelte-kit
+	printf "🧹 Limpando artefatos de compilação, caches e .venv...\n"
+	rm -rf build .svelte-kit .venv
+	find . -type d -name "__pycache__" -exec rm -rf {} + 2> "/dev/null" || true
 	printf "✅ Workspace limpo!\n"
