@@ -1,119 +1,73 @@
-# 🚀 Gabriel Frigo Portfolio — AI Agent Briefing
+# 🤖 AI Agent Briefing
 
-> Este é o repositório do **website oficial e portfólio pessoal de Gabriel Frigo** ([gabrielfrigo.dev.br](https://gabrielfrigo.dev.br)), compilado estaticamente em **SvelteKit** (`@sveltejs/adapter-static`).
-
----
-
-## 🧭 Identidade e Papel
-
-O website reflete a identidade técnica, acadêmica e filosófica de Gabriel Frigo:
-
-- **Estudante de Ciência da Computação (UFABC)** e Pesquisador de Otimização Combinatória (PIBIC / Network Flows)
-- **Finalista Nacional da Maratona SBC / ICPC 2026** (Equipe GRUB da UFABC)
-- **Engenharia de Sistemas Perto do Metal:** C23, C++23, Rust, Zig, Go, Assembly, FreeBSD, Linux, OpenBSD e illumos
-- **Fundamentos de UNIX:** Primitivas puras de File Descriptors (FD) e Identifiers (ID), OSS (`cat /dev/dsp > /dev/dsp`) vs ALSA, Privilege Separation (`pledge`/`unveil`, Capsicum)
-- **O Sexteto de Engenharia Federado:** `Environment`, `Foundation`, `Research`, `Training`, `Personal` e `Venture`
-- **Filosofia Anti-Inchaço & Compilador Determinístico:** Garantias matemáticas estáticas superam qualquer suposição em tempo de execução
-- **Método Socrático com IA:** Tutoria ativa com IA (Antigravity CLI/IDE/2.0), questionando tudo perpetuamente (99% não basta; 100% de certeza)
+> Diretrizes canônicas, invariantes de engenharia, governança autônoma e protocolo operacional para agentes de inteligência artificial em repositórios do ecossistema.
 
 ---
 
-## 📁 Estrutura Canônica de Arquivos
+## 🧭 Identidade & Fonte de Contexto
 
-```text
-Portfolio/
-├── .agents/                   # Governança e runbooks de IA
-│   ├── rules/                 # Diretrizes de Clean Code
-│   └── skills/                # Runbooks de developer-identity-crafting
-├── .githooks/                 # Quality gates locais (pre-commit, commit-msg)
-├── .github/workflows/         # Pipeline de CI/CD (GitHub Actions)
-├── src/
-│   ├── app.html               # Template HTML com meta tags e fontes
-│   └── routes/
-│       ├── +layout.js         # Prerender = true e trailingSlash
-│       ├── +layout.svelte     # Tema visual escuro e variáveis CSS
-│       └── +page.svelte       # Página principal e seções canônicas
-├── static/                    # Favicon, assets e imagens públicas
-├── AGENTS.md                  # Este briefing de engenharia
-├── INFRASTRUCTURE.md          # Arquitetura Caddy, Edge Gateway e Políticas de Cache
-├── LICENSE                    # Licença do projeto
-├── Makefile                   # Orquestrador POSIX silencioso
-├── PRINCIPLES.md              # 22 Princípios de Engenharia aplicados
-├── README.md                  # Documentação institucional do repositório
-├── TODO.md                    # Backlog & Roadmap técnico (CI/CD Modelo A)
-├── package.json               # Dependências estritas de SvelteKit e Vite
-├── svelte.config.js           # Configuração de adapter-static
-└── vite.config.js             # Configuração do Vite
-```
+Todo agente de IA que atua neste repositório deve ancorar suas decisões na documentação canônica local antes de executar qualquer alteração. Consulte rigorosamente nesta ordem:
+
+1. [README.md](README.md) — Arquitetura, stack técnica, topologia de diretórios e comandos operacionais específicos do repositório.
+2. [TODO.md](TODO.md) — Matriz de status operacional, cobertura de implementação e roadmap de engenharia.
+3. [PRINCIPLES.md](PRINCIPLES.md) — Os 22 Princípios de Engenharia UNIX e diretrizes estritas de Clean Code.
+4. [CONTRIBUTING.md](CONTRIBUTING.md) — Fluxo Git soberano, convenção de commits semânticos e qualidade local.
+5. `ENVIRONMENT.md` — Arquitetura federada do ecossistema (quando presente na raiz do repositório, como no hub `Environment` e seus submódulos centrais).
 
 ---
 
-## ⚠️ Regras Críticas para Agentes de IA
+## 🤝 Protocolo Bidirecional de Esclarecimento Proativo
 
-1. **Static First & Zero Runtime Bloat:** O site é 100% pré-renderizado via `@sveltejs/adapter-static`. Não utilize Node SSR, servidores dinâmicos em produção ou bibliotecas inchadas de UI.
-2. **Método Socrático:** Ao implementar novos componentes ou textos, questione criticamente sua necessidade. Teste rigorosamente cada mudança.
-3. **Hermetismo de Produção (`rm -rf .agents`):** A pasta `.agents/` serve exclusivamente para inteligência contextual local e não pode ser acoplada ao build.
-4. **Make como Interface Única:** Todas as ações devem ser validadas via `make lint`, `make build` e `make test`.
-5. **Ícones Vetoriais SVG Nativos em Todo o Website (Zero Bloat & Zero Unicode Jitter):** É proibido instalar bibliotecas de ícones no npm (`lucide`, `font-awesome`) e expressamente proibido usar glifos Unicode frágeis ou emojis (`⚙`, `↵`, `⏹`, `▾`, `⚡`, `🧠`, `🎲`, `↗`, `↓`) para controles, badges e botões em qualquer lugar do site. Todo ícone deve ser SVG inline nativo com `viewBox`, estilizado via CSS com `currentColor`, garantindo determinismo visual idêntico em qualquer sistema operacional (FreeBSD, Linux, macOS, Windows, mobile).
-6. **Código Sem Comentários (Clean Code Declarativo):** Nenhum arquivo de código (`.svelte`, `.js`, `.css`, HTML, `Makefile`, shell scripts) deve conter comentários (`//`, `/* */`, `<!-- -->`, `#`). O código deve ser 100% legível, declarativo e autoexplicativo por construção. Toda explicação conceitual, arquitetural ou de governança deve residir exclusivamente na documentação (`.md`). Única exceção tolerada no código: `/* @vite-ignore */` para bundles dinâmicos via CDN.
-7. **Estado da Arte (2025/2026) e Rejeição de Modelos Legados:** Evite sugerir, configurar ou incluir modelos de inteligência artificial ou ferramentas legadas/antigas. O portfólio e seu subsistema de inferência WebGPU devem refletir estritamente o estado da arte real dos anos vigentes (**2025/2026**: Google Gemma 3, Alibaba Qwen 3.5, Mistral AI Ministral 3 (2512), Microsoft Phi-4, DeepSeek R1). Sem concessões para tecnologias obsoletas.
-8. **Padronização WebGPU (`q4f16_1` & Contexto Adaptativo):** Todos os modelos suportados DEVEM utilizar a quantização canônica `q4f16_1` (pesos em 4 bits e ativações em FP16 nativo com `shader-f16`), com `q4f32_1` estritamente restrito a fallback de compatibilidade. A redução da janela de contexto (`context_window_size: 1024`, `sliding_window_size: 512`) deve ocorrer **exclusivamente em ambientes mobile** (`isMobileDevice`) para blindar contra OOM do sistema operacional; no desktop, o contexto opera em capacidade plena padrão (4.096+ tokens).
+A autonomia operacional do agente é guiada pelo princípio de alinhamento contínuo: nunca assuma silenciosamente suposições ambíguas.
 
----
+### 🏛️ Alinhamento Socrático (Master -> User)
 
-## 🛡️ Regra da Proatividade e Correção Contínua (Boy Scout Rule)
+Qualquer ambiguidade, inconsistência de requisitos, trade-off arquitetural crítico ou especificação incompleta DEVE ser esclarecido proativamente com o usuário via `ask_question` antes do início da execução em massa. É expressamente proibido adotar suposições silenciosas sobre escopo ou tomar ações destrutivas sem validação prévia.
 
-O agente de IA atua de forma proativa na manutenção e aplicação dos padrões canônicos deste repositório.
+### ⚡ Escalonamento de Subagentes (Worker -> Master)
 
-Ao identificar linhas ou artefatos fora dos padrões estabelecidos:
-
-1. **Notificar concisamente** o usuário sobre o ajuste realizado.
-2. **Corrigir a inconformidade**, aplicando o padrão correspondente:
-    - **Comentários Narrativos:** Eliminar comentários óbvios que apenas narram código executável.
-    - **Banners Estruturais:** Ajustar réguas para exatamente 64 hífens no topo ou 32 caracteres com `### ` no corpo (ou 64 `=` em `.gitignore`), com títulos sempre em MAIÚSCULO.
-    - **Portabilidade POSIX:** Substituir bashismos (`[[ ]]`, `&>`, arrays, `source`) por sintaxe estrita POSIX `/bin/sh`.
-    - **Shebang Universal:** Garantir sempre `#!/usr/bin/env sh` ou `#!/usr/bin/env python3`.
-    - **Sequências ANSI & Escapes:** Não use octais (`\033`, `\001`) para caracteres ou escapes. Use `[ -t 1 ] && echo -n $'\e...'` ou notação hexadecimal (`\x01`, `\x1b`). Octal é exclusivo para permissões POSIX (`chmod 0755`, `chmod 0644`, `umask`).
-    - **Redirecionamento Seguro:** Envolver destinos em aspas duplas (ex: `> "/dev/null" 2>&1`).
-    - **Makefiles:** Assegurar cabeçalho `.POSIX: .SILENT:`, `MAKEFLAGS += --no-print-directory -s`, alinhamento estético de variáveis e zero `@` redundante.
-    - **Permissões Canônicas:** Aplicar 4 dígitos octais (`chmod 0755`, `chmod 0644`, `chmod 0700`, `chmod 0600`).
-    - **Invariante Out-of-the-Box:** Garantir modos octais corretos no Git Index e auto-cura em tempo de execução sem requerer intervenção manual pós-clone.
-    - **Emissão Semântica de UI:** Substituir `echo` avulsos com emojis pelas rotinas canônicas `_ui_*`.
-    - **Antifragilidade & Resiliência:** Resolução ativa de caminhos em cascata, auto-cura de permissões (0600 em chaves/segredos) e validação defensiva de pré-requisitos.
-    - **Curadoria Cognitiva:** Capturar decisões estruturais e regras tácitas em skills locais compactas (`.agents/skills/`), mantendo-as atualizadas e expurgando ruído obsoleto.
-    - **Refatoração Sem Legado:** Expurgar aliases obsoletos, variáveis mortas e shims de compatibilidade em renomeações.
-    - **Elevação Antifrágil & Shift Seguro:** Usar o bloco explícito `if [ "$(id -u)" -ne 0 ]` para resolução de `ELEVATE` (evitando término fatal sob `set -e` como root) e proteger todo comando `shift` com validação prévia de parâmetros (`[ "$#" -ge N ] && shift N`).
-    - **Simetria de Documentação:** Mover regras ou invariantes universais documentadas erroneamente em sub-membros específicos para o documento de arquitetura do grupo correspondente, eliminando falsas assimetrias.
+Subagentes de execução que identificarem qualquer dúvida de escopo, divergência entre especificação e código real, ou risco de efeito colateral inesperado DEVEM interromper a mutação de arquivos e questionar imediatamente o agente orquestrador pai via `send_message`.
 
 ---
 
-## 🚀 Comandos de Verificação Rápida (Quality Gates)
+## ⚠️ Regras Críticas & Invariantes Soberanas
 
-| Comando         | Finalidade Operacional                                             |
-| :-------------- | :----------------------------------------------------------------- |
-| `make help`     | Exibe o catálogo interativo de comandos disponíveis                |
-| `make dev`      | Inicia o servidor local de desenvolvimento Vite                    |
-| `make build`    | Compila o site estático via adapter-static em `build/`             |
-| `make preview`  | Visualiza localmente o bundle estático gerado                      |
-| `make format`   | Formata código-fonte e documentações (Prettier)                    |
-| `make prettier` | Formata arquivos Markdown com Prettier                             |
-| `make lint`     | Valida formatação e conformidade sem alterar arquivos              |
-| `make check`    | Executa checagem de tipos e integridade do Svelte (`svelte-check`) |
-| `make hooks`    | Configura e aplica permissão `0755` nos ganchos de `.githooks/`    |
-| `make test`     | Executa suíte automatizada de testes do portfólio                  |
-| `make ci`       | Executa pipeline local de validação (`check lint test build`)      |
-| `make clean`    | Remove artefatos de compilação intermediários e `.svelte-kit`      |
+1. **Soberania e Isolamento de Repositórios OSS (`**/OSS/**`):** Projetos de terceiros sob diretórios `OSS/` são estritamente somente-leitura para operações globais, templates, formatação ou auditoria, só podendo ser editados sob ordem explícita e nominal do usuário e seguindo as regras do upstream.
+2. **Desacoplamento Bancada vs. Produção & Zero-Dirty Invariant:** Nunca edite clones de produção diretamente (`~/.local/share/*`, `~/.config/*`, `~/.emacs.d`, etc.). Edite exclusivamente na bancada em `~/Documents/`, valide localmente (`make test`, `make ci`), comite e envie via `git push`. A produção recebe atualizações exclusivamente via `git pull` e DEVE manter `git status` 100% limpo a todo momento (Invariante Zero-Dirty).
+3. **Hermetismo de Produção (`rm -rf .agents`):** O ecossistema é soberano e independente de ferramentas de IA. Código de produção (scripts, Makefiles, hooks, dotfiles, compiladores) não depende de `.agents/` ou `skills/`. Se o diretório `.agents/` for deletado, o repositório opera com 100% de sua integridade.
+4. **Invariante Out-of-the-Box (`0755` / `0644` / `0700` / `0600`):** O repositório deve funcionar imediatamente após um simples `git clone`, sem etapas manuais pós-clone. Permissões octais canônicas devem estar registradas no Git Index (`0755` para executáveis/scripts/hooks, `0644` para arquivos de configuração e documentação, `0700`/`0600` para Vault e chaves). Scripts devem aplicar self-healing de permissões em tempo de execução.
+5. **Taxonomia Tripartite de Comentários:** O código adota estritamente três categorias:
+    - _Comentários de Sistema:_ PERMITIDOS (shebangs, pragmas, linters).
+    - _Comentários Estruturais de 64/32 colunas:_ PERMITIDOS (cabeçalhos de 64 `-` `# ----------------------------------------------------------------`, seções de 32 colunas `### ================================` e `### --------------------------------` com títulos em MAIÚSCULO, réguas de 64 `=` em `.gitignore` `# ================================================================` com títulos em MAIÚSCULO, sem vazamento lateral).
+    - _Comentários Explicativos/Narrativos:_ PROIBIDOS em código, arquivos de configuração e blocos de código dentro de Markdowns.
+6. **Portabilidade POSIX, Makefiles Silenciosos & Boy Scout Rule:**
+    - Sintaxe estrita POSIX `/bin/sh` (`#!/usr/bin/env sh`, sem bashismos).
+    - Makefiles silenciosos com `.POSIX: .SILENT:`, `MAKEFLAGS += --no-print-directory -s`, subshells `(cd dir && $(MAKE))` e zero `@` redundante.
+    - Sequências ANSI via `$'\e'` ou notação hexadecimal `\x1b` (nunca octal `\033`).
+    - Redirecionamento seguro envolvendo destinos em aspas duplas (ex: `> "/dev/null" 2>&1`).
+    - Refatoração Clean-Break sem legado (expurgar shims, aliases obsoletos e variáveis mortas).
+    - Simetria de escopo e não-assimetria de subgrupo na documentação.
+    - Emissão semântica de UI via rotinas canônicas `_ui_*`.
+    - **Boy Scout Rule:** Ao identificar qualquer inconformidade com os padrões estabelecidos, notifique concisamente o usuário e aplique a correção de forma proativa.
+
+---
+
+## 🚀 Comandos Canônicos de Verificação (Quality Gates)
+
+| Comando       | Finalidade Operacional                                           |
+| :------------ | :--------------------------------------------------------------- |
+| `make help`   | Exibe o catálogo interativo de comandos disponíveis              |
+| `make test`   | Executa a suíte automatizada de testes locais                    |
+| `make audit`  | Executa as suítes de auditoria estática de padrões e integridade |
+| `make format` | Formata código-fonte e documentações com Prettier e linters      |
+| `make ci`     | Executa a pipeline local completa de validação integrada         |
+| `make hooks`  | Configura e ativa os ganchos Git com permissões canônicas (0755) |
 
 ---
 
 ## 📖 Referências Obrigatórias
 
-Antes de qualquer modificação neste ecossistema, consulte:
-
-- [README.md](README.md) — Documentação institucional do repositório
+- [README.md](README.md) — Visão geral, arquitetura e stack técnica
+- [TODO.md](TODO.md) — Roadmap de tarefas e matriz de cobertura
 - [PRINCIPLES.md](PRINCIPLES.md) — Os 22 Princípios de Engenharia Soberanos
-- [TODO.md](TODO.md) — Backlog & Roadmap técnico
-- [INFRASTRUCTURE.md](INFRASTRUCTURE.md) — Arquitetura Caddy, Edge Gateway e Políticas de Cache
-- [LICENSE](LICENSE) — Licença do projeto
-- [.agents/rules/clean-code.md](.agents/rules/clean-code.md) — Regra de Clean Code
-- [.agents/skills/developer-identity-crafting/SKILL.md](.agents/skills/developer-identity-crafting/SKILL.md) — Runbook de identidade pública e design
+- [CONTRIBUTING.md](CONTRIBUTING.md) — Guia de contribuição, fluxo Git e convenções
