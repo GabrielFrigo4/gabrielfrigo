@@ -107,16 +107,9 @@ flowchart TD
 Conectado ao servidor via SSH (`ssh -i ... ubuntu@144.22.210.65`):
 
 ```bash
-# Validar sintaxe do Caddyfile sem interromper o serviço
 caddy validate --config /etc/caddy/Caddyfile
-
-# Recarregar configuração do Caddy com zero downtime (hot reload)
 sudo systemctl reload caddy
-
-# Verificar status operacional e portas em escuta
 sudo systemctl status caddy
-
-# Acompanhar logs de acesso e erros em tempo real
 journalctl -u caddy -f -n 50
 ```
 
@@ -127,7 +120,6 @@ journalctl -u caddy -f -n 50
 Atualmente, o deploy sincroniza a pasta local compilada `build/` diretamente para o servidor via SSH:
 
 ```bash
-# Executa compilação e sincronização atômica
 make deploy
 ```
 

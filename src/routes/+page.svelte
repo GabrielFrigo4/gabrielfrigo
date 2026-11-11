@@ -361,7 +361,7 @@
 				},
 				{
 					name: "Shells UNIX",
-					desc: "zsh, bash, ksh e baseline rigoroso FreeBSD /bin/sh (POSIX.1)",
+					desc: "zsh, bash, ksh e baseline rigoroso FreeBSD sh (POSIX.1)",
 				},
 				{
 					name: "Shells Alternativos",

@@ -74,19 +74,10 @@ flowchart TD
 ### Comandos Rápidos
 
 ```sh
-# 1. Instalar dependências
 npm install
-
-# 2. Ativar os quality gates locais (Git Hooks)
 make hooks
-
-# 3. Iniciar servidor de desenvolvimento
 make dev
-
-# 4. Compilar artefatos estáticos de produção
 make build
-
-# 5. Pré-visualizar a compilação estática
 make preview
 ```
 

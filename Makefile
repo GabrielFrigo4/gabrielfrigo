@@ -81,7 +81,7 @@ lint check:
 ### ================================
 hooks:
 	printf "⚓ Configurando Git Hooks em .githooks/...\n"
-	chmod 0755 .githooks/* 2>/dev/null || true
+	chmod 0755 .githooks/* 2> "/dev/null" || true
 	$(GIT) config core.hooksPath .githooks
 	printf "✅ Quality gates locais ativados!\n"
 

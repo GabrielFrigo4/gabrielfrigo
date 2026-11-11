@@ -130,7 +130,6 @@ flowchart LR
 #### Passo 1: Gerar o Par de Chaves Dedicado na Máquina Local
 
 ```bash
-# Gerar chave ed25519 isolada sem passphrase para o bot de CI
 ssh-keygen -t ed25519 -C "github-actions-portfolio-deploy" -f ~/.ssh/id_ed25519_portfolio_deploy
 ```
 
@@ -139,7 +138,6 @@ ssh-keygen -t ed25519 -C "github-actions-portfolio-deploy" -f ~/.ssh/id_ed25519_
 No servidor (`ubuntu@144.22.210.65`), anexar a chave pública com restrições em `~/.ssh/authorized_keys`:
 
 ```bash
-# Linha a ser adicionada no ~/.ssh/authorized_keys do servidor:
 no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-ed25519 AAAA... github-actions-portfolio-deploy
 ```
 
