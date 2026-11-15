@@ -1,0 +1,44 @@
+name: Tests
+
+on:
+    push:
+        branches: [main, master]
+    pull_request:
+        branches: [main, master]
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+env:
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+    validate-and-build:
+        name: ⚡ Validate & Static Build
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v7
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v7
+              with:
+                  node-version: "22"
+                  cache: "npm"
+
+            - name: Install Dependencies
+              run: npm ci
+
+            - name: Validate Svelte & App Formatting (Prettier)
+              run: npm run lint
+
+            - name: Build Static SvelteKit Site
+              run: npm run build
+
+            - name: Verify Static Artifacts
+              run: |
+                  test -f build/index.html || { echo "❌ build/index.html not generated!"; exit 1; }
+                  test -f build/404.html || { echo "❌ build/404.html not generated!"; exit 1; }
+                  echo "✅ Static site built successfully with @sveltejs/adapter-static"
